@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="360dp"
+        android:layout_height="725dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <ImageView
+        android:layout_width="338dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="11dp"
+        android:scaleType="center"
+        android:src="@drawable/ke1" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="65dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="35dp"
+        android:scaleType="center"
+        android:src="@drawable/profil"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <ImageView
+        android:layout_width="338dp"
+        android:layout_height="143dp"
+        android:layout_marginTop="134dp"
+        android:layout_marginLeft="11dp"
+        android:scaleType="center"
+        android:src="@drawable/ke2" />
+
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="140dp"
+        android:background="@null"
+        android:src="@drawable/kas" />
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="140dp"
+        android:background="@null"
+        android:src="@drawable/bpjs" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="159dp"
+        android:layout_marginTop="140dp"
+        android:background="@null"
+        android:src="@drawable/logistik" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="230dp"
+        android:layout_marginTop="140dp"
+        android:background="@null"
+        android:src="@drawable/gaji" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="301dp"
+        android:layout_marginTop="140dp"
+        android:background="@null"
+        android:src="@drawable/pajak" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="210dp"
+        android:background="@null"
+        android:src="@drawable/pinjaman" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="210dp"
+        android:background="@null"
+        android:src="@drawable/jadwal" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="159dp"
+        android:layout_marginTop="210dp"
+        android:background="@null"
+        android:src="@drawable/analisis" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="230dp"
+        android:layout_marginTop="210dp"
+        android:background="@null"
+        android:src="@drawable/absen" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="301dp"
+        android:layout_marginTop="210dp"
+        android:background="@null"
+        android:src="@drawable/setting" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="40dp"
+        android:padding="10dp"
+        android:text="MUHAMMAD SUMBUL"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="15sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="60dp"
+        android:padding="10dp"
+        android:text="Candi - Sidoarjo"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:padding="10dp"
+        android:text="PT WIRA BUANA ARUM"
+        android:textColor="#000000"
+        android:textSize="11sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="174dp"
+        android:padding="10dp"
+        android:text="Kas"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="174dp"
+        android:padding="10dp"
+        android:text="Bpjs"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="174dp"
+        android:padding="10dp"
+        android:text="Logistik"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="230dp"
+        android:layout_marginTop="174dp"
+        android:padding="10dp"
+        android:text="Gaji"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="298dp"
+        android:layout_marginTop="174dp"
+        android:padding="10dp"
+        android:text="Pajak"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="243dp"
+        android:padding="10dp"
+        android:text="Pinjaman"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="79dp"
+        android:layout_marginTop="243dp"
+        android:padding="10dp"
+        android:text="Jadwal"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="149dp"
+        android:layout_marginTop="243dp"
+        android:padding="10dp"
+        android:text="Analisis"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="224dp"
+        android:layout_marginTop="243dp"
+        android:padding="10dp"
+        android:text="Absen"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="293dp"
+        android:layout_marginTop="243dp"
+        android:padding="10dp"
+        android:text="Setting"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <ImageView
+        android:layout_width="338dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="11dp"
+        android:scaleType="center"
+        android:src="@drawable/ke3" />
+
+
+
+    <!-- Menggunakan wrap_content untuk tinggi -->
+
+            <!-- Elemen gambar di dalam FrameLayout -->
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="440dp"
+                android:layout_marginLeft="11dp"
+                android:scaleType="center"
+                android:src="@drawable/ke4" />
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="590dp"
+                android:layout_marginLeft="11dp"
+                android:scaleType="center"
+                android:src="@drawable/ke4" />
+
+
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="440dp"
+                android:layout_marginLeft="188dp"
+                android:scaleType="center"
+                android:src="@drawable/ke4" />
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="590dp"
+                android:layout_marginLeft="188dp"
+                android:scaleType="center"
+                android:src="@drawable/ke4" />
+
+
+
+
+
+
+
+
+
+</FrameLayout>

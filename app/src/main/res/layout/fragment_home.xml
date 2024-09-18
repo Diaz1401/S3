@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/layout_home_toolbar"
+        layout="@layout/layout_home_toolbar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_home_toolbar"
+        app:layout_constraintVertical_bias="0.0" >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include android:id="@+id/layout_home_member"
+                layout="@layout/layout_home_member" />
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_home_member">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/menuKas"
+                        android:text="Kas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/kas" />
+                    <TextView
+                        android:id="@+id/menuAbsen"
+                        android:text="Absen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/absen" />
+                    <TextView
+                        android:id="@+id/menuAnalisis"
+                        android:text="Analisis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/analisis" />
+                    <TextView
+                        android:id="@+id/menuBPJS"
+                        android:text="BPJS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/bpjs" />
+                    <TextView
+                        android:id="@+id/menuGaji"
+                        android:text="Gaji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/gaji" />
+                    <TextView
+                        android:id="@+id/menuJadwal"
+                        android:text="Jadwal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/jadwal" />
+                    <TextView
+                        android:id="@+id/menuLogistik"
+                        android:text="Logistik"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/logistik" />
+                    <TextView
+                        android:id="@+id/menuPajak"
+                        android:text="Pajak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/pajak" />
+                    <TextView
+                        android:id="@+id/menuPinjaman"
+                        android:text="KAS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/pinjaman"/>
+                    <TextView
+                        android:id="@+id/menuSetting"
+                        android:text="Setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="sans-serif"
+                        android:textAlignment="center"
+                        android:textSize="12sp"
+                        app:drawableTopCompat="@drawable/setting"/>
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:paddingBottom="@dimen/_5sdp">-->
+
+
+
+<!--            <HorizontalScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginHorizontal="@dimen/_5sdp"-->
+<!--                android:scrollbars="none"-->
+<!--                android:visibility="gone">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal">-->
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/imageButton"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@null"-->
+<!--                        android:contentDescription="TODO"-->
+<!--                        android:src="@drawable/kas" />-->
+<!--                </LinearLayout>-->
+
+<!--&lt;!&ndash;                <RelativeLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginStart="@dimen/_3sdp">&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;                    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        android:orientation="horizontal"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        tools:itemCount="6"&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                        tools:listitem="@layout/item_home_produk_terlaris" />&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </RelativeLayout>&ndash;&gt;-->
+
+<!--            </HorizontalScrollView>-->
+
+<!--            <HorizontalScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginHorizontal="@dimen/_5sdp"-->
+<!--                android:scrollbars="none">-->
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="@dimen/_3sdp">-->
+
+<!--&lt;!&ndash;                    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:orientation="horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"&ndash;&gt;-->
+<!--&lt;!&ndash;                        app:spanCount="2"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:itemCount="6"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:listitem="@layout/item_home_produk_terlaris" />&ndash;&gt;-->
+
+<!--                </RelativeLayout>-->
+
+<!--            </HorizontalScrollView>-->
+
+<!--        </LinearLayout>-->
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

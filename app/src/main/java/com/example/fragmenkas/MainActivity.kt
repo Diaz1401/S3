@@ -1,59 +1,37 @@
 package com.example.fragmenkas
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.fragmenkas.ui.theme.FragmenkasTheme
-import android.os.Handler
-import android.os.Looper
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.provider.MediaStore
-import android.widget.ImageButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.ImageView
-class MainActivity : ComponentActivity() {
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.fragmenkas.databinding.ActivityNavigationBinding
 
-    private lateinit var imageView: ImageView
-    private val PICK_IMAGE = 100
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityNavigationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layouttt)
-        val imageButton: ImageButton = findViewById(R.id.imageButton)
+        // Hide the ActionBar
+        supportActionBar?.hide()
 
-        imageButton.setOnClickListener {
-            // Pindah ke SecondActivity
-            val intent = Intent(this, keduaa::class.java)
-            startActivity(intent)
-        }
-        imageView = findViewById(R.id.imageView)
+        binding = ActivityNavigationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        imageView.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, PICK_IMAGE)
-        }
+        val navView: BottomNavigationView = binding.navView
 
+        val navController = findNavController(R.id.nav_host_fragment_activity_navigation)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
-            val imageUri: Uri? = data?.data
-            imageView.setImageURI(imageUri)
-        }
-    }
-
 }

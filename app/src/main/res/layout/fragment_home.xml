@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/wba_1">
 
     <include
         android:id="@+id/layout_home_toolbar"
@@ -19,14 +20,18 @@
         app:layout_constraintVertical_bias="0.0" >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include android:id="@+id/layout_home_member"
+            android:layout_height="wrap_content" >
+            <include
+                android:id="@+id/layout_home_member"
                 layout="@layout/layout_home_member" />
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,118 +40,392 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/menuKas"
-                        android:text="Kas"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/kas" />
-                    <TextView
-                        android:id="@+id/menuAbsen"
-                        android:text="Absen"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuKas"
+                            android:text="@string/kas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/kas"
+                        />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/absen" />
-                    <TextView
-                        android:id="@+id/menuAnalisis"
-                        android:text="Analisis"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuAbsen"
+                            android:text="@string/absen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/absen"
+                        />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/analisis" />
-                    <TextView
-                        android:id="@+id/menuBPJS"
-                        android:text="BPJS"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuAnalisis"
+                            android:text="@string/analisis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/analisis"
+                        />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/bpjs" />
-                    <TextView
-                        android:id="@+id/menuGaji"
-                        android:text="Gaji"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuBPJS"
+                            android:text="@string/bpjs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/bpjs"
+                        />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/gaji" />
-                    <TextView
-                        android:id="@+id/menuJadwal"
-                        android:text="Jadwal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/jadwal" />
-                    <TextView
-                        android:id="@+id/menuLogistik"
-                        android:text="Logistik"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/logistik" />
-                    <TextView
-                        android:id="@+id/menuPajak"
-                        android:text="Pajak"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/pajak" />
-                    <TextView
-                        android:id="@+id/menuPinjaman"
-                        android:text="KAS"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/pinjaman"/>
-                    <TextView
-                        android:id="@+id/menuSetting"
-                        android:text="Setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="16dp"
-                        android:fontFamily="sans-serif"
-                        android:textAlignment="center"
-                        android:textSize="12sp"
-                        app:drawableTopCompat="@drawable/setting"/>
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuGaji"
+                            android:text="@string/gaji"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/gaji"
+                        />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
+            </HorizontalScrollView>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutProgresss"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:background="@drawable/banner_list_background"
+                android:elevation="@dimen/_2sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+                app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
 
+                <ImageView
+                    android:id="@+id/imageViewProgress1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_marginRight="@dimen/_2sdp"
+                    android:contentDescription="TODO"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/white"
+                    tools:ignore="ImageContrastCheck" />
+
+                <ImageView
+                    android:id="@+id/imageViewProgress2"
+                    android:layout_width="@dimen/_48sdp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_marginRight="@dimen/_2sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/profil"
+                    android:contentDescription="TODO" />
+
+                <TextView
+                    android:id="@+id/textViewProgress1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_marginRight="@dimen/_2sdp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/progress_tugas"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/imageViewProgress4"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewProgress2"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewProgress2" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:progress="72"
+                    android:progressTint="#FF2323"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewProgress1"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textViewProgress1"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewProgress1" />
+
+                <TextView
+                    android:id="@+id/textViewProgress2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Semangat terus ya!"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageViewProgress3"
+                    app:layout_constraintEnd_toEndOf="@+id/progressBar"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewProgress3"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewProgress3" />
+
+                <ImageView
+                    android:id="@+id/imageViewProgress3"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageViewProgress2"
+                    app:layout_constraintStart_toStartOf="@+id/progressBar"
+                    app:layout_constraintTop_toBottomOf="@+id/progressBar"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:srcCompat="@drawable/hourglass"
+                    android:contentDescription="TODO" />
+
+                <ImageView
+                    android:id="@+id/imageViewProgress4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewProgress2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textViewProgress1"
+                    app:layout_constraintTop_toTopOf="@+id/textViewProgress1"
+                    app:srcCompat="@drawable/baseline_arrow_forward_ios_24"
+                    android:contentDescription="TODO" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayoutProgresss">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuJadwal"
+                            android:text="@string/jadwal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/jadwal"
+                            />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuLogistik"
+                            android:text="Logistik"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/logistik"
+                            />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuPajak"
+                            android:text="@string/pajak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/pajak"
+                            />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuPinjaman"
+                            android:text="@string/pinjaman"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/pinjaman"
+                            />
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:backgroundTint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        app:cardUseCompatPadding="true">
+                        <TextView
+                            android:id="@+id/menuSetting"
+                            android:text="@string/setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            app:drawableTopCompat="@drawable/setting"
+                            />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
             </HorizontalScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_45sdp"
     android:padding="@dimen/_5sdp"
-    android:background="@color/purple_200"
+    android:background="@color/wba_1"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 

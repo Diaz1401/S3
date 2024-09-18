@@ -4,4 +4,14 @@
     <string name="title_home">Home</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_account">Account</string>
+    <string name="kas">Kas</string>
+    <string name="absen">Absen</string>
+    <string name="analisis">Analisis</string>
+    <string name="bpjs">BPJS</string>
+    <string name="gaji">Gaji</string>
+    <string name="jadwal">Jadwal</string>
+    <string name="pajak">Pajak</string>
+    <string name="pinjaman">Pinjaman</string>
+    <string name="setting">Setting</string>
+    <string name="progress_tugas">Tugas yang sudah anda selesaikan . . .</string>
 </resources>

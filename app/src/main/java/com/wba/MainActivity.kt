@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navbarView
 
         // Ensure the correct ID is used for the NavController
-        val navController = findNavController(R.id.fragmentView)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications

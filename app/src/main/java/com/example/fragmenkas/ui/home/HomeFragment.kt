@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.fragmenkas.KasActivity
+import com.example.fragmenkas.TaxFormActivity
 import com.example.fragmenkas.R
 import com.example.fragmenkas.databinding.FragmentDashboardBinding
 import com.example.fragmenkas.databinding.FragmentHomeBinding
@@ -36,6 +37,11 @@ class HomeFragment : Fragment() {
 
         imageButton.setOnClickListener {
             val intent = Intent(activity, KasActivity::class.java)
+            startActivity(intent)
+        }
+        val imageButtonTax : ImageButton = binding.imageButtonPajak
+        imageButtonTax.setOnClickListener {
+            val intent = Intent(activity, TaxFormActivity::class.java)
             startActivity(intent)
         }
 

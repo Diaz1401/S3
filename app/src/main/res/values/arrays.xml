@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="jenis_pajak_array">
+        <item name="PPH 21">PPH 21</item>
+        <item name="PPH 22">PPH 22</item>
+    </string-array>
+</resources>

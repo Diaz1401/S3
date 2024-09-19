@@ -41,6 +41,7 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/menuKas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10sdp"
@@ -51,7 +52,6 @@
                         app:cardCornerRadius="@dimen/_12sdp"
                         app:cardUseCompatPadding="true">
                         <TextView
-                            android:id="@+id/menuKas"
                             android:text="@string/kas"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

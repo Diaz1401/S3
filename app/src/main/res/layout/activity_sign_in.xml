@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:padding="@dimen/_12sdp"
+    android:scrollbars="none"
+    tools:context=".wba.SignInActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_180sdp"
+            android:layout_marginTop="@dimen/_48sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:src="@drawable/logo_wba"
+            android:contentDescription="Logo"/>
+        <EditText
+            android:id="@+id/inputEmailSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:hint="Email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/_18sdp"
+            android:paddingEnd="@dimen/_18sdp"
+            android:textSize="@dimen/_12ssp"
+            android:background="@drawable/outline" />
+        <EditText
+            android:id="@+id/inputPasswordSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:hint="Password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/_18sdp"
+            android:paddingEnd="@dimen/_18sdp"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="monospace"
+            android:background="@drawable/outline" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Belum punya akun?"
+                android:textSize="@dimen/_12ssp"/>
+            <TextView
+                android:id="@+id/txtSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Buat akun"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:textSize="@dimen/_12ssp"/>
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginTop="@dimen/_48sdp"
+            android:text="Log In"
+            android:textSize="@dimen/_12ssp"
+            app:cornerRadius="@dimen/_12ssp"/>
+    </LinearLayout>
+
+</ScrollView>

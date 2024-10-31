@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/daftarakun">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:text="< Daftar Akun"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btnbuatDA"
+            android:layout_marginTop="174dp"
+            android:layout_marginLeft="9dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/kotakmenuDA"
+            android:layout_marginTop="58dp"
+            android:layout_marginLeft="9dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="107dp"
+            android:layout_marginTop="55dp"
+            android:text="Pembuatan Akun"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gajiwba"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="74dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pajakwba"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="130dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pinjamanwba"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="186dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/kaswba"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="241dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bpjswba"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="296dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logistikwba"
+            android:background="@android:color/transparent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="153dp"
+            android:layout_marginTop="181dp"
+            android:text="BUAT"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="230dp"
+            android:text="Daftar Akun"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+</LinearLayout>

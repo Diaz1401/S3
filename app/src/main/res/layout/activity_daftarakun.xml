@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="360dp"
     android:layout_height="match_parent"
-    android:background="@drawable/daftarakun">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/daftarakun"
+    >
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -16,20 +18,20 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="8dp"
             android:layout_height="wrap_content"
-            android:text="< Daftar Akun"/>
+            android:text=" Daftar Akun"/>
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/btnbuatDA"
+            android:src="@drawable/btnbuatda"
             android:layout_marginTop="174dp"
             android:layout_marginLeft="9dp"
             />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/kotakmenuDA"
+            android:src="@drawable/kotakmenuda"
             android:layout_marginTop="58dp"
             android:layout_marginLeft="9dp"
             />

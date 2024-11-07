@@ -22,7 +22,7 @@
             android:layout_height="@dimen/_180sdp"
             android:layout_marginTop="@dimen/_48sdp"
             android:layout_marginBottom="@dimen/_24sdp"
-            android:src="@drawable/logo_wba"
+            android:src="@drawable/logowba"
             android:contentDescription="Logo"/>
         <EditText
             android:id="@+id/inputEmailSignIn"

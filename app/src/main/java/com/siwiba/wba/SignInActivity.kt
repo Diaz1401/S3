@@ -23,17 +23,17 @@ class SignInActivity : AppCompatActivity() {
             val email = binding.inputEmailSignIn.text.toString()
             val password = binding.inputPasswordSignIn.text.toString()
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Sign In Successful", Toast.LENGTH_SHORT).show()
+//            auth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this) { task ->
+//                    if (task.isSuccessful) {
+//                        Toast.makeText(this, "Sign In Successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
-                    } else {
-                        Toast.makeText(this, "Sign In Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+//                    } else {
+//                        Toast.makeText(this, "Sign In Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
         }
 
         binding.txtSignUp.setOnClickListener {

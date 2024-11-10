@@ -2,12 +2,11 @@ package com.siwiba
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.wba.fragment.DashboardFragment
 import com.siwiba.wba.fragment.KeuanganFragment
 import com.siwiba.wba.fragment.LogistikFragment
-import com.siwiba.wba.fragment.SDMFragment
+import com.siwiba.wba.fragment.AnalisisFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,11 +36,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_logistik -> {
-                    loadFragment(SDMFragment())
+                    loadFragment(AnalisisFragment())
                     true
                 }
                 R.id.navigation_profil -> {
-                    loadFragment(SDMFragment())
+                    loadFragment(AnalisisFragment())
                     true
                 }
                 else -> false
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.selectedItemId = R.id.navigation_dashboard
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(fragment: LogistikFragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()

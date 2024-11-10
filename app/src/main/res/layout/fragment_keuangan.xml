@@ -1,7 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/backgroundku">
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/kotakmenuku"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:text="Kirim Uang"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            />
+        <EditText
+            android:layout_marginTop="42dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/kotaknominalku"
+             />
+        <ImageView
+            android:layout_marginTop="43dp"
+            android:layout_marginLeft="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btnkirimku"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icongaji2"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="66dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconpajak2"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="122dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconpinjaman2"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="178dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconkas2"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="233dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconbpjs2"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="289dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/iconlogistik2"
+            android:background="@android:color/transparent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Gaji"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="18dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Pajak"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="67.5dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Pinjaman"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="112dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Kas"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="185dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Bpjs"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="239.5dp"
+            android:textSize="14sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="Logistik"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="283dp"
+            android:textSize="14sp"
+            />
+
+
+    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:text="Riwayat Pengiriman"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="16sp"/>
+</FrameLayout>

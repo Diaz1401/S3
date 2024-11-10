@@ -70,95 +70,80 @@
             android:src="@drawable/kotakmenu_main"/>
         <ImageButton
 
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:id="@+id/btnkas"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconkas"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="80dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="100dp"
             android:layout_width="wrap_content"
-            android:id="@+id/btnbpjs"
+            android:id="@+id/btndaftarakun"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconbpjs"
+            android:src="@drawable/icondaftarakun"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="150dp"
-            android:id="@+id/btnkirimuang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconkirimuang"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="223dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="185dp"
             android:layout_width="wrap_content"
             android:id="@+id/btnlogistik"
             android:layout_height="wrap_content"
             android:src="@drawable/iconlogistik"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="290dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="275dp"
             android:layout_width="wrap_content"
             android:id="@+id/btngaji"
             android:layout_height="wrap_content"
             android:src="@drawable/icongaji"
             android:background="@android:color/transparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="55dp"
+            android:fontFamily="sans-serif"
+            android:text="kas"
+            android:textColor="#000000"
+            android:textSize="15sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_marginTop="55dp"
             android:fontFamily="sans-serif"
             android:textColor="#000000"
-            android:layout_marginLeft="20dp"
-            android:textSize="12.5sp"
+            android:layout_marginLeft="84dp"
+            android:textSize="15sp"
             android:layout_height="wrap_content"
-            android:text="kas"/>
+            android:text="Daftar Akun"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_marginTop="55dp"
             android:fontFamily="sans-serif"
             android:textColor="#000000"
-            android:layout_marginLeft="86dp"
-            android:textSize="12.5sp"
+            android:layout_marginLeft="185dp"
             android:layout_height="wrap_content"
-            android:text="Bpjs"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="140dp"
-            android:textSize="12.5sp"
-            android:layout_height="wrap_content"
-            android:text="Kirim Uang"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="220dp"
-            android:layout_height="wrap_content"
-            android:textSize="12.5sp"
+            android:textSize="15sp"
             android:text="Logistik"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_marginTop="55dp"
             android:fontFamily="sans-serif"
             android:textColor="#000000"
-            android:textSize="12.5sp"
-            android:layout_marginLeft="299dp"
+            android:textSize="15sp"
+            android:layout_marginLeft="285dp"
             android:layout_height="wrap_content"
             android:text="Gaji"/>
 
 
         <ImageButton
             android:layout_marginTop="75dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:id="@+id/btnpinjaman"
             android:layout_height="wrap_content"
@@ -166,31 +151,24 @@
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="75dp"
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="100dp"
             android:id="@+id/btndaftarabsen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icondaftarabsen"
             android:background="@android:color/transparent" />
+
         <ImageButton
             android:layout_marginTop="75dp"
-            android:layout_marginLeft="150dp"
-            android:id="@+id/btnanalisis"
+            android:id="@+id/btnbpjs"
+            android:layout_marginLeft="185dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconanalisis"
+            android:src="@drawable/iconbpjs"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="75dp"
-            android:id="@+id/btndaftarakun"
-            android:layout_marginLeft="223dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icondaftarakun"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="75dp"
-            android:layout_marginLeft="290dp"
+            android:layout_marginLeft="275dp"
             android:id="@+id/btnpajak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -198,52 +176,43 @@
             android:background="@android:color/transparent" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="125dp"
             android:fontFamily="sans-serif"
             android:textColor="#000000"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
-            android:textSize="12.5sp"
+            android:textSize="15sp"
             android:text="Pinjaman"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="65dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginLeft="83dp"
+            android:layout_marginTop="125dp"
             android:fontFamily="sans-serif"
             android:text="Daftar Absen"
             android:textColor="#000000"
-            android:textSize="12.5sp" />
+            android:textSize="15sp" />
+
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="125dp"
             android:fontFamily="sans-serif"
-            android:textSize="12.5sp"
+            android:textSize="15sp"
             android:textColor="#000000"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="195dp"
             android:layout_height="wrap_content"
-            android:text="Analisis"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="120dp"
-            android:fontFamily="sans-serif"
-            android:textSize="12.5sp"
-            android:textColor="#000000"
-            android:layout_marginLeft="210dp"
-            android:layout_height="wrap_content"
-            android:text="Daftar Akun"/>
-
+            android:text="Bpjs"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="295dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginLeft="280dp"
+            android:layout_marginTop="125dp"
             android:fontFamily="sans-serif"
             android:text="Pajak"
             android:textColor="#000000"
-            android:textSize="12.5sp" />
+            android:textSize="15sp" />
     </FrameLayout>
 
     <FrameLayout

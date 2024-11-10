@@ -40,64 +40,55 @@
             android:layout_height="wrap_content"
             android:src="@drawable/btnkirimku"
             android:background="@android:color/transparent" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Kirim"
-            android:layout_marginTop="42dp"
-            android:layout_marginLeft="265dp"
-            android:textSize="20sp"
-            />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icongaji"
+            android:src="@drawable/icongaji2"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="66dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconpajak"
+            android:src="@drawable/iconpajak2"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="122dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconpinjaman"
+            android:src="@drawable/iconpinjaman2"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="178dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconkas"
+            android:src="@drawable/iconkas2"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="233dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconbpjs"
+            android:src="@drawable/iconbpjs2"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="80dp"
             android:layout_marginLeft="289dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconlogistik"
+            android:src="@drawable/iconlogistik2"
             android:background="@android:color/transparent" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:text="Kirim"
+            android:text="Gaji"
             android:layout_marginTop="120dp"
-            android:layout_marginLeft="13dp"
+            android:layout_marginLeft="18dp"
             android:textSize="14sp"
             />
         <TextView

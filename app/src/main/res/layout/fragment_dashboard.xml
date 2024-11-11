@@ -155,7 +155,7 @@
             android:id="@+id/btndaftarabsen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icondaftarabsen"
+            android:src="@drawable/iconbpjs"
             android:background="@android:color/transparent" />
 
         <ImageButton
@@ -164,7 +164,7 @@
             android:layout_marginLeft="185dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/iconbpjs"
+            android:src="@drawable/icondaftarabsen"
             android:background="@android:color/transparent" />
         <ImageButton
             android:layout_marginTop="75dp"
@@ -187,10 +187,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="83dp"
+            android:layout_marginLeft="110dp"
             android:layout_marginTop="125dp"
             android:fontFamily="sans-serif"
-            android:text="Daftar Absen"
+            android:text="Bpjs"
             android:textColor="#000000"
             android:textSize="15sp" />
 
@@ -201,9 +201,9 @@
             android:fontFamily="sans-serif"
             android:textSize="15sp"
             android:textColor="#000000"
-            android:layout_marginLeft="195dp"
+            android:layout_marginLeft="170dp"
             android:layout_height="wrap_content"
-            android:text="Bpjs"/>
+            android:text="Daftar Akun"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

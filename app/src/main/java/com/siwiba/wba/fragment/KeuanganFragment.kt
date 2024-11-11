@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.FirebaseApp
 import com.siwiba.R
-import com.siwiba.databinding.FragmentKeuanganBinding
 
-class KeuanganFragment: AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_keuangan)
-        FirebaseApp.initializeApp(this)
+class KeuanganFragment : Fragment(R.layout.fragment_keuangan) {
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inisialisasi Firebase
+        FirebaseApp.initializeApp(requireContext())
 
+        // Return the view for the fragment
+        return inflater.inflate(R.layout.fragment_keuangan, container, false)
     }
 }

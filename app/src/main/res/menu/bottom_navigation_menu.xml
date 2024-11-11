@@ -11,11 +11,11 @@
     <item
         android:id="@+id/navigation_sdm"
         android:icon="@drawable/ic_laporan"
-        android:title="SDM" />
+        android:title="Absen" />
     <item
         android:id="@+id/navigation_logistik"
         android:icon="@drawable/ic_pengaturan"
-        android:title="Logistik" />
+        android:title="Analisis" />
     <item
         android:id="@+id/navigation_profil"
         android:icon="@drawable/ic_profil"

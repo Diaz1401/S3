@@ -11,7 +11,7 @@ import com.siwiba.wba.SignInActivity
 class DaftarAkun: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_daftarakun)
+        setContentView(R.layout.activity_daftar_akun)
         FirebaseApp.initializeApp(this)
 
 

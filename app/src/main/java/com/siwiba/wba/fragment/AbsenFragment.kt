@@ -1,16 +1,27 @@
 package com.siwiba.wba.fragment
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.FirebaseApp
-import com.siwiba.R
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.siwiba.databinding.FragmentAbsenBinding
 
-class AbsenFragment: AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_absen)
-        FirebaseApp.initializeApp(this)
+class AbsenFragment : Fragment() {
 
+    private var _binding: FragmentAbsenBinding? = null
+    private val binding get() = _binding!!
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAbsenBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

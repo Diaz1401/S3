@@ -5,19 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.FirebaseApp
-import com.siwiba.R
+import com.siwiba.databinding.FragmentAnalisisBinding
 
-class AnalisisFragment : Fragment(R.layout.fragment_analisis) {
+class AnalisisFragment : Fragment() {
+
+    private var _binding: FragmentAnalisisBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inisialisasi Firebase
-        FirebaseApp.initializeApp(requireContext())
+        _binding = FragmentAnalisisBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Return the view for the fragment
-        return inflater.inflate(R.layout.fragment_analisis, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

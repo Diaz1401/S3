@@ -9,11 +9,11 @@
         android:icon="@drawable/ic_transaksi"
         android:title="Keuangan" />
     <item
-        android:id="@+id/navigation_sdm"
+        android:id="@+id/navigation_absen"
         android:icon="@drawable/ic_laporan"
         android:title="Absen" />
     <item
-        android:id="@+id/navigation_logistik"
+        android:id="@+id/navigation_analisis"
         android:icon="@drawable/ic_pengaturan"
         android:title="Analisis" />
     <item

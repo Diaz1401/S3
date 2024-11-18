@@ -5,19 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.FirebaseApp
-import com.siwiba.R
+import com.siwiba.databinding.FragmentKeuanganBinding
 
-class KeuanganFragment : Fragment(R.layout.fragment_keuangan) {
+class KeuanganFragment : Fragment() {
+
+    private var _binding: FragmentKeuanganBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inisialisasi Firebase
-        FirebaseApp.initializeApp(requireContext())
+        _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Return the view for the fragment
-        return inflater.inflate(R.layout.fragment_keuangan, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

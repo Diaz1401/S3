@@ -5,19 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.FirebaseApp
-import com.siwiba.R
+import com.siwiba.databinding.FragmentAbsenBinding
 
-class AbsenFragment : Fragment(R.layout.fragment_absen) {
+class AbsenFragment : Fragment() {
+
+    private var _binding: FragmentAbsenBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inisialisasi Firebase
-        FirebaseApp.initializeApp(requireContext())
+        _binding = FragmentAbsenBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Return the view for the fragment
-        return inflater.inflate(R.layout.fragment_absen, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -4,27 +4,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/backgroundabsen">
+
+    <!-- Tanggal dan Jam -->
+    <TextView
+        android:id="@+id/tvTanggalWaktu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="41dp"
         android:layout_gravity="center_horizontal">
+
+        <!-- Tombol Kamera -->
         <ImageButton
+            android:id="@+id/btnkamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/kotakkamera"/>
+            android:background="@drawable/kotakkamera" />
+
+        <!-- Tombol Absen -->
         <ImageButton
+            android:id="@+id/btnAbsen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="178dp"
-            android:background="@drawable/btnabsen"/>
+            android:background="@drawable/btnabsen" />
+
+        <!-- Tombol Izin -->
         <ImageButton
+            android:id="@+id/btnIzin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="178dp"
             android:layout_marginLeft="149dp"
-            android:background="@drawable/btnizin"/>
-
+            android:background="@drawable/btnizin" />
     </FrameLayout>
-
 </FrameLayout>

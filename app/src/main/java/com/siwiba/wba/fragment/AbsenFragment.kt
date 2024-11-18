@@ -1,27 +1,205 @@
-package com.siwiba.wba.fragment
+package com.siwiba.wba
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.siwiba.databinding.FragmentAbsenBinding
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.siwiba.R
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
-class AbsenFragment : Fragment() {
+class AbsenFragment : Activity() {
 
-    private var _binding: FragmentAbsenBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var tvTanggalWaktu: TextView
+    private lateinit var btnKamera: ImageButton
+    private lateinit var btnAbsen: ImageButton
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAbsenBinding.inflate(inflater, container, false)
-        return binding.root
+    private var imageBitmap: Bitmap? = null
+
+    private val lokasiKantor = Location("").apply {
+        latitude = -7.460280112797017 // Latitude lokasi kantor
+        longitude = 112.70801758822674 // Longitude lokasi kantor
+    }
+    private val MAX_DISTANCE_METERS = 50.0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.fragment_absen)
+
+        tvTanggalWaktu = findViewById(R.id.tvTanggalWaktu)
+        btnKamera = findViewById(R.id.btnkamera)
+        btnAbsen = findViewById(R.id.btnAbsen)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        updateTanggalWaktu()
+
+        btnKamera.setOnClickListener { ambilFoto() }
+        btnAbsen.setOnClickListener { tampilkanDialogNama() }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun updateTanggalWaktu() {
+        val dateFormat = SimpleDateFormat("EEEE, dd MMM yyyy HH:mm", Locale.getDefault())
+        val currentDateTime = dateFormat.format(Date())
+        tvTanggalWaktu.text = currentDateTime
+    }
+
+    private fun ambilFoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_CAMERA)
+    }
+
+    private fun cekLokasiDanAbsen(nama: String) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                val distance = location.distanceTo(lokasiKantor)
+                if (distance <= MAX_DISTANCE_METERS) {
+                    simpanDataAbsen(nama)
+                } else {
+                    resetAbsen()
+                    tampilkanToast("Absen gagal! Anda terlalu jauh dari lokasi absen.")
+                }
+            } else {
+                resetAbsen()
+                tampilkanToast("Gagal mendapatkan lokasi!")
+            }
+        }
+    }
+
+    private fun simpanDataAbsen(nama: String) {
+        if (imageBitmap != null) {
+            val baos = ByteArrayOutputStream()
+            imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val imageData = baos.toByteArray()
+
+            val storageRef = FirebaseStorage.getInstance().reference
+                .child("absen_images/${UUID.randomUUID()}.jpg")
+
+            storageRef.putBytes(imageData)
+                .addOnSuccessListener {
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        val absenData = mapOf(
+                            "nama" to nama,
+                            "tanggal" to tvTanggalWaktu.text.toString(),
+                            "imageUrl" to imageUrl
+                        )
+
+                        FirebaseDatabase.getInstance().getReference("absen")
+                            .push()
+                            .setValue(absenData)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    resetAbsen()
+                                    tampilkanToast("Absen berhasil disimpan.")
+                                } else {
+                                    tampilkanToast("Gagal menyimpan data absensi.")
+                                    task.exception?.printStackTrace()
+                                }
+                            }
+                    }.addOnFailureListener { e ->
+                        tampilkanToast("Gagal mendapatkan URL gambar.")
+                        e.printStackTrace()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    tampilkanToast("Gagal mengunggah gambar ke Firebase Storage.")
+                    e.printStackTrace()
+                }
+        } else {
+            tampilkanToast("Harap ambil foto sebelum absen.")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
+            imageBitmap = data?.extras?.get("data") as Bitmap
+            val scaledBitmap = imageBitmap?.let {
+                val targetWidth = dpToPx(289)
+                val targetHeight = dpToPx(171)
+                Bitmap.createScaledBitmap(it, targetWidth, targetHeight, true)
+            }
+            btnKamera.setImageBitmap(scaledBitmap)
+        }
+    }
+
+    private fun resetAbsen() {
+        imageBitmap = null
+        btnKamera.setImageDrawable(null)
+    }
+
+    private fun tampilkanToast(pesan: String) {
+        Toast.makeText(this, pesan, Toast.LENGTH_SHORT).apply {
+            setGravity(Gravity.CENTER, 0, -200)
+            show()
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+        return (dp * metrics.density).toInt()
+    }
+
+    private fun tampilkanDialogNama() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Isi Nama")
+
+        val input = EditText(this)
+        input.hint = "Masukkan nama Anda"
+        builder.setView(input)
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val nama = input.text.toString()
+            if (nama.isNotEmpty()) {
+                cekLokasiDanAbsen(nama)
+                dialog.dismiss()
+            } else {
+                tampilkanToast("Nama tidak boleh kosong!")
+            }
+        }
+
+        builder.setNegativeButton("Batal") { dialog, _ -> dialog.cancel() }
+        builder.show()
+    }
+
+    companion object {
+        private const val REQUEST_CAMERA = 100
+        private const val REQUEST_LOCATION = 101
     }
 }

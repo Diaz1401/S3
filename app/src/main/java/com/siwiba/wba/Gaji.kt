@@ -2,7 +2,6 @@ package com.siwiba.wba
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import android.graphics.Color
 import androidx.appcompat.app.AlertDialog
@@ -11,7 +10,7 @@ import com.google.firebase.database.*
 import com.siwiba.R
 import java.text.DecimalFormat
 
-class Pajak : AppCompatActivity() {
+class Gaji : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private lateinit var tableLayout: TableLayout
@@ -19,7 +18,7 @@ class Pajak : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pajak)
+        setContentView(R.layout.activity_gaji)
 
         // Inisialisasi Firebase
         database = FirebaseDatabase.getInstance().getReference("TabelData")

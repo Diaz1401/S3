@@ -37,13 +37,13 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".wba.Pajak"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".wba.absen"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

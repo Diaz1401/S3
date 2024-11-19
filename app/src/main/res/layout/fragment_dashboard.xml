@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background"
+    android:background="@color/wba_light"
     android:layout_gravity="center_horizontal">
 
     <ScrollView
@@ -13,36 +13,43 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:scrollbars="none"
+        android:layout_margin="@dimen/_18sdp"
         app:layout_constraintTop_toTopOf="parent" >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
-
-            <FrameLayout
-                android:id="@+id/layoutProfile"
-                android:layout_width="wrap_content"
+            android:background="@drawable/background_kotak_wba">
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_48sdp">
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/imgProfile"
-                    android:layout_width="@dimen/_64sdp"
-                    android:layout_height="@dimen/_64sdp"
-                    android:background="@drawable/background_bulat_white"
-                    android:scaleType="centerCrop"
-                    app:riv_oval="true"/>
-            </FrameLayout>
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_18sdp">
+                <FrameLayout
+                    android:id="@+id/layoutProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="@dimen/_64sdp"
+                        android:background="@drawable/background_bulat_white"
+                        android:scaleType="centerCrop"
+                        app:riv_oval="true"/>
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NAME"
+                        android:textSize="@dimen/_18ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/wba_light"
+                        android:layout_marginStart="@dimen/_72sdp"
+                        android:layout_marginTop="@dimen/_18sdp"/>
+                </FrameLayout>
 
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NAME"
-                android:textSize="@dimen/_18ssp"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/_24sdp"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtId"
@@ -51,61 +58,57 @@
                 android:text="ID"
                 android:textSize="@dimen/_12ssp"
                 android:textColor="@color/colorGreyLight"
+                android:layout_marginStart="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_6sdp"/>
 
             <LinearLayout
                 android:id="@+id/layoutEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp" >
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_6sdp" >
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="0dp"
-                    android:src="@drawable/baseline_mail_outline_24"/>
+                    android:src="@drawable/baseline_mail_outline_24_white"/>
                 <TextView
                     android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="EMAIL"
                     android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/wba_light"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/_12sdp"/>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGreyLight" />
             <LinearLayout
                 android:id="@+id/layoutAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_12sdp" >
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_marginBottom="@dimen/_18sdp">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="0dp"
-                    android:src="@drawable/baseline_location_pin_24"/>
+                    android:src="@drawable/baseline_location_pin_24_white"/>
                 <TextView
                     android:id="@+id/txtAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ADDRESS"
                     android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/wba_light"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/_12sdp"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorGreyLight" />
+                    android:layout_marginStart="@dimen/_12sdp" />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorGreyLight" />
+
         </LinearLayout>
+
     </ScrollView>
 
     <FrameLayout

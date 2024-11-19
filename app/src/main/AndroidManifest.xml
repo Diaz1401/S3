@@ -39,7 +39,7 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name=".wba.Pajak"
+            android:name=".wba.activity.Pajak"
             android:exported="true" />
         <activity
             android:name=".wba.absen"

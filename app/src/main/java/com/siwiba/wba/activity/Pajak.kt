@@ -1,14 +1,14 @@
-package com.siwiba.wba
+package com.siwiba.wba.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import android.graphics.Color
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.siwiba.R
+import com.siwiba.wba.tabledata
 import java.text.DecimalFormat
 
 class Pajak : AppCompatActivity() {

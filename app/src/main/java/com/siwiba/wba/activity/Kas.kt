@@ -1,4 +1,4 @@
-package com.siwiba.wba
+package com.siwiba.wba.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,9 +8,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.siwiba.R
+import com.siwiba.wba.tabledata
 import java.text.DecimalFormat
 
-class Gaji : AppCompatActivity() {
+class Kas : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private lateinit var tableLayout: TableLayout

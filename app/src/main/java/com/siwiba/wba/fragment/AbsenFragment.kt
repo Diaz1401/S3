@@ -1,4 +1,4 @@
-package com.siwiba.wba
+package com.siwiba.wba.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,24 +11,24 @@ import android.location.Location
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.siwiba.R
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AbsenFragment : Activity() {
+class AbsenFragment : Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var tvTanggalWaktu: TextView
@@ -43,20 +43,35 @@ class AbsenFragment : Activity() {
     }
     private val MAX_DISTANCE_METERS = 50.0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_absen)
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                imageBitmap = data?.extras?.get("data") as? Bitmap
+                imageBitmap?.let {
+                    btnKamera.setImageBitmap(it)
+                }
+            }
+        }
 
-        tvTanggalWaktu = findViewById(R.id.tvTanggalWaktu)
-        btnKamera = findViewById(R.id.btnkamera)
-        btnAbsen = findViewById(R.id.btnAbsen)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_absen, container, false)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        tvTanggalWaktu = view.findViewById(R.id.tvTanggalWaktu)
+        btnKamera = view.findViewById(R.id.btnkamera)
+        btnAbsen = view.findViewById(R.id.btnAbsen)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         updateTanggalWaktu()
 
         btnKamera.setOnClickListener { ambilFoto() }
         btnAbsen.setOnClickListener { tampilkanDialogNama() }
+
+        return view
     }
 
     private fun updateTanggalWaktu() {
@@ -67,17 +82,17 @@ class AbsenFragment : Activity() {
 
     private fun ambilFoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_CAMERA)
+        cameraLauncher.launch(intent)
     }
 
     private fun cekLokasiDanAbsen(nama: String) {
         if (ActivityCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION
             )
@@ -119,42 +134,25 @@ class AbsenFragment : Activity() {
                             "imageUrl" to imageUrl
                         )
 
-                        FirebaseDatabase.getInstance().getReference("absen")
-                            .push()
-                            .setValue(absenData)
+                        // Simpan ke Firestore
+                        val firestore = FirebaseFirestore.getInstance()
+                        firestore.collection("absen")
+                            .add(absenData)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     resetAbsen()
                                     tampilkanToast("Absen berhasil disimpan.")
                                 } else {
-                                    tampilkanToast("Gagal menyimpan data absensi.")
-                                    task.exception?.printStackTrace()
+                                    tampilkanToast("Gagal menyimpan data absensi ke Firestore.")
                                 }
                             }
-                    }.addOnFailureListener { e ->
-                        tampilkanToast("Gagal mendapatkan URL gambar.")
-                        e.printStackTrace()
                     }
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener {
                     tampilkanToast("Gagal mengunggah gambar ke Firebase Storage.")
-                    e.printStackTrace()
                 }
         } else {
             tampilkanToast("Harap ambil foto sebelum absen.")
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
-            imageBitmap = data?.extras?.get("data") as Bitmap
-            val scaledBitmap = imageBitmap?.let {
-                val targetWidth = dpToPx(289)
-                val targetHeight = dpToPx(171)
-                Bitmap.createScaledBitmap(it, targetWidth, targetHeight, true)
-            }
-            btnKamera.setImageBitmap(scaledBitmap)
         }
     }
 
@@ -164,23 +162,17 @@ class AbsenFragment : Activity() {
     }
 
     private fun tampilkanToast(pesan: String) {
-        Toast.makeText(this, pesan, Toast.LENGTH_SHORT).apply {
+        Toast.makeText(requireContext(), pesan, Toast.LENGTH_SHORT).apply {
             setGravity(Gravity.CENTER, 0, -200)
             show()
         }
     }
 
-    private fun dpToPx(dp: Int): Int {
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        return (dp * metrics.density).toInt()
-    }
-
     private fun tampilkanDialogNama() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Isi Nama")
 
-        val input = EditText(this)
+        val input = EditText(requireContext())
         input.hint = "Masukkan nama Anda"
         builder.setView(input)
 
@@ -199,7 +191,6 @@ class AbsenFragment : Activity() {
     }
 
     companion object {
-        private const val REQUEST_CAMERA = 100
         private const val REQUEST_LOCATION = 101
     }
 }

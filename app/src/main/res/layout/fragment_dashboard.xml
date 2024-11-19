@@ -1,245 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
+    android:layout_gravity="center_horizontal">
 
+    <ScrollView
+        android:id="@+id/profil"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent" >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <FrameLayout
+                android:id="@+id/layoutProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_48sdp">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="@dimen/_64sdp"
+                    android:background="@drawable/background_bulat_white"
+                    android:scaleType="centerCrop"
+                    app:riv_oval="true"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NAME"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_24sdp"/>
+
+            <TextView
+                android:id="@+id/txtId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/colorGreyLight"
+                android:layout_marginTop="@dimen/_6sdp"/>
+
+            <LinearLayout
+                android:id="@+id/layoutEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_12sdp" >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:src="@drawable/baseline_mail_outline_24"/>
+                <TextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EMAIL"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_12sdp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGreyLight" />
+            <LinearLayout
+                android:id="@+id/layoutAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_12sdp" >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:src="@drawable/baseline_location_pin_24"/>
+                <TextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADDRESS"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_12sdp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGreyLight" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGreyLight" />
+        </LinearLayout>
+    </ScrollView>
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_gravity="center_horizontal">
-        <ImageView
-            android:layout_width="340dp"
-            android:layout_height="112dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/profil_main" />
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="34dp"
-            android:src="@drawable/fotoprofil_main"/>
-        <ImageView
-            android:layout_marginTop="21dp"
-            android:layout_marginLeft="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconvariasiprofil"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="10dp"
-            android:layout_height="wrap_content"
-            android:text="PT WIRA BUANA ARUM"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="45dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="80dp"
-            android:textStyle="bold"
-            android:layout_height="wrap_content"
-            android:text="MUHHAMMAD KASIM"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="60dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="80dp"
-            android:textStyle=""
-            android:layout_height="wrap_content"
-            android:text="Candi - Sidoarjo"/>
-
-    </FrameLayout>
-
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_18sdp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="160dp">
-        <ImageView
-            android:layout_width="340dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/kotakmenu_main"/>
-        <ImageButton
-
-            android:layout_marginTop="5dp"
-            android:id="@+id/btnkas"
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconkas"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="100dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/btndaftarakun"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icondaftarakun"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="185dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/btnlogistik"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconlogistik"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="275dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/btngaji"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icongaji"
-            android:background="@android:color/transparent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:text="kas"
-            android:textColor="#000000"
-            android:textSize="15sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="84dp"
-            android:textSize="15sp"
-            android:layout_height="wrap_content"
-            android:text="Daftar Akun"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="185dp"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="Logistik"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="55dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_marginLeft="285dp"
-            android:layout_height="wrap_content"
-            android:text="Gaji"/>
-
-
-        <ImageButton
-            android:layout_marginTop="75dp"
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:id="@+id/btnpinjaman"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconpinjaman"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="75dp"
-            android:layout_marginLeft="100dp"
-            android:id="@+id/btndaftarabsen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconbpjs"
-            android:background="@android:color/transparent" />
-
-        <ImageButton
-            android:layout_marginTop="75dp"
-            android:id="@+id/btnbpjs"
-            android:layout_marginLeft="185dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icondaftarabsen"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:layout_marginTop="75dp"
-            android:layout_marginLeft="275dp"
-            android:id="@+id/btnpajak"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconpajak"
-            android:background="@android:color/transparent" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="125dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"
-            android:layout_marginLeft="10dp"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="Pinjaman"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
-            android:layout_marginTop="125dp"
-            android:fontFamily="sans-serif"
-            android:text="Bpjs"
-            android:textColor="#000000"
-            android:textSize="15sp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginTop="125dp"
-            android:fontFamily="sans-serif"
-            android:textSize="15sp"
-            android:textColor="#000000"
-            android:layout_marginLeft="165dp"
-            android:layout_height="wrap_content"
-            android:text="Daftar Absen"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="280dp"
-            android:layout_marginTop="125dp"
-            android:fontFamily="sans-serif"
-            android:text="Pajak"
-            android:textColor="#000000"
-            android:textSize="15sp" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/kotakgrafik">
+        android:background="@drawable/background_kotak_white"
+        app:layout_constraintTop_toBottomOf="@id/profil"
+        android:id="@+id/grafik1">
         <com.github.mikephil.charting.charts.BarChart
             android:layout_gravity="center_horizontal"
-            android:id="@+id/chart"
             android:layout_width="340dp"
             android:layout_height="130dp"/>
-
     </FrameLayout>
+
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="480dp"
+        android:layout_margin="@dimen/_18sdp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/kotakgrafik">
+        android:background="@drawable/background_kotak_white"
+        app:layout_constraintTop_toBottomOf="@id/grafik1"
+        android:id="@+id/grafik2">
         <com.github.mikephil.charting.charts.BarChart
             android:layout_gravity="center_horizontal"
-            android:id="@+id/chart2"
             android:layout_width="340dp"
             android:layout_height="130dp"/>
-
     </FrameLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@
     <include
         android:id="@+id/layout_toolbar"
         layout="@layout/layout_toolbar" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Keuangan Gaji"
+            android:text="Keuangan Pinjaman"
             android:textColor="#000000"
             android:layout_margin="@dimen/_6sdp"
             android:textStyle="bold" />
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/_24sdp"
-            android:text="Keuangan Gaji"
+            android:text="Keuangan Pinjaman"
             android:textColor="#000000"
             android:layout_marginTop="@dimen/_6sdp"
             android:layout_marginLeft="@dimen/_210sdp"
@@ -58,39 +59,44 @@
                         android:layout_height="wrap_content"
                         android:text="No."
                         android:textColor="#000000"
-                        android:padding="8dp"
+                        android:padding="@dimen/_6ssp"
                         android:background="#CCCCCC"
+                        android:textSize="@dimen/_8ssp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Karyawan"
-                        android:padding="8dp"
+                        android:text="Jumlah"
+                        android:padding="@dimen/_6ssp"
+                        android:textSize="@dimen/_8ssp"
                         android:textColor="#000000"
                         android:background="#CCCCCC"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Posisi/Jabatan"
-                        android:padding="8dp"
+                        android:text="Tanggal Peminjaman"
                         android:textColor="#000000"
+                        android:padding="@dimen/_6ssp"
+                        android:textSize="@dimen/_8ssp"
                         android:background="#CCCCCC"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gaji"
+                        android:text="Tanggal Pembayaran"
                         android:textColor="#000000"
-                        android:padding="8dp"
+                        android:padding="@dimen/_6ssp"
+                        android:textSize="@dimen/_8ssp"
                         android:background="#CCCCCC"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tanggal"
+                        android:text="Status"
                         android:textColor="#000000"
-                        android:padding="8dp"
+                        android:padding="@dimen/_6ssp"
+                        android:textSize="@dimen/_8ssp"
                         android:background="#CCCCCC"
                         android:textStyle="bold" />
                 </TableRow>

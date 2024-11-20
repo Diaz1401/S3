@@ -108,16 +108,19 @@
             android:layout_height="wrap_content"
             android:text="Keuangan Gaji"
             android:textColor="#000000"
+            android:textSize="@dimen/_12ssp"
             android:layout_margin="@dimen/_6sdp"
             android:textStyle="bold" />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/_24sdp"
+            android:id="@+id/txtTotal"
+            android:layout_width="@dimen/_240sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:paddingStart="@dimen/_36sdp"
             android:text="Keuangan Gaji"
             android:textColor="#000000"
+            android:textSize="@dimen/_24ssp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginLeft="@dimen/_210sdp"
+            android:layout_marginStart="@dimen/_120sdp"
             android:background="@drawable/saldo_pajak"/>
 
 

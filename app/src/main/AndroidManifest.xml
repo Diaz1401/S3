@@ -11,20 +11,38 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_wba"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_wba"
         android:supportsRtl="true"
         android:theme="@style/Theme.SIWIBA"
         tools:targetApi="31">
         <activity
-            android:name=".wba.activity.ManageGajiActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.PinjamanActivity"
+            android:name=".wba.activity.BpjsActivity"
             android:exported="false" />
         <activity
             android:name=".wba.activity.GajiActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".wba.activity.KasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.activity.LogistikActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.activity.ManageGajiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.activity.PajakActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.activity.PinjamanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,20 +51,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".wba.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.SignInActivity"
-            android:exported="true"></activity>
-        <activity
             android:name=".MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".wba.activity.PajakActivity"
-            android:exported="true" />
-        <activity
-            android:name=".wba.absen"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

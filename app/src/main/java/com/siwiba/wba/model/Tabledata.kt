@@ -1,4 +1,4 @@
-package com.siwiba.wba
+package com.siwiba.wba.model
 
 data class tabledata(
     val no: String = "",

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.siwiba.R
-import com.siwiba.wba.tabledata
+import com.siwiba.wba.model.tabledata
 import java.text.DecimalFormat
 
 class PinjamanActivity : AppCompatActivity() {

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TableRow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.siwiba.databinding.ActivityGajiBinding
+import com.siwiba.wba.model.Gaji
 
 class GajiActivity : AppCompatActivity() {
 
@@ -41,11 +43,8 @@ class GajiActivity : AppCompatActivity() {
         firestore.collection("gaji")
             .get()
             .addOnSuccessListener { documents ->
-                binding.tableLayout.removeAllViews()
-                addTableHeader()
-                for (document in documents) {
-                    addTableRow(document)
-                }
+                val gajiList = documents.toObjects(Gaji::class.java)
+                addTableRows(gajiList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
@@ -54,51 +53,51 @@ class GajiActivity : AppCompatActivity() {
 
     private fun searchGajiData(searchString: String) {
         firestore.collection("gaji")
-            .whereEqualTo("karyawan", searchString)
+            .whereGreaterThanOrEqualTo("karyawan", searchString.lowercase())
+            .whereLessThanOrEqualTo("karyawan", searchString.uppercase() + "\uf8ff")
             .get()
             .addOnSuccessListener { documents ->
-                binding.tableLayout.removeAllViews()
-                addTableHeader()
-                for (document in documents) {
-                    addTableRow(document)
-                }
+                val gajiList = documents.toObjects(Gaji::class.java)
+                addTableRows(gajiList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
             }
     }
 
-    private fun addTableHeader() {
-        val tableRow = TableRow(this)
-        tableRow.addView(createTextView("No."))
-        tableRow.addView(createTextView("Karyawan"))
-        tableRow.addView(createTextView("Posisi/Jabatan"))
-        tableRow.addView(createTextView("Gaji"))
-        tableRow.addView(createTextView("Tanggal"))
-        binding.tableLayout.addView(tableRow)
+    private fun addTableRows(gajiList: List<Gaji>) {
+        binding.tableLayout.removeAllViews()
+        addHeaderRow()
+        for (gaji in gajiList) {
+            val tableRow = TableRow(this)
+            tableRow.addView(createTextView(gaji.no.toString()))
+            tableRow.addView(createTextView(gaji.karyawan))
+            tableRow.addView(createTextView(gaji.posisi))
+            tableRow.addView(createTextView(gaji.gaji))
+            tableRow.addView(createTextView(gaji.tanggal))
+            binding.tableLayout.addView(tableRow)
+        }
     }
 
-    private fun addTableRow(document: DocumentSnapshot) {
-        val no = document.getString("no") ?: ""
-        val karyawan = document.getString("karyawan") ?: ""
-        val posisi = document.getString("posisi") ?: ""
-        val gaji = document.getString("gaji") ?: ""
-        val tanggal = document.getString("tanggal") ?: ""
-
-        val tableRow = TableRow(this)
-        tableRow.addView(createTextView(no))
-        tableRow.addView(createTextView(karyawan))
-        tableRow.addView(createTextView(posisi))
-        tableRow.addView(createTextView(gaji))
-        tableRow.addView(createTextView(tanggal))
-
-        binding.tableLayout.addView(tableRow)
+    private fun addHeaderRow() {
+        val headerRow = TableRow(this)
+        headerRow.addView(createTextView("No.", true))
+        headerRow.addView(createTextView("Karyawan", true))
+        headerRow.addView(createTextView("Posisi/Jabatan", true))
+        headerRow.addView(createTextView("Gaji", true))
+        headerRow.addView(createTextView("Tanggal", true))
+        binding.tableLayout.addView(headerRow)
     }
 
-    private fun createTextView(text: String): TextView {
+    private fun createTextView(text: String, isHeader: Boolean = false): TextView {
         val textView = TextView(this)
         textView.text = text
         textView.setPadding(8, 8, 8, 8)
+        if (isHeader) {
+            textView.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+            textView.setTextColor(resources.getColor(android.R.color.black))
+            textView.setTypeface(null, android.graphics.Typeface.BOLD)
+        }
         return textView
     }
 }

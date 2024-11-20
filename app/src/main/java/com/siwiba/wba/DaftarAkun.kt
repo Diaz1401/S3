@@ -13,7 +13,5 @@ class DaftarAkun: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daftar_akun)
         FirebaseApp.initializeApp(this)
-
-
     }
 }

@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_45sdp"
     android:padding="@dimen/_5sdp"
-    android:background="#FF7F152E"
+    android:background="@color/wba_dark"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/search"
+        android:id="@+id/searchCard"
         android:layout_width="0dp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginEnd="@dimen/_5sdp"
@@ -17,7 +17,7 @@
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/envelope"
+        app:layout_constraintEnd_toStartOf="@id/tambah"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -33,31 +33,41 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:src="@drawable/btncari_pajak" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:text="Cari ..."
-                android:textSize="@dimen/_12sdp" />
+            <EditText
+                android:id="@+id/search"
+                android:hint="Cari ..."
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/background_kotak_white"/>
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+<!--    <EditText-->
+<!--        android:id="@+id/search"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="@dimen/_36sdp"-->
+<!--        android:layout_marginEnd="@dimen/_5sdp"-->
+<!--        android:background="@drawable/background_kotak_white"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/tambah"/>-->
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/envelope"
+        android:id="@+id/tambah"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:src="@drawable/btntambah_pajak"
         android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/notification"
+        app:layout_constraintEnd_toStartOf="@id/edit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/notification"
+        android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"

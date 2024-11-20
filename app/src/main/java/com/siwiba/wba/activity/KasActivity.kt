@@ -11,7 +11,7 @@ import com.siwiba.R
 import com.siwiba.wba.tabledata
 import java.text.DecimalFormat
 
-class Pinjaman : AppCompatActivity() {
+class KasActivity : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private lateinit var tableLayout: TableLayout
@@ -19,7 +19,7 @@ class Pinjaman : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pinjaman)
+        setContentView(R.layout.activity_gaji)
 
         // Inisialisasi Firebase
         database = FirebaseDatabase.getInstance().getReference("TabelData")

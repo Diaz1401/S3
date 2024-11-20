@@ -7,7 +7,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.siwiba.databinding.ActivityGajiBinding
 import com.siwiba.wba.model.Gaji
 
@@ -45,6 +44,7 @@ class GajiActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 val gajiList = documents.toObjects(Gaji::class.java)
                 addTableRows(gajiList)
+                calculateTotalGaji(gajiList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
@@ -59,6 +59,7 @@ class GajiActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
                 val gajiList = documents.toObjects(Gaji::class.java)
                 addTableRows(gajiList)
+                calculateTotalGaji(gajiList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
@@ -99,5 +100,13 @@ class GajiActivity : AppCompatActivity() {
             textView.setTypeface(null, android.graphics.Typeface.BOLD)
         }
         return textView
+    }
+
+    private fun calculateTotalGaji(gajiList: List<Gaji>) {
+        var totalGaji = 0
+        for (gaji in gajiList) {
+            totalGaji += gaji.gaji.toIntOrNull() ?: 0
+        }
+        binding.txtTotal.text = "Rp $totalGaji"
     }
 }

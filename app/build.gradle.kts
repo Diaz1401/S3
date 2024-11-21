@@ -45,9 +45,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-
-
+    implementation ("com.github.SeptiawanAjiP:Android-DataTable:1.2.2")
+    implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("androidx.compose.ui:ui:1.5.0")
     implementation ("androidx.compose.material:material:1.5.0")
     implementation ("androidx.activity:activity-compose:1.6.0")

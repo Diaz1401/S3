@@ -29,9 +29,14 @@ class ManageGajiActivity : AppCompatActivity() {
 
         when (mode) {
             1 -> setupAddMode()
-            2 -> setupDeleteMode()
-            3 -> setupUpdateMode()
-            else -> Toast.makeText(this, "Invalid mode", Toast.LENGTH_SHORT).show()
+            2 -> {
+                setupDeleteMode()
+                setupUpdateMode()
+            }
+            else -> {
+                Toast.makeText(this, "Invalid mode", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
 
         val etTanggal: EditText = binding.etTanggal
@@ -91,10 +96,69 @@ class ManageGajiActivity : AppCompatActivity() {
 
     private fun setupDeleteMode() {
         // Implement delete functionality
+        val no = intent.getIntExtra("no", 0)
+        val karyawan = intent.getStringExtra("karyawan")
+        val posisi = intent.getStringExtra("posisi")
+        val gaji = intent.getStringExtra("gaji")
+        val tanggal = intent.getStringExtra("tanggal")
+        binding.etKaryawan.setText(karyawan)
+        binding.etPosisi.setText(posisi)
+        binding.etGaji.setText(gaji)
+        binding.etTanggal.setText(tanggal)
+        binding.btnDelete.setOnClickListener {
+            firestore.collection("gaji")
+                .document(no.toString())
+                .delete()
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Data deleted successfully", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to delete data", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun setupUpdateMode() {
         // Implement update functionality
+        val no = intent.getIntExtra("no", 0)
+        val karyawan = intent.getStringExtra("karyawan")
+        val posisi = intent.getStringExtra("posisi")
+        val gaji = intent.getStringExtra("gaji")
+        val tanggal = intent.getStringExtra("tanggal")
+        binding.etKaryawan.setText(karyawan)
+        binding.etPosisi.setText(posisi)
+        binding.etGaji.setText(gaji)
+        binding.etTanggal.setText(tanggal)
+        binding.btnSave.setOnClickListener {
+            val newKaryawan = binding.etKaryawan.text.toString()
+            val newPosisi = binding.etPosisi.text.toString()
+            val newGaji = binding.etGaji.text.toString()
+            val newTanggal = binding.etTanggal.text.toString()
+
+            if (newKaryawan.isEmpty() || newPosisi.isEmpty() || newGaji.isEmpty() || newTanggal.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                val gajiData = mapOf(
+                    "no" to no,
+                    "karyawan" to newKaryawan,
+                    "posisi" to newPosisi,
+                    "gaji" to newGaji,
+                    "tanggal" to newTanggal
+                )
+
+                firestore.collection("gaji")
+                    .document(no.toString())
+                    .set(gajiData)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Data updated successfully", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Failed to update data", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
     }
 
     private fun showDatePickerDialog(editText: EditText) {

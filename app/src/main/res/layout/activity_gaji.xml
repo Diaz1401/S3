@@ -6,187 +6,127 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".wba.activity.GajiActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
-        android:padding="@dimen/_5sdp"
-        android:background="@color/wba_dark"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/topInfo"
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_18sdp"
         app:layout_constraintTop_toTopOf="parent">
-<!--        <com.google.android.material.card.MaterialCardView-->
-<!--            android:id="@+id/searchCard"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="@dimen/_40sdp"-->
-<!--            android:layout_marginEnd="@dimen/_5sdp"-->
-<!--            android:background="@color/white"-->
-<!--            app:cardCornerRadius="@dimen/_10sdp"-->
-<!--            app:cardUseCompatPadding="true"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/tambah"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <androidx.appcompat.widget.AppCompatImageView-->
-<!--                    android:layout_width="@dimen/_15sdp"-->
-<!--                    android:layout_height="@dimen/_15sdp"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:layout_marginStart="@dimen/_5sdp"-->
-<!--                    android:src="@drawable/btncari_pajak" />-->
-
-<!--                <EditText-->
-<!--                    android:id="@+id/search"-->
-<!--                    android:hint="Cari ..."-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginEnd="@dimen/_5sdp"-->
-<!--                    android:background="@drawable/background_kotak_white"/>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </com.google.android.material.card.MaterialCardView>-->
-
-        <EditText
-            android:id="@+id/search"
-            android:layout_width="0dp"
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:paddingStart="@dimen/_30sdp"
-            android:paddingEnd="@dimen/_12sdp"
-            android:background="@drawable/background_kotak_white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/fotoprofil"
+            android:scaleType="centerCrop"
+            app:riv_oval="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tambah"/>
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gaji Karyawan"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/colorGreyDark"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            app:layout_constraintStart_toEndOf="@id/imgProfile"
+            app:layout_constraintEnd_toStartOf="@id/imgLogo"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:src="@drawable/btncari_pajak"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:src="@drawable/logo_wba"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/mainInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_kotak_wba"
+        android:layout_margin="@dimen/_18sdp"
+        app:layout_constraintTop_toBottomOf="@id/topInfo">
+
+        <TextView
+            android:id="@+id/txtTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TOTAL"
+            android:textStyle="bold"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
+
+        <TextView
+            android:id="@+id/txtPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PERIODE"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_48sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/tambah"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:src="@drawable/baseline_add_box_24"
-            android:tint="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/edit"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:clickable="true"
+            android:src="@drawable/baseline_add_box_24_grey"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:layout_marginStart="@dimen/_216sdp"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/edit"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:src="@drawable/btntambah_pajak"
-            android:tint="@color/black"
+        <TextView
+            android:id="@+id/txtTambah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Catat data baru"
+            android:textSize="@dimen/_8ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_54sdp"
+            android:layout_marginStart="@dimen/_204sdp" />
+        <TextView
+            android:id="@+id/txtPilihPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih waktu:"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_72sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_18sdp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerPeriode"
+            android:layout_marginTop="@dimen/_72sdp"
+            android:layout_marginStart="@dimen/_84sdp"/>
+    </FrameLayout>
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/menu"
-        app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+        android:layout_marginTop="@dimen/_36sdp"
+        app:layout_constraintTop_toBottomOf="@id/mainInfo"
         app:layout_constraintLeft_toLeftOf="parent" >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Keuangan Gaji"
-            android:textColor="#000000"
-            android:textSize="@dimen/_12ssp"
-            android:layout_margin="@dimen/_6sdp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/txtTotal"
-            android:layout_width="@dimen/_240sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:paddingStart="@dimen/_36sdp"
-            android:text="Keuangan Gaji"
-            android:textColor="#000000"
-            android:textSize="@dimen/_24ssp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:layout_marginStart="@dimen/_120sdp"
-            android:background="@drawable/saldo_pajak"/>
 
-
-        <FrameLayout
+        <com.dewakoding.androiddatatable.DataTableView
+            android:id="@+id/dataTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="145dp">
-
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="1,2,3">
-
-                <!-- Header Row -->
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#CCCCCC"
-                        android:padding="8dp"
-                        android:text="No."
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#CCCCCC"
-                        android:padding="8dp"
-                        android:text="Karyawan"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#CCCCCC"
-                        android:padding="8dp"
-                        android:text="Posisi/Jabatan"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#CCCCCC"
-                        android:padding="8dp"
-                        android:text="Gaji"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#CCCCCC"
-                        android:padding="8dp"
-                        android:text="Tanggal"
-                        android:textColor="#000000"
-                        android:textStyle="bold" />
-                </TableRow>
-
-            </TableLayout>
-
-        </FrameLayout>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </FrameLayout>
 

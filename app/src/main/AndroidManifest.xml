@@ -23,6 +23,15 @@
         <activity
             android:name=".wba.activity.GajiActivity"
             android:exported="false"/>
+<!--        <activity-->
+<!--            android:name=".wba.activity.GajiActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
             android:name=".wba.activity.KasActivity"
             android:exported="false" />
@@ -50,6 +59,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        <activity-->
+<!--            android:name=".wba.SignInActivity"-->
+<!--            android:exported="false"/>-->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

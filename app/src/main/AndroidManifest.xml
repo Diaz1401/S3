@@ -43,6 +43,9 @@
             android:name=".wba.activity.ManageGajiActivity"
             android:exported="false" />
         <activity
+            android:name=".wba.activity.ManageKasActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.activity.PajakActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".wba.activity.PajakActivity" -->

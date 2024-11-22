@@ -16,68 +16,45 @@
             android:src="@drawable/kotakmenuku"
             android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:text="Kirim Uang"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="16sp"
-            />
-        <ImageView
-            android:layout_marginTop="42dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/kotaknominalku"
-            android:background="@android:color/transparent" />
-        <ImageView
-            android:layout_marginTop="43dp"
-            android:layout_marginLeft="250dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btnkirimku"
-            android:background="@android:color/transparent" />
+
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icongaji2"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="66dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_110sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconpajak2"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="122dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_200sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconpinjaman2"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="178dp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconkas2"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="233dp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginLeft="@dimen/_110sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconbpjs2"
             android:background="@android:color/transparent" />
         <ImageButton
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="289dp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginLeft="@dimen/_200sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/iconlogistik2"
@@ -87,8 +64,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Gaji"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="18dp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_30sdp"
             android:textSize="14sp"
             />
         <TextView
@@ -96,8 +73,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Pajak"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="67.5dp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_117sdp"
             android:textSize="14sp"
             />
         <TextView
@@ -105,8 +82,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Pinjaman"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="112dp"
+            android:layout_marginTop="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_196sdp"
             android:textSize="14sp"
             />
         <TextView
@@ -114,8 +91,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Kas"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="185dp"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_marginLeft="@dimen/_32sdp"
             android:textSize="14sp"
             />
         <TextView
@@ -123,8 +100,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Bpjs"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="239.5dp"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_marginLeft="@dimen/_119sdp"
             android:textSize="14sp"
             />
         <TextView
@@ -132,8 +109,8 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:text="Logistik"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="283dp"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_marginLeft="@dimen/_199sdp"
             android:textSize="14sp"
             />
 

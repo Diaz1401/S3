@@ -39,8 +39,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/btnkirimku"
+            android:clickable="true"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnGaji"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
@@ -48,6 +50,7 @@
             android:src="@drawable/icongaji2"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnPajak"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="66dp"
             android:layout_width="wrap_content"
@@ -55,6 +58,7 @@
             android:src="@drawable/iconpajak2"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnPinjaman"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="122dp"
             android:layout_width="wrap_content"
@@ -62,6 +66,7 @@
             android:src="@drawable/iconpinjaman2"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnKas"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="178dp"
             android:layout_width="wrap_content"
@@ -69,6 +74,7 @@
             android:src="@drawable/iconkas2"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnBpjs"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="233dp"
             android:layout_width="wrap_content"
@@ -76,6 +82,7 @@
             android:src="@drawable/iconbpjs2"
             android:background="@android:color/transparent" />
         <ImageButton
+            android:id="@+id/btnLogistik"
             android:layout_marginTop="80dp"
             android:layout_marginLeft="289dp"
             android:layout_width="wrap_content"

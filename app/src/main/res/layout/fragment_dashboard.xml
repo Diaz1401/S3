@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp">
+        android:layout_marginStart="@dimen/_10sdp">
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imgProfile"
             android:layout_width="@dimen/_35sdp"
@@ -84,106 +84,101 @@
         android:layout_marginTop="@dimen/_200sdp">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="@dimen/_262sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/background_kotak_white"
+                android:id="@+id/grafik1"
+                tools:ignore="MissingConstraints">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gaji"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="#000000"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textSize="@dimen/_18sdp"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart"
+                    android:layout_marginLeft="@dimen/_130sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
+            <FrameLayout
+                android:layout_width="@dimen/_262sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_110sdp"
+                android:background="@drawable/background_kotak_white"
+                android:id="@+id/grafik2"
+                tools:ignore="MissingConstraints">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pajak"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="#000000"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textSize="@dimen/_18sdp"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart1"
+                    android:layout_marginLeft="@dimen/_130sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="@dimen/_262sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/background_kotak_white"
-        android:id="@+id/grafik1"
-        tools:ignore="MissingConstraints">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gaji"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textColor="#000000"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:textSize="@dimen/_18sdp"/>
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart"
-            android:layout_marginLeft="@dimen/_130sdp"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="match_parent"/>
-    </FrameLayout>
+            <FrameLayout
+                android:layout_width="@dimen/_262sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_220sdp"
+                android:background="@drawable/background_kotak_white"
+                android:id="@+id/grafik3"
+                tools:ignore="MissingConstraints">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bpjs"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="#000000"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textSize="@dimen/_18sdp"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart2"
+                    android:layout_marginLeft="@dimen/_130sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
-
-
-    <FrameLayout
-        android:layout_width="@dimen/_262sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_110sdp"
-        android:background="@drawable/background_kotak_white"
-        android:id="@+id/grafik2"
-        tools:ignore="MissingConstraints">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pajak"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textColor="#000000"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:textSize="@dimen/_18sdp"/>
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart1"
-            android:layout_marginLeft="@dimen/_130sdp"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="match_parent"/>
-    </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="@dimen/_262sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_220sdp"
-            android:background="@drawable/background_kotak_white"
-            android:id="@+id/grafik3"
-            tools:ignore="MissingConstraints">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bpjs"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textColor="#000000"
-                android:fontFamily="sans-serif-medium"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:textSize="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart2"
-                android:layout_marginLeft="@dimen/_130sdp"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="match_parent"/>
-        </FrameLayout>
-
-
-        <FrameLayout
-            android:layout_width="@dimen/_262sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_330sdp"
-            android:background="@drawable/background_kotak_white"
-            android:id="@+id/grafik4"
-            tools:ignore="MissingConstraints">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Kas"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textColor="#000000"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:textSize="@dimen/_18sdp"/>
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart3"
-            android:layout_marginLeft="@dimen/_130sdp"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="match_parent"/>
-        </FrameLayout>
+            <FrameLayout
+                android:layout_width="@dimen/_262sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_330sdp"
+                android:background="@drawable/background_kotak_white"
+                android:id="@+id/grafik4"
+                tools:ignore="MissingConstraints">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kas"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="#000000"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textSize="@dimen/_18sdp"/>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart3"
+                    android:layout_marginLeft="@dimen/_130sdp"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="match_parent"/>
+            </FrameLayout>
 
             <FrameLayout
                 android:layout_width="@dimen/_262sdp"
@@ -209,8 +204,6 @@
                     android:layout_height="match_parent"/>
             </FrameLayout>
 
-
-
             <FrameLayout
                 android:layout_width="@dimen/_262sdp"
                 android:layout_height="@dimen/_100sdp"
@@ -235,7 +228,7 @@
                     android:layout_height="match_parent"/>
             </FrameLayout>
 
-
         </FrameLayout>
+
     </ScrollView>
 </FrameLayout>

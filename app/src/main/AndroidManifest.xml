@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,20 +19,14 @@
         android:theme="@style/Theme.SIWIBA"
         tools:targetApi="31">
         <activity
+            android:name=".wba.activity.ManagePajakActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.activity.BpjsActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".wba.activity.GajiActivity"-->
-<!--            android:exported="false"/>-->
         <activity
             android:name=".wba.activity.GajiActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".wba.activity.KasActivity"
             android:exported="false" />
@@ -44,14 +39,8 @@
         <activity
             android:name=".wba.activity.PajakActivity"
             android:exported="false" />
-        <activity
-            android:name=".wba.activity.PinjamanActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.SignUpActivity"
-            android:exported="false" />
 <!--        <activity-->
-<!--            android:name=".wba.SignInActivity"-->
+<!--            android:name=".wba.activity.PajakActivity"-->
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -60,8 +49,23 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
         <activity
+            android:name=".wba.activity.PinjamanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wba.SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.SignInActivity"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+<!--        <activity-->
+<!--            android:name=".wba.SignInActivity"-->
+<!--            android:exported="false"/>-->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

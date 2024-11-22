@@ -26,11 +26,7 @@ class KasActivity : AppCompatActivity() {
         tableLayout = findViewById(R.id.tableLayout) // ID dari TableLayout di XML
 
 
-        // Tombol tambah data
-        val btnTambah = findViewById<ImageButton>(R.id.btnpajak)
-        btnTambah.setOnClickListener {
-            tambahDataBaru()
-        }
+
     }
 
     // Menambahkan baris data ke TableLayout

@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import com.dewakoding.androiddatatable.DataTableView
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
 import com.google.firebase.firestore.FirebaseFirestore

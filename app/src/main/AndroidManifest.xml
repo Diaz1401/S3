@@ -19,6 +19,9 @@
         android:theme="@style/Theme.SIWIBA"
         tools:targetApi="31">
         <activity
+            android:name=".wba.activity.ManagePinjamanActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.activity.ManageBpjsActivity"
             android:exported="false" />
         <activity

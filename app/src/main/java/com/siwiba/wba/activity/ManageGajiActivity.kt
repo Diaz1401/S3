@@ -45,7 +45,7 @@ class ManageGajiActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAddMode() {
+     private fun setupAddMode() {
         binding.btnSave.setOnClickListener {
             val karyawan = binding.etKaryawan.text.toString()
             val posisi = binding.etPosisi.text.toString()

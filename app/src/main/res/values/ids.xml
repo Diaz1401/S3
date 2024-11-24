@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tvNomor" type="id" />
+    <item name="tvNamaBarang" type="id" />
+    <item name="tvHargaBarang" type="id" />
+    <item name="tvKeterangan" type="id" />
+</resources>

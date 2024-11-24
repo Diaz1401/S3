@@ -1,6 +1,8 @@
 package com.siwiba.wba.activity
-
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -12,15 +14,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.siwiba.R
 import com.siwiba.databinding.ActivityPajakBinding
-import com.siwiba.wba.model.Pajak
+import com.siwiba.wba.activity.manager.ManageActivity
+import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Calendar
+import java.util.Locale
+import android.util.Base64
 
 class PajakActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPajakBinding
     private lateinit var firestore: FirebaseFirestore
     private var selectedPeriod: String = "Bulanan"
+    private val whichSaldo = "pajak"
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +38,16 @@ class PajakActivity : AppCompatActivity() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        // Fetch data from Firestore
-        fetchPajakData()
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+
+        // Load profile picture from SharedPreferences
+        loadProfilePicture()
 
         binding.tambah.setOnClickListener {
-            val intent = Intent(this, ManagePajakActivity::class.java)
+            val intent = Intent(this, ManageActivity::class.java)
             intent.putExtra("mode", 1)
+            intent.putExtra("whichSaldo", whichSaldo)
             startActivity(intent)
         }
 
@@ -50,87 +62,98 @@ class PajakActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedPeriod = periods[position]
                 binding.txtPeriode.text = "Untuk $selectedPeriod terakhir"
-                fetchPajakData() // Refresh data based on selected period
+                fetchSaldoData() // Refresh data based on selected period
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
-    private fun fetchPajakData() {
-        firestore.collection("pajak")
+    private fun fetchSaldoData() {
+        firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
             .get()
             .addOnSuccessListener { documents ->
-                val pajakList = documents.toObjects(Pajak::class.java)
-                populateDataTable(pajakList)
-                calculateTotalPajak(pajakList)
+                val saldoList = documents.toObjects(Saldo::class.java)
+                populateDataTable(saldoList)
+                calculateTotalSaldo(saldoList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
             }
     }
 
-    private fun populateDataTable(pajakList: List<Pajak>) {
+    private fun populateDataTable(saldoList: List<Saldo>) {
         val columns = ArrayList<Column>()
         columns.add(Column("no", "No."))
-        columns.add(Column("jenis", "Jenis Pajak"))
-        columns.add(Column("nominal", "Nominal Pajak"))
-        columns.add(Column("periode", "Periode Pajak"))
-        columns.add(Column("tanggal", "Tanggal"))
+        columns.add(Column("keterangan", "Keterangan"))
+        columns.add(Column("debit", "Debit"))
+        columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("timestamp", "Timestamp"))
 
         // Clear existing views
         binding.dataTable.removeAllViews()
 
-        binding.dataTable.setTable(columns, pajakList, isActionButtonShow = true)
+        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = true)
 
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
-                val pajakClicked = Gson().fromJson(dataStr, Pajak::class.java)
-                val intent = Intent(applicationContext, ManagePajakActivity::class.java)
+                val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
+                val intent = Intent(applicationContext, ManageActivity::class.java)
                 intent.putExtra("mode", 2)
-                intent.putExtra("no", pajakClicked.no)
-                intent.putExtra("jenis", pajakClicked.jenis)
-                intent.putExtra("nominal", pajakClicked.nominal)
-                intent.putExtra("periode", pajakClicked.periode)
-                intent.putExtra("tanggal", pajakClicked.tanggal)
+                intent.putExtra("whichSaldo", whichSaldo)
+                intent.putExtra("no", saldoClicked.no)
+                intent.putExtra("keterangan", saldoClicked.keterangan)
+                intent.putExtra("debit", saldoClicked.debit)
+                intent.putExtra("kredit", saldoClicked.kredit)
                 startActivity(intent)
             }
         })
     }
 
-    private fun calculateTotalPajak(pajakList: List<Pajak>) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private fun calculateTotalSaldo(saldoList: List<Saldo>) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        var totalPajak = 0
+        var totalSaldo = 0
 
-        for (pajak in pajakList) {
-            val pajakDate = dateFormat.parse(pajak.tanggal)
-            if (pajakDate != null) {
+        for (saldo in saldoList) {
+            val saldoDate = dateFormat.parse(saldo.timestamp)
+            if (saldoDate != null) {
                 when (selectedPeriod) {
                     "Seminggu" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.DAY_OF_YEAR, -7)
-                        if (pajakDate.after(calendar.time)) {
-                            totalPajak += pajak.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Sebulan" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.MONTH, -1)
-                        if (pajakDate.after(calendar.time)) {
-                            totalPajak += pajak.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Setahun" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.YEAR, -1)
-                        if (pajakDate.after(calendar.time)) {
-                            totalPajak += pajak.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                 }
             }
         }
-        binding.txtTotal.text = "Rp $totalPajak"
+        binding.txtTotal.text = "Rp $totalSaldo"
+    }
+
+    private fun loadProfilePicture() {
+        val profileImage = sharedPreferences.getString("profileImage", null)
+        if (profileImage != null) {
+            val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            binding.imgProfile.setImageBitmap(bitmap)
+        }
     }
 }

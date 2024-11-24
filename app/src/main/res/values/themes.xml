@@ -1,6 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.SIWIBA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/wba_dark</item>
+        <item name="colorPrimaryVariant">@color/wba_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/wba_dark</item>
     </style>
 
     <style name="Theme.SIWIBA" parent="Base.Theme.SIWIBA" />

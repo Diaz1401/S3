@@ -1,6 +1,8 @@
 package com.siwiba.wba.activity
-
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -12,15 +14,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.siwiba.R
 import com.siwiba.databinding.ActivityPinjamanBinding
-import com.siwiba.wba.model.Pinjaman
+import com.siwiba.wba.activity.manager.ManageActivity
+import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Calendar
+import java.util.Locale
+import android.util.Base64
 
 class PinjamanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPinjamanBinding
     private lateinit var firestore: FirebaseFirestore
     private var selectedPeriod: String = "Bulanan"
+    private val whichSaldo = "pinjaman"
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +38,16 @@ class PinjamanActivity : AppCompatActivity() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        // Fetch data from Firestore
-        fetchData()
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+
+        // Load profile picture from SharedPreferences
+        loadProfilePicture()
 
         binding.tambah.setOnClickListener {
-            val intent = Intent(this, ManagePinjamanActivity::class.java)
+            val intent = Intent(this, ManageActivity::class.java)
             intent.putExtra("mode", 1)
+            intent.putExtra("whichSaldo", whichSaldo)
             startActivity(intent)
         }
 
@@ -50,87 +62,98 @@ class PinjamanActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedPeriod = periods[position]
                 binding.txtPeriode.text = "Untuk $selectedPeriod terakhir"
-                fetchData() // Refresh data based on selected period
+                fetchSaldoData() // Refresh data based on selected period
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
-    private fun fetchData() {
-        firestore.collection("pinjaman")
+    private fun fetchSaldoData() {
+        firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
             .get()
             .addOnSuccessListener { documents ->
-                val list = documents.toObjects(Pinjaman::class.java)
-                populateDataTable(list)
-                calculateTotalPinjaman(list)
+                val saldoList = documents.toObjects(Saldo::class.java)
+                populateDataTable(saldoList)
+                calculateTotalSaldo(saldoList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
             }
     }
 
-    private fun populateDataTable(pinjamanList: List<Pinjaman>) {
+    private fun populateDataTable(saldoList: List<Saldo>) {
         val columns = ArrayList<Column>()
         columns.add(Column("no", "No."))
-        columns.add(Column("deskripsi", "Deskripsi"))
-        columns.add(Column("jumlahPinjaman", "Jumlah Pinjaman"))
-        columns.add(Column("tanggalPinjam", "Tanggal Pinjam"))
-        columns.add(Column("tanggalBayar", "Tanggal Bayar"))
+        columns.add(Column("keterangan", "Keterangan"))
+        columns.add(Column("debit", "Debit"))
+        columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("timestamp", "Timestamp"))
 
         // Clear existing views
         binding.dataTable.removeAllViews()
 
-        binding.dataTable.setTable(columns, pinjamanList, isActionButtonShow = true)
+        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = true)
 
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
-                val pinjamanClicked = Gson().fromJson(dataStr, Pinjaman::class.java)
-                val intent = Intent(applicationContext, ManagePinjamanActivity::class.java)
+                val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
+                val intent = Intent(applicationContext, ManageActivity::class.java)
                 intent.putExtra("mode", 2)
-                intent.putExtra("no", pinjamanClicked.no)
-                intent.putExtra("deskripsi", pinjamanClicked.deskripsi)
-                intent.putExtra("jumlahPinjaman", pinjamanClicked.jumlahPinjaman)
-                intent.putExtra("tanggalPinjam", pinjamanClicked.tanggalPinjam)
-                intent.putExtra("tanggalBayar", pinjamanClicked.tanggalBayar)
+                intent.putExtra("whichSaldo", whichSaldo)
+                intent.putExtra("no", saldoClicked.no)
+                intent.putExtra("keterangan", saldoClicked.keterangan)
+                intent.putExtra("debit", saldoClicked.debit)
+                intent.putExtra("kredit", saldoClicked.kredit)
                 startActivity(intent)
             }
         })
     }
 
-    private fun calculateTotalPinjaman(pinjamanList: List<Pinjaman>) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private fun calculateTotalSaldo(saldoList: List<Saldo>) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        var total = 0
+        var totalSaldo = 0
 
-        for (pinjaman in pinjamanList) {
-            val pinjamanDate = dateFormat.parse(pinjaman.tanggalPinjam)
-            if (pinjamanDate != null) {
+        for (saldo in saldoList) {
+            val saldoDate = dateFormat.parse(saldo.timestamp)
+            if (saldoDate != null) {
                 when (selectedPeriod) {
                     "Seminggu" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.DAY_OF_YEAR, -7)
-                        if (pinjamanDate.after(calendar.time)) {
-                            total += pinjaman.jumlahPinjaman.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Sebulan" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.MONTH, -1)
-                        if (pinjamanDate.after(calendar.time)) {
-                            total += pinjaman.jumlahPinjaman.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Setahun" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.YEAR, -1)
-                        if (pinjamanDate.after(calendar.time)) {
-                            total += pinjaman.jumlahPinjaman.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                 }
             }
         }
-        binding.txtTotal.text = "Rp $total"
+        binding.txtTotal.text = "Rp $totalSaldo"
+    }
+
+    private fun loadProfilePicture() {
+        val profileImage = sharedPreferences.getString("profileImage", null)
+        if (profileImage != null) {
+            val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            binding.imgProfile.setImageBitmap(bitmap)
+        }
     }
 }

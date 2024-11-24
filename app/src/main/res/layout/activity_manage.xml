@@ -4,54 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".wba.activity.ManageGajiActivity"
+    tools:context=".wba.activity.manager.ManageActivity"
     android:background="@color/wba_light">
 
     <EditText
-        android:id="@+id/etKaryawan"
+        android:id="@+id/etKeterangan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Karyawan"
+        android:hint="Keterangan"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/_18sdp" />
 
     <EditText
-        android:id="@+id/etPosisi"
+        android:id="@+id/etDebit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Posisi/Jabatan"
-        app:layout_constraintTop_toBottomOf="@id/etKaryawan"
+        android:hint="Debit"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/etKeterangan"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/_18sdp" />
 
     <EditText
-        android:id="@+id/etGaji"
+        android:id="@+id/etKredit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Gaji"
-        app:layout_constraintTop_toBottomOf="@id/etPosisi"
+        android:hint="Kredit"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/etDebit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/_18sdp" />
 
-    <EditText
-        android:id="@+id/etTanggal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Tanggal"
-        android:focusable="true"
-        android:clickable="true"
-        app:layout_constraintTop_toBottomOf="@id/etGaji"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/_18sdp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/etTanggal"
+        app:layout_constraintTop_toBottomOf="@id/etKredit"
         android:gravity="center_horizontal">
 
         <Button
@@ -64,7 +55,6 @@
 
         <Button
             android:id="@+id/btnSave"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save/Update"

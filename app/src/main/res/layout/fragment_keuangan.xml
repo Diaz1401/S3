@@ -1,158 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundku">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/wba_light"
+    android:layout_gravity="center_horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/topInfo"
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:background="@drawable/fotoprofil"
+            android:scaleType="centerCrop"
+            app:riv_oval="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keuangan"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/colorGreyDark"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            app:layout_constraintStart_toEndOf="@id/imgProfile"
+            app:layout_constraintEnd_toStartOf="@id/imgLogo"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:src="@drawable/logo_wba"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_gravity="center_horizontal">
+        android:background="@drawable/background_kotak_wba"
+        app:layout_constraintTop_toBottomOf="@id/topInfo"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:layout_marginHorizontal="@dimen/_18sdp">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_height="@dimen/_78sdp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:alpha="0.4"
+            android:background="@drawable/background_kotak_white_no_border"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/kotakmenuku"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_marginHorizontal="@dimen/_24sdp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/frameGaji"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/icongaji2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gaji"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/framePajak"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/iconpajak2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pajak"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/frameLogistik"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/iconlogistik2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Logistik"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/frameBpjs"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/iconbpjs2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bpjs"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/frameKas"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/iconkas2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kas"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/framePinjaman"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/iconpinjaman2"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pinjaman"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/wba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txtTotal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
+            android:text="TOTAL"
             android:textStyle="bold"
-            android:text="Kirim Uang"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="16sp"
-            />
-        <EditText
-            android:layout_marginTop="42dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/kotaknominalku"
-             />
-        <ImageView
-            android:layout_marginTop="43dp"
-            android:layout_marginLeft="250dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/btnkirimku"
-            android:clickable="true"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnGaji"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icongaji2"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnPajak"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="66dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconpajak2"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnPinjaman"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="122dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconpinjaman2"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnKas"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="178dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconkas2"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnBpjs"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="233dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconbpjs2"
-            android:background="@android:color/transparent" />
-        <ImageButton
-            android:id="@+id/btnLogistik"
-            android:layout_marginTop="80dp"
-            android:layout_marginLeft="289dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/iconlogistik2"
-            android:background="@android:color/transparent" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Gaji"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="18dp"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Pajak"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="67.5dp"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Pinjaman"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="112dp"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Kas"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="185dp"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Bpjs"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="239.5dp"
-            android:textSize="14sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:text="Logistik"
-            android:layout_marginTop="120dp"
-            android:layout_marginLeft="283dp"
-            android:textSize="14sp"
-            />
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_108sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
 
+        <TextView
+            android:id="@+id/txtPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PERIODE"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_138sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
 
+        <TextView
+            android:id="@+id/txtPilihPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih waktu:"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_162sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_18sdp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerPeriode"
+            android:layout_marginTop="@dimen/_162sdp"
+            android:layout_marginStart="@dimen/_84sdp"/>
     </FrameLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:text="Riwayat Pengiriman"
-        android:layout_marginTop="230dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="16sp"/>
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/menu"
+        android:layout_marginTop="@dimen/_18sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.dewakoding.androiddatatable.DataTableView
+                android:id="@+id/dataTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

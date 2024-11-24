@@ -1,5 +1,8 @@
 package com.siwiba.wba.activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -10,18 +13,22 @@ import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.siwiba.R
-
 import com.siwiba.databinding.ActivityKasBinding
-import com.siwiba.wba.model.Gaji
-import com.siwiba.wba.model.Kas
+import com.siwiba.wba.activity.manager.ManageActivity
+import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Calendar
+import java.util.Locale
+import android.util.Base64
 
 class KasActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityKasBinding
     private lateinit var firestore: FirebaseFirestore
     private var selectedPeriod: String = "Bulanan"
+    private val whichSaldo = "kas"
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +38,16 @@ class KasActivity : AppCompatActivity() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        // Fetch data from Firestore
-        fetchKasData()
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+
+        // Load profile picture from SharedPreferences
+        loadProfilePicture()
 
         binding.tambah.setOnClickListener {
-            val intent = Intent(this, ManageKasActivity::class.java)
+            val intent = Intent(this, ManageActivity::class.java)
             intent.putExtra("mode", 1)
+            intent.putExtra("whichSaldo", whichSaldo)
             startActivity(intent)
         }
 
@@ -51,91 +62,98 @@ class KasActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedPeriod = periods[position]
                 binding.txtPeriode.text = "Untuk $selectedPeriod terakhir"
-                fetchKasData() // Refresh data based on selected period
+                fetchSaldoData() // Refresh data based on selected period
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
-    private fun fetchKasData() {
-        firestore.collection("kas")
+    private fun fetchSaldoData() {
+        firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
             .get()
             .addOnSuccessListener { documents ->
-                val kasList = documents.toObjects(Kas::class.java)
-                populateDataTable(kasList)
-                calculateTotalGaji(kasList)
+                val saldoList = documents.toObjects(Saldo::class.java)
+                populateDataTable(saldoList)
+                calculateTotalSaldo(saldoList)
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
             }
     }
 
-    private fun populateDataTable(kasList: List<Kas>) {
+    private fun populateDataTable(saldoList: List<Saldo>) {
         val columns = ArrayList<Column>()
         columns.add(Column("no", "No."))
-        columns.add(Column("id_transaksi", "Id Transaksi"))
-        columns.add(Column("tanggal", "Tanggal"))
-        columns.add(Column("nominal", "Nominal"))
         columns.add(Column("keterangan", "Keterangan"))
-        columns.add(Column("status", "Status Transaksi"))
-        columns.add(Column("metode_pembayaran", "Metode Pembayaran"))
+        columns.add(Column("debit", "Debit"))
+        columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("timestamp", "Timestamp"))
 
         // Clear existing views
         binding.dataTable.removeAllViews()
 
-        binding.dataTable.setTable(columns, kasList, isActionButtonShow = true)
+        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = true)
 
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
-                val kasClicked = Gson().fromJson(dataStr, Kas::class.java)
-                val intent = Intent(applicationContext, ManageKasActivity::class.java)
+                val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
+                val intent = Intent(applicationContext, ManageActivity::class.java)
                 intent.putExtra("mode", 2)
-                intent.putExtra("no", kasClicked.no)
-                intent.putExtra("id_transaksi", kasClicked.id_transaksi)
-                intent.putExtra("tanggal", kasClicked.tanggal)
-                intent.putExtra("nominal", kasClicked.nominal)
-                intent.putExtra("keterangan", kasClicked.keterangan)
-                intent.putExtra("status", kasClicked.status)
-                intent.putExtra("metode_pembayaran", kasClicked.metode_pembayaran)
+                intent.putExtra("whichSaldo", whichSaldo)
+                intent.putExtra("no", saldoClicked.no)
+                intent.putExtra("keterangan", saldoClicked.keterangan)
+                intent.putExtra("debit", saldoClicked.debit)
+                intent.putExtra("kredit", saldoClicked.kredit)
                 startActivity(intent)
             }
         })
     }
 
-    private fun calculateTotalGaji(KasList: List<Kas>) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private fun calculateTotalSaldo(saldoList: List<Saldo>) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        var totalGaji = 0
+        var totalSaldo = 0
 
-        for (kas in KasList) {
-            val gajiDate = dateFormat.parse(kas.tanggal)
-            if (gajiDate != null) {
+        for (saldo in saldoList) {
+            val saldoDate = dateFormat.parse(saldo.timestamp)
+            if (saldoDate != null) {
                 when (selectedPeriod) {
                     "Seminggu" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.DAY_OF_YEAR, -7)
-                        if (gajiDate.after(calendar.time)) {
-                            totalGaji += kas.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Sebulan" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.MONTH, -1)
-                        if (gajiDate.after(calendar.time)) {
-                            totalGaji += kas.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                     "Setahun" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.YEAR, -1)
-                        if (gajiDate.after(calendar.time)) {
-                            totalGaji += kas.nominal.toIntOrNull() ?: 0
+                        if (saldoDate.after(calendar.time)) {
+                            totalSaldo += saldo.debit - saldo.kredit
                         }
                     }
                 }
             }
         }
-        binding.txtTotal.text = "Rp $totalGaji"
+        binding.txtTotal.text = "Rp $totalSaldo"
+    }
+
+    private fun loadProfilePicture() {
+        val profileImage = sharedPreferences.getString("profileImage", null)
+        if (profileImage != null) {
+            val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            binding.imgProfile.setImageBitmap(bitmap)
+        }
     }
 }

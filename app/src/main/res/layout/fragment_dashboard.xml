@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/dashboardpt"
+    android:background="@color/wba_light"
     android:layout_gravity="center_horizontal">
 
     <FrameLayout
-        android:id="@+id/layoutProfile"
-        android:layout_width="wrap_content"
+        android:id="@+id/profil"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp">
+        android:background="@drawable/background_kotak_wba"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:layout_marginHorizontal="@dimen/_18sdp">
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imgProfile"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/fotoprofil"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:background="@drawable/background_bulat_white"
             android:scaleType="centerCrop"
             app:riv_oval="true"/>
         <TextView
@@ -25,210 +28,135 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NAME"
-            android:textSize="@dimen/_13ssp"
+            android:textSize="@dimen/_18ssp"
             android:textStyle="bold"
             android:textColor="@color/wba_light"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_2sdp"/>
-        <TextView
-            android:id="@+id/txtEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="EMAIL"
-            android:textSize="@dimen/_10ssp"
-            android:textColor="@color/wba_light"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_40sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtAdress"/>
-    </FrameLayout>
+            android:layout_marginStart="@dimen/_90sdp"
+            android:layout_marginTop="@dimen/_36sdp"/>
 
-    <FrameLayout
-        android:layout_width="@dimen/_267sdp"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_63sdp"
-        android:background="@drawable/bg_dashtrans">
-        <ImageButton
+        <TextView
+            android:id="@+id/txtId"
             android:layout_width="wrap_content"
-            android:id="@+id/btnAbsen"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_225sdp"
-            android:layout_gravity="center_vertical"
+            android:text="ID"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_84sdp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_114sdp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/baseline_mail_outline_24_white"/>
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EMAIL"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/wba_light"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_12sdp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_132sdp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/baseline_location_pin_24_white"/>
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADDRESS"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/wba_light"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_12sdp" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_height="@dimen/_84sdp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_162sdp"
+            android:layout_marginHorizontal="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:alpha="0.4"
+            android:background="@drawable/background_kotak_white_no_border"/>
+        <ImageButton
+            android:id="@+id/btnAbsen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_180sdp"
+            android:layout_marginEnd="@dimen/_36sdp"
+            android:layout_gravity="end"
             android:src="@drawable/ic_absen"
             android:background="@null"/>
         <TextView
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_180sdp"
+            android:layout_marginStart="@dimen/_36sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_10sdp"
-            android:text="Presentase Absen"
-            android:textColor="#FFFFFF"/>
+            android:textSize="@dimen/_12ssp"
+            android:text="Kehadiran"
+            android:textColor="@color/white"/>
         <TextView
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_18sdp"
+            android:id="@+id/persentaseKehadiran"
+            android:layout_marginTop="@dimen/_198sdp"
+            android:layout_marginStart="@dimen/_36sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0%"
-            android:textSize="@dimen/_25sdp"
-            android:textColor="#FFFFFF"/>
-
+            android:textSize="@dimen/_24ssp"
+            android:textColor="@color/white"/>
     </FrameLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_200sdp">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik1"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gaji"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_110sdp"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik2"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pajak"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart1"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_220sdp"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik3"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bpjs"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart2"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_330sdp"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik4"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kas"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart3"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_440sdp"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik5"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Logistik"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart4"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/_262sdp"
-                android:layout_height="@dimen/_100sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_550sdp"
-                android:background="@drawable/background_kotak_white"
-                android:id="@+id/grafik6"
-                tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pinjaman"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="#000000"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:textSize="@dimen/_18sdp"/>
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart5"
-                    android:layout_marginLeft="@dimen/_130sdp"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-
-        </FrameLayout>
-
-    </ScrollView>
-</FrameLayout>
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/profil"-->
+<!--        android:layout_marginTop="@dimen/_18sdp">-->
+<!--        <FrameLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+<!--            <FrameLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_100sdp"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginHorizontal="@dimen/_24sdp"-->
+<!--                android:layout_marginVertical="@dimen/_12sdp"-->
+<!--                android:background="@drawable/background_kotak_white"-->
+<!--                android:id="@+id/grafik1" >-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Gaji"-->
+<!--                    android:layout_marginTop="@dimen/_5sdp"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:layout_marginLeft="@dimen/_5sdp"-->
+<!--                    android:textSize="@dimen/_18sdp"/>-->
+<!--                <com.github.mikephil.charting.charts.PieChart-->
+<!--                    android:id="@+id/chart"-->
+<!--                    android:layout_marginLeft="@dimen/_130sdp"-->
+<!--                    android:layout_width="@dimen/_120sdp"-->
+<!--                    android:layout_height="match_parent"/>-->
+<!--            </FrameLayout>-->
+<!--        </FrameLayout>-->
+<!--    </ScrollView>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

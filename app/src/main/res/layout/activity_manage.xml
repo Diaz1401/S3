@@ -45,19 +45,20 @@
         app:layout_constraintTop_toBottomOf="@id/etKredit"
         android:gravity="center_horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_48sdp"
             android:text="Delete"
-            android:background="#FF0000"
+            app:cornerRadius="@dimen/_12sdp"
             android:layout_margin="@dimen/_18sdp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_48sdp"
             android:text="Save/Update"
+            app:cornerRadius="@dimen/_12sdp"
             android:layout_margin="@dimen/_18sdp" />
 
     </LinearLayout>

@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.MainActivity
 import com.siwiba.databinding.ActivitySignInBinding
@@ -27,27 +30,96 @@ class SignInActivity : AppCompatActivity() {
             val email = binding.inputEmailSignIn.text.toString()
             val password = binding.inputPasswordSignIn.text.toString()
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        user?.let {
-                            getUserData(it.uid)
-                        }
-                        Toast.makeText(this, "Sign In Successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Sign In Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+            if (isValidSignInDetails(email, password)) {
+                signIn()
+            }
+        }
+
+        binding.imgGoogle.setOnClickListener {
+            signInWithGoogle()
         }
 
         binding.txtSignUp.setOnClickListener {
-            // Start SignUpActivity
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun isValidSignInDetails(email: String, password: String): Boolean {
+        if (email.isEmpty()) {
+            binding.inputEmailSignIn.error = "Masukan email"
+            binding.inputEmailSignIn.requestFocus()
+            return false
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.inputEmailSignIn.error = "Masukan email yang valid"
+            binding.inputEmailSignIn.requestFocus()
+            return false
+        }
+        if (password.isEmpty()) {
+            binding.inputPasswordSignIn.error = "Masukan password"
+            binding.inputPasswordSignIn.requestFocus()
+            return false
+        }
+        return true
+    }
+
+    private fun signIn() {
+        val email = binding.inputEmailSignIn.text.toString()
+        val password = binding.inputPasswordSignIn.text.toString()
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.let {
+                        if (it.isEmailVerified) {
+                            saveCredentialsToSharedPrefs(email, password)
+                            getUserData(it.uid)
+                            Toast.makeText(this, "Sign In successful", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Please verify your email first", Toast.LENGTH_SHORT).show()
+                            auth.signOut()
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "Sign In failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun signInWithGoogle() {
+        val provider = OAuthProvider.newBuilder("google.com")
+        auth.startActivityForSignInWithProvider(this, provider.build())
+            .addOnCompleteListener { task ->
+                handleSignInResult(task)
+            }
+    }
+
+    private fun handleSignInResult(task: Task<AuthResult>) {
+        if (task.isSuccessful) {
+            val user = auth.currentUser
+            user?.let {
+                getUserData(it.uid)
+                Toast.makeText(this, "Sign In successful", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        } else {
+            Toast.makeText(this, "Sign In failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveCredentialsToSharedPrefs(email: String, password: String) {
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("email", email)
+            putString("password", password)
+            apply()
         }
     }
 
@@ -74,11 +146,11 @@ class SignInActivity : AppCompatActivity() {
                         apply()
                     }
                 } else {
-                    Toast.makeText(this, "No such document", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting document: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to retrieve user data: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

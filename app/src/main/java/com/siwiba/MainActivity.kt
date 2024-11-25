@@ -3,6 +3,8 @@ package com.siwiba
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.wba.fragment.AbsenFragment
 import com.siwiba.wba.fragment.DashboardFragment
@@ -13,12 +15,16 @@ import com.siwiba.wba.fragment.ProfilFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         setupBottomNavigation()
     }
 

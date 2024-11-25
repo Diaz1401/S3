@@ -42,7 +42,13 @@
             android:exported="false" />
         <activity
             android:name=".wba.SignUpActivity"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter>
+                <data
+                    android:host="siwiba-3402c.firebaseapp.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".wba.SignInActivity"
             android:exported="true">

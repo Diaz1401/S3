@@ -251,6 +251,22 @@
             android:id="@+id/spinnerPeriode"
             android:layout_marginTop="@dimen/_162sdp"
             android:layout_marginStart="@dimen/_84sdp"/>
+        <TextView
+            android:id="@+id/txtPilihSaldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih saldo:"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_186sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_18sdp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerSaldo"
+            android:layout_marginTop="@dimen/_186sdp"
+            android:layout_marginStart="@dimen/_84sdp"/>
     </FrameLayout>
     <ScrollView
         android:layout_width="match_parent"

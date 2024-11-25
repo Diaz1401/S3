@@ -1,0 +1,7 @@
+<!-- res/drawable/line_chart_gradient.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#FF5733"
+        android:endColor="#FFC300"
+        android:angle="90" />
+</shape>

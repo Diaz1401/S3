@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.siwiba.R
 import com.siwiba.databinding.ActivityPajakBinding
-import com.siwiba.wba.activity.manager.ManageActivity
 import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -53,7 +52,7 @@ class PajakActivity : AppCompatActivity() {
 
         // Set up Spinner
         val periods = arrayOf("Seminggu", "Sebulan", "Setahun")
-        val adapter = ArrayAdapter(this, R.layout.item_spinner, periods)
+        val adapter = ArrayAdapter(this, R.layout.item_spinner_periode, periods)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = adapter
         binding.txtPeriode.text = "Untuk $selectedPeriod Terakhir"

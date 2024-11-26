@@ -193,6 +193,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun updateLineChart(dataList: List<Saldo>, chart: LineChart) {
+
+        if (!isAdded) return // Fragment is not attached to activity
+
         val entries = ArrayList<Entry>()
         val dates = ArrayList<String>()
 

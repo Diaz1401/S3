@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Calendar
 import java.util.Locale
-import android.graphics.Bitmap
 import android.util.Base64
+import android.widget.Toast
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
 import com.google.gson.Gson
@@ -32,7 +32,7 @@ class KeuanganFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
     private var selectedPeriod: String = "Bulanan"
-    private var selectedSaldo: String = "gaji"
+    private val saldo = "utama"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,6 +83,20 @@ class KeuanganFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.btnTambah.setOnClickListener {
+            // if user if admin allow click else show toast not allowed
+            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+            if (isAdmin) {
+                val intent = Intent(activity, ManageAdminActivity::class.java)
+                intent.putExtra("mode", 1)
+                intent.putExtra("whichSaldo", saldo)
+                startActivity(intent)
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk menambah data", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+        }
+
         loadProfilePicture()
         setupSpinners()
     }
@@ -110,25 +124,11 @@ class KeuanganFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
-        val saldos = arrayOf("gaji", "pajak", "pinjaman", "kas", "bpjs", "logistik")
-        val saldoAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, saldos)
-        saldoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerSaldo.adapter = saldoAdapter
-
-        binding.spinnerSaldo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedSaldo = saldos[position]
-                fetchSaldoData()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
     }
 
     private fun fetchSaldoData() {
         firestore.collection("saldo")
-            .document(selectedSaldo)
+            .document(saldo)
             .collection("data")
             .get()
             .addOnSuccessListener { documents ->
@@ -147,35 +147,36 @@ class KeuanganFragment : Fragment() {
         columns.add(Column("keterangan", "Keterangan"))
         columns.add(Column("debit", "Debit"))
         columns.add(Column("kredit", "Kredit"))
-        columns.add(Column("timestamp", "Timestamp"))
+        columns.add(Column("tanggal", "Tanggal"))
 
         // Clear existing views
         binding.dataTable.removeAllViews()
 
-        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = true)
+        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = sharedPreferences.getBoolean("isAdmin", false))
 
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
                 val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
-                val intent = Intent(activity, ManageActivity::class.java)
+                val intent = Intent(activity, ManageAdminActivity::class.java)
                 intent.putExtra("mode", 2)
-                intent.putExtra("whichSaldo", selectedSaldo)
+                intent.putExtra("whichSaldo", saldo)
                 intent.putExtra("no", saldoClicked.no)
                 intent.putExtra("keterangan", saldoClicked.keterangan)
                 intent.putExtra("debit", saldoClicked.debit)
                 intent.putExtra("kredit", saldoClicked.kredit)
+                intent.putExtra("tanggal", saldoClicked.tanggal)
                 startActivity(intent)
             }
         })
     }
 
     private fun calculateTotalSaldo(saldoList: List<Saldo>) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
         var totalSaldo = 0
 
         for (saldo in saldoList) {
-            val saldoDate = dateFormat.parse(saldo.timestamp)
+            val saldoDate = dateFormat.parse(saldo.tanggal)
             if (saldoDate != null) {
                 when (selectedPeriod) {
                     "Seminggu" -> {
@@ -208,5 +209,10 @@ class KeuanganFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchSaldoData()
     }
 }

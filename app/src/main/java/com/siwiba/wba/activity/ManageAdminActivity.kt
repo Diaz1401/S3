@@ -7,21 +7,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.siwiba.databinding.ActivityManageBinding
+import com.siwiba.databinding.ActivityManageAdminBinding
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ManageActivity : AppCompatActivity() {
+class ManageAdminActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityManageBinding
+    private lateinit var binding: ActivityManageAdminBinding
     private lateinit var firestore: FirebaseFirestore
     private var mode: Int = 0
-    private val debit: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityManageBinding.inflate(layoutInflater)
+        binding = ActivityManageAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         firestore = FirebaseFirestore.getInstance()
@@ -74,10 +73,11 @@ class ManageActivity : AppCompatActivity() {
     private fun setupAddMode(whichSaldo: String) {
         binding.btnSave.setOnClickListener {
             val keterangan = binding.etKeterangan.text.toString()
+            val debit = binding.etDebit.text.toString()
             val kredit = binding.etKredit.text.toString()
             val tanggal = binding.etTanggal.text.toString()
 
-            if (keterangan.isEmpty() || kredit.isEmpty() || tanggal.isEmpty()) {
+            if (keterangan.isEmpty() || (kredit.isEmpty() && debit.isEmpty()) || tanggal.isEmpty()) {
                 Toast.makeText(this, "Lengkapi semua kolom", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -89,7 +89,7 @@ class ManageActivity : AppCompatActivity() {
                     var saldo = document.getLong("saldo") ?: 0
 
                     saldo -= kredit.toInt()
-//                    saldo += debit.toInt()
+                    saldo += debit.toInt()
 
                     firestore.collection("saldo")
                         .document(whichSaldo)
@@ -107,7 +107,7 @@ class ManageActivity : AppCompatActivity() {
                             val data = mapOf(
                                 "no" to newNo,
                                 "keterangan" to keterangan,
-                                "debit" to debit,
+                                "debit" to debit.toInt(),
                                 "kredit" to kredit.toInt(),
                                 "tanggal" to tanggal
                             )
@@ -123,7 +123,7 @@ class ManageActivity : AppCompatActivity() {
                                         .update("saldo", saldo)
                                         .addOnSuccessListener {
 //                                            if (whichSaldo != "utama") {
-//                                                updateUtamaSaldo(debit, -kredit.toInt())
+//                                                updateUtamaSaldo(debit.toInt(), -kredit.toInt())
 //                                            } else {
                                                 Toast.makeText(this, "Sukses menambahkan data", Toast.LENGTH_SHORT).show()
                                                 finish()
@@ -150,10 +150,12 @@ class ManageActivity : AppCompatActivity() {
     private fun loadData() {
         val keterangan = intent.getStringExtra("keterangan")
         val kredit = intent.getIntExtra("kredit", 0)
+        val debit = intent.getIntExtra("debit", 0)
         val tanggal = intent.getStringExtra("tanggal")
 
         binding.etKeterangan.setText(keterangan)
         binding.etKredit.setText(kredit.toString())
+        binding.etDebit.setText(debit.toString())
         binding.etTanggal.setText(tanggal)
     }
 
@@ -164,7 +166,7 @@ class ManageActivity : AppCompatActivity() {
                 .setMessage("Apakah anda yakin ingin menghapus data ini?")
                 .setPositiveButton("Ya") { dialog, _ ->
                     val no = intent.getIntExtra("no", 0)
-//                    val debit = intent.getIntExtra("debit", 0)
+                    val debit = intent.getIntExtra("debit", 0)
                     val kredit = intent.getIntExtra("kredit", 0)
 
                     firestore.collection("saldo")
@@ -178,7 +180,7 @@ class ManageActivity : AppCompatActivity() {
                                 .get()
                                 .addOnSuccessListener { document ->
                                     var saldo = document.getLong("saldo") ?: 0
-//                                    saldo -= debit
+                                    saldo -= debit
                                     saldo += kredit
 
                                     firestore.collection("saldo")
@@ -217,20 +219,20 @@ class ManageActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             val no = intent.getIntExtra("no", 0)
             val kredit = intent.getIntExtra("kredit", 0)
+            val debit = intent.getIntExtra("debit", 0)
 
             val newKeterangan = binding.etKeterangan.text.toString()
             val newKredit = binding.etKredit.text.toString().toInt()
-//            val newDebit = binding.etDebit.text.toString().toInt()
+            val newDebit = binding.etDebit.text.toString().toInt()
             val newTanggal = binding.etTanggal.text.toString()
 
-            if (newKeterangan.isEmpty() ||  newKredit.toString().isEmpty() || newTanggal.isEmpty()) {
+            if (newKeterangan.isEmpty() || newDebit.toString().isEmpty() || newKredit.toString().isEmpty() || newTanggal.isEmpty()) {
                 Toast.makeText(this, "Lengkapi semua kolom", Toast.LENGTH_SHORT).show()
             } else {
                 val data = mapOf(
                     "no" to no,
                     "keterangan" to newKeterangan,
-//                    "debit" to newDebit,
-                    "debit" to debit,
+                    "debit" to newDebit,
                     "kredit" to newKredit,
                     "tanggal" to newTanggal
                 )
@@ -246,8 +248,8 @@ class ManageActivity : AppCompatActivity() {
                             .get()
                             .addOnSuccessListener { document ->
                                 var saldo = document.getLong("saldo") ?: 0
-//                                saldo -= debit
-//                                saldo += newDebit
+                                saldo -= debit
+                                saldo += newDebit
                                 saldo += kredit
                                 saldo -= newKredit
 
@@ -256,8 +258,7 @@ class ManageActivity : AppCompatActivity() {
                                     .update("saldo", saldo)
                                     .addOnSuccessListener {
 //                                        if (whichSaldo != "utama") {
-////                                            updateUtamaSaldo(newDebit - debit, -(newKredit - kredit))
-//                                            updateUtamaSaldo(debit, -(newKredit - kredit))
+//                                            updateUtamaSaldo(newDebit - debit, -(newKredit - kredit))
 //                                        } else {
                                             Toast.makeText(this, "Sukses memperbarui data", Toast.LENGTH_SHORT).show()
                                             finish()

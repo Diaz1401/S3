@@ -1,6 +1,8 @@
 package com.siwiba.wba.fragment
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
@@ -22,6 +24,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.R
 import com.siwiba.databinding.FragmentDashboardBinding
+import com.siwiba.wba.SignInActivity
 import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -39,6 +42,7 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        firestore = FirebaseFirestore.getInstance()
         return binding.root
     }
 
@@ -46,14 +50,34 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         displayUserData()
         setupSpinners()
-        firestore = FirebaseFirestore.getInstance()
+
         binding.spinnerPeriode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 selectedPeriod = parent.getItemAtPosition(position).toString()
                 fetchAllSaldoData()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        binding.imglogOut.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Sign Out")
+                .setMessage("Apakah anda yakin untuk logout?")
+                .setPositiveButton("Ya") { dialog, _ ->
+                    val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    val editor = sharedPref.edit()
+                    editor.clear()
+                    editor.apply()
+                    val intent = Intent(requireContext(), SignInActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Tidak") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
         }
     }
 
@@ -118,12 +142,12 @@ class DashboardFragment : Fragment() {
     }
 
     private fun filterDataByPeriod(dataList: List<Saldo>, period: String): List<Saldo> {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
         val groupedData = mutableMapOf<String, MutableList<Saldo>>()
 
         for (data in dataList) {
-            val dataDate = dateFormat.parse(data.timestamp)
+            val dataDate = dateFormat.parse(data.tanggal)
             if (dataDate != null) {
                 calendar.time = dataDate
                 val key = when (period) {
@@ -151,8 +175,8 @@ class DashboardFragment : Fragment() {
         for ((_, groupedSaldo) in groupedData) {
             val totalDebit = groupedSaldo.sumOf { it.debit }
             val totalKredit = groupedSaldo.sumOf { it.kredit }
-            val totalSaldo = groupedSaldo.last().saldo // Asumsikan saldo terakhir relevan
-            val latestTimestamp = groupedSaldo.maxByOrNull { dateFormat.parse(it.timestamp)!! }?.timestamp ?: ""
+            val totalSaldo = groupedSaldo.last().saldo // Assume the last saldo is relevant
+            val latestTanggal = groupedSaldo.maxByOrNull { dateFormat.parse(it.tanggal)!! }?.tanggal ?: ""
             aggregatedList.add(
                 Saldo(
                     no = 0,
@@ -160,22 +184,21 @@ class DashboardFragment : Fragment() {
                     debit = totalDebit,
                     kredit = totalKredit,
                     saldo = totalSaldo,
-                    timestamp = latestTimestamp
+                    tanggal = latestTanggal
                 )
             )
         }
 
-        return aggregatedList.sortedBy { dateFormat.parse(it.timestamp) }
+        return aggregatedList.sortedBy { dateFormat.parse(it.tanggal) }
     }
 
     private fun updateLineChart(dataList: List<Saldo>, chart: LineChart) {
         val entries = ArrayList<Entry>()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val dates = ArrayList<String>()
 
         for ((index, data) in dataList.withIndex()) {
             entries.add(Entry(index.toFloat(), data.saldo.toFloat()))
-            dates.add(data.timestamp)
+            dates.add(data.tanggal)
         }
 
         val dataSet = LineDataSet(entries, "Saldo Data")
@@ -212,5 +235,10 @@ class DashboardFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchAllSaldoData()
     }
 }

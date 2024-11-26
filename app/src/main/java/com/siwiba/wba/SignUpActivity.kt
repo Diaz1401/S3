@@ -108,7 +108,8 @@ class SignUpActivity : AppCompatActivity() {
             "name" to binding.inputNameSignUp.text.toString(),
             "email" to user.email,
             "address" to binding.inputAlamat.text.toString(),
-            "profileImage" to encodedImage
+            "profileImage" to encodedImage,
+            "isAdmin" to false
         )
 
         firestore.collection("users").document(user.uid)

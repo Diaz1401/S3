@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".wba.activity.ManageActivity"
+    tools:context=".wba.activity.ManageAdminActivity"
     android:background="@color/wba_light">
 
     <EditText
@@ -20,6 +20,19 @@
         android:layout_margin="@dimen/_18sdp" />
 
     <EditText
+        android:id="@+id/etDebit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Debit"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textColorHint="@color/colorGreyLighter"
+        app:layout_constraintTop_toBottomOf="@id/etKeterangan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/_18sdp" />
+
+    <EditText
         android:id="@+id/etKredit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,7 +40,7 @@
         android:inputType="number"
         android:textColor="@color/black"
         android:textColorHint="@color/colorGreyLighter"
-        app:layout_constraintTop_toBottomOf="@id/etKeterangan"
+        app:layout_constraintTop_toBottomOf="@id/etDebit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/_18sdp" />

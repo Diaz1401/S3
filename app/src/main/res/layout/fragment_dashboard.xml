@@ -6,12 +6,54 @@
     android:background="@color/wba_light"
     android:layout_gravity="center_horizontal">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/topInfo"
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imglogOut"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:background="@drawable/background_bulat_wba_dark"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_power_settings_new_24"
+            app:riv_oval="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/colorGreyDark"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginEnd="@dimen/_18sdp"
+            app:layout_constraintStart_toEndOf="@id/imglogOut"
+            app:layout_constraintEnd_toStartOf="@id/imgLogo"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:src="@drawable/logo_wba"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <FrameLayout
         android:id="@+id/profil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_kotak_wba"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topInfo"
         android:layout_marginTop="@dimen/_18sdp"
         android:layout_marginHorizontal="@dimen/_18sdp">
         <com.makeramen.roundedimageview.RoundedImageView

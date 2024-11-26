@@ -89,7 +89,7 @@ class GajiActivity : AppCompatActivity() {
         columns.add(Column("keterangan", "Keterangan"))
         columns.add(Column("debit", "Debit"))
         columns.add(Column("kredit", "Kredit"))
-        columns.add(Column("timestamp", "Timestamp"))
+        columns.add(Column("tanggal", "Tanggal"))
 
         // Clear existing views
         binding.dataTable.removeAllViews()
@@ -106,18 +106,19 @@ class GajiActivity : AppCompatActivity() {
                 intent.putExtra("keterangan", saldoClicked.keterangan)
                 intent.putExtra("debit", saldoClicked.debit)
                 intent.putExtra("kredit", saldoClicked.kredit)
+                intent.putExtra("tanggal", saldoClicked.tanggal)
                 startActivity(intent)
             }
         })
     }
 
     private fun calculateTotalSaldo(saldoList: List<Saldo>) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
         var totalSaldo = 0
 
         for (saldo in saldoList) {
-            val saldoDate = dateFormat.parse(saldo.timestamp)
+            val saldoDate = dateFormat.parse(saldo.tanggal)
             if (saldoDate != null) {
                 when (selectedPeriod) {
                     "Seminggu" -> {

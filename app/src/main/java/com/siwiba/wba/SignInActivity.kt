@@ -20,6 +20,16 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val uid = sharedPref.getString("uid", null)
+        if (!uid.isNullOrEmpty() && uid.isNotBlank()) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -76,17 +86,17 @@ class SignInActivity : AppCompatActivity() {
                         if (it.isEmailVerified) {
                             saveCredentialsToSharedPrefs(email, password)
                             getUserData(it.uid)
-                            Toast.makeText(this, "Sign In successful", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {
-                            Toast.makeText(this, "Please verify your email first", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Tolong verifikasi email Anda", Toast.LENGTH_SHORT).show()
                             auth.signOut()
                         }
                     }
                 } else {
-                    Toast.makeText(this, "Sign In failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -104,13 +114,13 @@ class SignInActivity : AppCompatActivity() {
             val user = auth.currentUser
             user?.let {
                 getUserData(it.uid)
-                Toast.makeText(this, "Sign In successful", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
         } else {
-            Toast.makeText(this, "Sign In failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -137,20 +147,22 @@ class SignInActivity : AppCompatActivity() {
                     val email = document.getString("email")
                     val address = document.getString("address")
                     val profileImage = document.getString("profileImage")
+                    val isAdmin = document.getBoolean("isAdmin") ?: false
 
                     with(sharedPref.edit()) {
                         putString("name", name)
                         putString("email", email)
                         putString("address", address)
                         putString("profileImage", profileImage)
+                        putBoolean("isAdmin", isAdmin)
                         apply()
                     }
                 } else {
-                    Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Data pengguna tidak ditemukan", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Failed to retrieve user data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Gagal mengambil data pengguna: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

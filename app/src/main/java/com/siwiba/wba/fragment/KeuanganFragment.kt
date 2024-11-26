@@ -15,15 +15,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.FragmentKeuanganBinding
 import com.siwiba.wba.activity.*
 import com.siwiba.wba.model.Saldo
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Calendar
-import java.util.Locale
 import android.util.Base64
 import android.widget.Toast
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class KeuanganFragment : Fragment() {
 
@@ -98,7 +99,6 @@ class KeuanganFragment : Fragment() {
         }
 
         loadProfilePicture()
-        setupSpinners()
     }
 
     private fun loadProfilePicture() {
@@ -107,22 +107,6 @@ class KeuanganFragment : Fragment() {
             val decodedString = Base64.decode(profilePicture, Base64.DEFAULT)
             val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
             binding.imgProfile.setImageBitmap(decodedByte)
-        }
-    }
-
-    private fun setupSpinners() {
-        val periods = arrayOf("Seminggu", "Sebulan", "Setahun")
-        val periodAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, periods)
-        periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerPeriode.adapter = periodAdapter
-
-        binding.spinnerPeriode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedPeriod = periods[position]
-                fetchSaldoData()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
@@ -171,39 +155,35 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun calculateTotalSaldo(saldoList: List<Saldo>) {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val calendar = Calendar.getInstance()
         var totalSaldo = 0
+        var totalSaldoDebit = 0
+        var totalSaldoKredit = 0
+        val saldoArray = arrayOf("gaji", "bpjs", "kas", "logistik", "pajak", "pinjaman")
+        val tasks = mutableListOf<Task<*>>()
 
+        // Calculate total debit and kredit for "utama"
         for (saldo in saldoList) {
-            val saldoDate = dateFormat.parse(saldo.tanggal)
-            if (saldoDate != null) {
-                when (selectedPeriod) {
-                    "Seminggu" -> {
-                        calendar.time = Date()
-                        calendar.add(Calendar.DAY_OF_YEAR, -7)
-                        if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
-                        }
-                    }
-                    "Sebulan" -> {
-                        calendar.time = Date()
-                        calendar.add(Calendar.MONTH, -1)
-                        if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
-                        }
-                    }
-                    "Setahun" -> {
-                        calendar.time = Date()
-                        calendar.add(Calendar.YEAR, -1)
-                        if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
-                        }
-                    }
-                }
-            }
+            totalSaldoDebit += saldo.debit
+            totalSaldoKredit += saldo.kredit
         }
-        binding.txtTotal.text = "Rp $totalSaldo"
+
+        saldoArray.forEach { saldo ->
+            val task = firestore.collection("saldo")
+                .document(saldo)
+                .get()
+                .continueWith { task ->
+                    val saldoValue = task.result?.getLong("saldo")?.toInt() ?: 0
+                    totalSaldoKredit += -saldoValue
+                }
+            tasks.add(task)
+        }
+
+        Tasks.whenAllComplete(tasks).addOnCompleteListener {
+            totalSaldo = totalSaldoDebit - totalSaldoKredit
+            binding.txtTotal.text = "Rp $totalSaldo"
+            binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
+            binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
+        }
     }
 
     override fun onDestroyView() {

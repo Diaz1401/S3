@@ -115,37 +115,52 @@ class KasActivity : AppCompatActivity() {
     private fun calculateTotalSaldo(saldoList: List<Saldo>) {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        var totalSaldo = 0
+        var totalDebit = 0
+        var totalKredit = 0
 
         for (saldo in saldoList) {
             val saldoDate = dateFormat.parse(saldo.tanggal)
             if (saldoDate != null) {
                 when (selectedPeriod) {
+                    "Total" -> {
+                        totalDebit += saldo.debit
+                        totalKredit += saldo.kredit
+                    }
                     "Seminggu" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.DAY_OF_YEAR, -7)
                         if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
+                            totalDebit += saldo.debit
+                            totalKredit += saldo.kredit
                         }
                     }
                     "Sebulan" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.MONTH, -1)
                         if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
+                            totalDebit += saldo.debit
+                            totalKredit += saldo.kredit
                         }
                     }
                     "Setahun" -> {
                         calendar.time = Date()
                         calendar.add(Calendar.YEAR, -1)
                         if (saldoDate.after(calendar.time)) {
-                            totalSaldo += saldo.debit - saldo.kredit
+                            totalDebit += saldo.debit
+                            totalKredit += saldo.kredit
                         }
                     }
                 }
             }
         }
-        binding.txtTotal.text = "Rp $totalSaldo"
+        binding.txtDebit.text = "Debit Rp $totalDebit"
+        binding.txtKredit.text = "Kredit Rp $totalKredit"
+        binding.txtTotal.text = "Rp ${totalDebit - totalKredit}"
+        if (selectedPeriod == "Total") {
+            binding.txtPeriode.text = "Total"
+        } else {
+            binding.txtPeriode.text = "Untuk $selectedPeriod Terakhir"
+        }
     }
 
     private fun loadProfilePicture() {
@@ -155,5 +170,10 @@ class KasActivity : AppCompatActivity() {
             val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             binding.imgProfile.setImageBitmap(bitmap)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchSaldoData()
     }
 }

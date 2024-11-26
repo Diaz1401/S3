@@ -226,47 +226,27 @@
             android:layout_marginStart="@dimen/_18sdp"/>
 
         <TextView
-            android:id="@+id/txtPeriode"
+            android:id="@+id/txtTotalDebit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PERIODE"
+            android:text="DEBIT"
+            android:textStyle="bold|italic"
             android:textSize="@dimen/_10ssp"
             android:textColor="@color/colorGreyLight"
             android:layout_marginTop="@dimen/_138sdp"
             android:layout_marginStart="@dimen/_18sdp"/>
 
         <TextView
-            android:id="@+id/txtPilihPeriode"
+            android:id="@+id/txtTotalKredit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pilih waktu:"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_162sdp"
+            android:text="KREDIT"
+            android:textStyle="bold|italic"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_156sdp"
             android:layout_marginStart="@dimen/_18sdp"
-            android:layout_marginBottom="@dimen/_18sdp" />
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerPeriode"
-            android:layout_marginTop="@dimen/_162sdp"
-            android:layout_marginStart="@dimen/_84sdp"/>
-        <TextView
-            android:id="@+id/txtPilihSaldo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pilih saldo:"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_186sdp"
-            android:layout_marginStart="@dimen/_18sdp"
-            android:layout_marginBottom="@dimen/_18sdp" />
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerSaldo"
-            android:layout_marginTop="@dimen/_186sdp"
-            android:layout_marginStart="@dimen/_84sdp"/>
+            android:layout_marginBottom="@dimen/_18sdp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnTambah"

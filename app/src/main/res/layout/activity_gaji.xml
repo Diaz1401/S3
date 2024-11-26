@@ -67,14 +67,36 @@
             android:layout_marginStart="@dimen/_18sdp"/>
 
         <TextView
-            android:id="@+id/txtPeriode"
+            android:id="@+id/txtDebit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PERIODE"
+            android:text="DEBIT"
+            android:textStyle="bold|italic"
             android:textSize="@dimen/_10ssp"
             android:textColor="@color/colorGreyLight"
             android:layout_marginTop="@dimen/_48sdp"
             android:layout_marginStart="@dimen/_18sdp"/>
+        <TextView
+            android:id="@+id/txtKredit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KREDIT"
+            android:textStyle="bold|italic"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_66sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
+        <TextView
+            android:id="@+id/txtPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Periode"
+            android:textStyle="bold|italic"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_84sdp"
+            android:layout_marginStart="@dimen/_18sdp"/>
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/tambah"
@@ -101,14 +123,14 @@
             android:text="Pilih waktu:"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_72sdp"
+            android:layout_marginTop="@dimen/_102sdp"
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginBottom="@dimen/_18sdp" />
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spinnerPeriode"
-            android:layout_marginTop="@dimen/_72sdp"
+            android:layout_marginTop="@dimen/_102sdp"
             android:layout_marginStart="@dimen/_84sdp"/>
     </FrameLayout>
 

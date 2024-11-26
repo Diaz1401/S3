@@ -288,6 +288,8 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun populateDataTable(saldoList: List<Saldo>) {
+        val binding = _binding ?: return // Ensure binding is not null
+
         val columns = ArrayList<Column>()
         columns.add(Column("no", "No."))
         columns.add(Column("keterangan", "Keterangan"))
@@ -317,6 +319,8 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun calculateTotalSaldo(saldoList: List<Saldo>) {
+        val binding = _binding ?: return // Ensure binding is not null
+
         var totalSaldo = 0
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0

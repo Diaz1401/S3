@@ -1,8 +1,10 @@
 package com.siwiba.wba.activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -20,12 +22,20 @@ import java.util.Date
 import java.util.Calendar
 import java.util.Locale
 import android.util.Base64
+import android.widget.Toast
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.Query
+import com.opencsv.CSVReader
+import com.opencsv.CSVWriter
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
 class KasActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityKasBinding
     private lateinit var firestore: FirebaseFirestore
-    private var selectedPeriod: String = "Bulanan"
+    private var selectedPeriod: String = "Total"
     private val whichSaldo = "kas"
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -51,7 +61,7 @@ class KasActivity : AppCompatActivity() {
         }
 
         // Set up Spinner
-        val periods = arrayOf("Seminggu", "Sebulan", "Setahun")
+        val periods = arrayOf("Total", "Seminggu", "Sebulan", "Setahun")
         val adapter = ArrayAdapter(this, R.layout.item_spinner_periode, periods)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = adapter
@@ -66,6 +76,150 @@ class KasActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+        binding.dokumen.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Pilih Aksi")
+                .setItems(arrayOf("Export Data", "Import Data")) { _, which ->
+                    when (which) {
+                        0 -> {
+                            // Export data
+                            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = "text/comma-separated-values"
+                                putExtra(Intent.EXTRA_TITLE, "data.csv")
+                            }
+                            startActivityForResult(intent, REQUEST_CODE_EXPORT)
+                        }
+                        1 -> {
+                            // Import data
+                            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = "text/comma-separated-values"
+                            }
+                            startActivityForResult(intent, REQUEST_CODE_IMPORT)
+                        }
+                    }
+                }
+                .show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && data != null) {
+            when (requestCode) {
+                REQUEST_CODE_EXPORT -> {
+                    data.data?.let { uri ->
+                        fetchCsvSaldoData().addOnSuccessListener { saldoList ->
+                            exportDataToCSV(saldoList, uri)
+                        }
+                    }
+                }
+                REQUEST_CODE_IMPORT -> {
+                    data.data?.let { uri ->
+                        val importedData = importDataFromCSV(uri)
+                        firestore.collection("saldo")
+                            .document(whichSaldo)
+                            .get()
+                            .addOnSuccessListener { document ->
+                                var saldo = document.getLong("saldo") ?: 0
+
+                                firestore.collection("saldo")
+                                    .document(whichSaldo)
+                                    .collection("data")
+                                    .orderBy("no", Query.Direction.DESCENDING)
+                                    .limit(1)
+                                    .get()
+                                    .addOnSuccessListener { documents ->
+                                        var newNo = 1
+                                        if (!documents.isEmpty) {
+                                            val highestNo = documents.documents[0].getLong("no") ?: 0
+                                            newNo = highestNo.toInt() + 1
+                                        }
+
+                                        val batch = firestore.batch()
+                                        val collectionRef = firestore.collection("saldo")
+                                            .document(whichSaldo)
+                                            .collection("data")
+
+                                        importedData.forEach { saldoItem ->
+                                            val data = mapOf(
+                                                "no" to newNo,
+                                                "keterangan" to saldoItem.keterangan,
+                                                "debit" to saldoItem.debit,
+                                                "kredit" to saldoItem.kredit,
+                                                "tanggal" to saldoItem.tanggal
+                                            )
+                                            saldo -= saldoItem.kredit
+                                            val docRef = collectionRef.document(newNo.toString())
+                                            batch.set(docRef, data)
+                                            newNo++
+                                        }
+
+                                        batch.commit().addOnSuccessListener {
+                                            firestore.collection("saldo")
+                                                .document(whichSaldo)
+                                                .update("saldo", saldo)
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(this, "Sukses menambahkan data", Toast.LENGTH_SHORT).show()
+                                                    fetchSaldoData()
+                                                }
+                                                .addOnFailureListener {
+                                                    Toast.makeText(this, "Gagal memperbarui saldo", Toast.LENGTH_SHORT).show()
+                                                }
+                                        }.addOnFailureListener {
+                                            Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(this, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+            }
+        }
+    }
+
+
+    companion object {
+        private const val REQUEST_CODE_EXPORT = 1
+        private const val REQUEST_CODE_IMPORT = 2
+    }
+
+    private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
+        contentResolver.openOutputStream(uri)?.use { outputStream ->
+            val writer = CSVWriter(OutputStreamWriter(outputStream))
+            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Tanggal"))
+            for (saldo in data) {
+                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.tanggal))
+            }
+            writer.close()
+        }
+    }
+
+    private fun importDataFromCSV(uri: Uri): List<Saldo> {
+        val data = mutableListOf<Saldo>()
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            val reader = CSVReader(InputStreamReader(inputStream))
+            reader.readNext() // Skip header
+            var nextLine: Array<String>?
+            while (reader.readNext().also { nextLine = it } != null) {
+                val saldo = Saldo(
+                    no = nextLine!![0].toInt(),
+                    keterangan = nextLine!![1],
+                    debit = nextLine!![2].toInt(),
+                    kredit = nextLine!![3].toInt(),
+                    tanggal = nextLine!![4]
+                )
+                data.add(saldo)
+            }
+            reader.close()
+        }
+        return data
     }
 
     private fun fetchSaldoData() {
@@ -80,6 +234,20 @@ class KasActivity : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
+            }
+    }
+
+    private fun fetchCsvSaldoData(): Task<List<Saldo>> {
+        return firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
+            .get()
+            .continueWith { task ->
+                if (task.isSuccessful) {
+                    task.result?.toObjects(Saldo::class.java) ?: emptyList()
+                } else {
+                    emptyList()
+                }
             }
     }
 

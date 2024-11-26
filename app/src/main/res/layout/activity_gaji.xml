@@ -132,6 +132,27 @@
             android:id="@+id/spinnerPeriode"
             android:layout_marginTop="@dimen/_102sdp"
             android:layout_marginStart="@dimen/_84sdp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dokumen"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/baseline_edit_document_24"
+            android:layout_marginTop="@dimen/_84sdp"
+            android:layout_marginStart="@dimen/_216sdp"/>
+
+        <TextView
+            android:id="@+id/txtDokumen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Export/Import"
+            android:textSize="@dimen/_8ssp"
+            android:textColor="@color/colorGreyLight"
+            android:layout_marginTop="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_210sdp" />
+
     </FrameLayout>
 
     <ScrollView

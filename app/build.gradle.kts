@@ -66,6 +66,9 @@ dependencies {
 
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    implementation ("com.opencsv:opencsv:5.5.2")
+
     implementation(libs.androidx.material3.android)
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.storage.ktx)

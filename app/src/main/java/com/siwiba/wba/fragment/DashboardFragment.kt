@@ -157,7 +157,7 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        return groupedData.map { (key, groupedSaldo) ->
+        val aggregatedData = groupedData.map { (key, groupedSaldo) ->
             val totalDebit = groupedSaldo.sumOf { it.debit }
             val totalKredit = groupedSaldo.sumOf { it.kredit }
             val totalSaldo = totalDebit - totalKredit
@@ -171,6 +171,8 @@ class DashboardFragment : Fragment() {
                 tanggal = latestTanggal
             )
         }.sortedBy { dateFormat.parse(it.tanggal) }
+
+        return if (aggregatedData.size > 10) aggregatedData.takeLast(10) else aggregatedData
     }
 
     private fun updateLineChart(dataList: List<Saldo>, chart: LineChart) {

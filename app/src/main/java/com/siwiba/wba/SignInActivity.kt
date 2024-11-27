@@ -53,6 +53,23 @@ class SignInActivity : AppCompatActivity() {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        binding.txtResetPassword.setOnClickListener {
+            val email = binding.inputEmailSignIn.text.toString()
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Masukan email", Toast.LENGTH_SHORT).show()
+                binding.inputEmailSignIn.requestFocus()
+            } else {
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Link reset password telah dikirim ke email", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Gagal mengirim link reset password: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
+        }
     }
 
     private fun isValidSignInDetails(email: String, password: String): Boolean {
@@ -83,17 +100,8 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        if (it.isEmailVerified) {
-                            saveCredentialsToSharedPrefs(email, password)
-                            getUserData(it.uid)
-                            Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Tolong verifikasi email Anda", Toast.LENGTH_SHORT).show()
-                            auth.signOut()
-                        }
+                        Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
+                        getUserData(it.uid)
                     }
                 } else {
                     Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -124,15 +132,6 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveCredentialsToSharedPrefs(email: String, password: String) {
-        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("email", email)
-            putString("password", password)
-            apply()
-        }
-    }
-
     private fun getUserData(uid: String) {
         val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
@@ -157,6 +156,10 @@ class SignInActivity : AppCompatActivity() {
                         putBoolean("isAdmin", isAdmin)
                         apply()
                     }
+                    // Start MainActivity after successfully getting user data
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this, "Data pengguna tidak ditemukan", Toast.LENGTH_SHORT).show()
                 }

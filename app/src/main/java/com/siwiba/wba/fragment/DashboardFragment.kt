@@ -29,6 +29,7 @@ import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.util.Log
 
 class DashboardFragment : Fragment() {
 
@@ -118,6 +119,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun fetchAllSaldoData() {
+        fetchSaldoData("utama", binding.lineChartUtama)
         fetchSaldoData("gaji", binding.lineChartGaji)
         fetchSaldoData("bpjs", binding.lineChartBpjs)
         fetchSaldoData("kas", binding.lineChartKas)
@@ -142,58 +144,36 @@ class DashboardFragment : Fragment() {
     }
 
     private fun filterDataByPeriod(dataList: List<Saldo>, period: String): List<Saldo> {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
-        val groupedData = mutableMapOf<String, MutableList<Saldo>>()
-
-        for (data in dataList) {
+        val groupedData = dataList.groupBy { data ->
             val dataDate = dateFormat.parse(data.tanggal)
-            if (dataDate != null) {
-                calendar.time = dataDate
-                val key = when (period) {
-                    "Perminggu" -> {
-                        val weekYear = calendar.get(Calendar.WEEK_OF_YEAR)
-                        val year = calendar.get(Calendar.YEAR)
-                        "$year-$weekYear"
-                    }
-                    "Perbulan" -> {
-                        val month = calendar.get(Calendar.MONTH) + 1
-                        val year = calendar.get(Calendar.YEAR)
-                        "$year-$month"
-                    }
-                    "Pertahun" -> {
-                        val year = calendar.get(Calendar.YEAR)
-                        "$year"
-                    }
-                    else -> continue
-                }
-                groupedData.getOrPut(key) { mutableListOf() }.add(data)
+            calendar.time = dataDate
+            when (period) {
+                "Perminggu" -> "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.WEEK_OF_YEAR)}"
+                "Perbulan" -> "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}"
+                "Pertahun" -> "${calendar.get(Calendar.YEAR)}"
+                else -> ""
             }
         }
 
-        val aggregatedList = mutableListOf<Saldo>()
-        for ((_, groupedSaldo) in groupedData) {
+        return groupedData.map { (key, groupedSaldo) ->
             val totalDebit = groupedSaldo.sumOf { it.debit }
             val totalKredit = groupedSaldo.sumOf { it.kredit }
-            val totalSaldo = groupedSaldo.last().saldo // Assume the last saldo is relevant
+            val totalSaldo = totalDebit - totalKredit
             val latestTanggal = groupedSaldo.maxByOrNull { dateFormat.parse(it.tanggal)!! }?.tanggal ?: ""
-            aggregatedList.add(
-                Saldo(
-                    no = 0,
-                    keterangan = "Aggregated $period",
-                    debit = totalDebit,
-                    kredit = totalKredit,
-                    saldo = totalSaldo,
-                    tanggal = latestTanggal
-                )
+            Saldo(
+                no = 0,
+                keterangan = "Aggregated $period",
+                debit = totalDebit,
+                kredit = totalKredit,
+                saldo = totalSaldo,
+                tanggal = latestTanggal
             )
-        }
-
-        return aggregatedList.sortedBy { dateFormat.parse(it.tanggal) }
+        }.sortedBy { dateFormat.parse(it.tanggal) }
     }
 
     private fun updateLineChart(dataList: List<Saldo>, chart: LineChart) {
-
         if (!isAdded) return // Fragment is not attached to activity
 
         val entries = ArrayList<Entry>()

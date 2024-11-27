@@ -163,44 +163,51 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChartUtama"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"/>
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartGaji"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartBpjs"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toBottomOf="@id/lineChartGaji"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartKas"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toBottomOf="@id/lineChartBpjs"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartLogistik"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toBottomOf="@id/lineChartKas"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartPajak"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toBottomOf="@id/lineChartKas"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChartPinjaman"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_150sdp"
                 app:layout_constraintTop_toBottomOf="@id/lineChartPajak"
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp"/>

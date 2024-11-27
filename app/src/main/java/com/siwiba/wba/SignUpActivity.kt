@@ -72,12 +72,19 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        saveUserData(it)
-                        Toast.makeText(this, "Sign Up sukses", Toast.LENGTH_SHORT).show()
-                        finish()
+                        it.sendEmailVerification()
+                            .addOnCompleteListener { verificationTask ->
+                                if (verificationTask.isSuccessful) {
+                                    saveUserData(it)
+                                    Toast.makeText(this, "Sign Up sukses. Link verifikasi email telah dikirim", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                } else {
+                                    Toast.makeText(this, "Gagal mengirim link verifikasi email: ${verificationTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                     }
                 } else {
-                    Toast.makeText(this, "Sign Up gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Sign Up failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }

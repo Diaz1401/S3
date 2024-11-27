@@ -100,8 +100,13 @@ class SignInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
-                        getUserData(it.uid)
+                        if (it.isEmailVerified) {
+                            Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
+                            getUserData(it.uid)
+                        } else {
+                            Toast.makeText(this, "Verifikasi email terlebih dahulu", Toast.LENGTH_SHORT).show()
+                            auth.signOut()
+                        }
                     }
                 } else {
                     Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()

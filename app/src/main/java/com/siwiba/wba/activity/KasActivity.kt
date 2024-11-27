@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.Query
 import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
+import com.siwiba.wba.activity.GajiActivity.Companion
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
@@ -77,6 +78,7 @@ class KasActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         binding.dokumen.setOnClickListener {
+            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
             AlertDialog.Builder(this)
                 .setTitle("Pilih Aksi")
                 .setItems(arrayOf("Export Data", "Import Data")) { _, which ->
@@ -86,17 +88,25 @@ class KasActivity : AppCompatActivity() {
                             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                                 addCategory(Intent.CATEGORY_OPENABLE)
                                 type = "text/comma-separated-values"
-                                putExtra(Intent.EXTRA_TITLE, "data.csv")
+                                putExtra(Intent.EXTRA_TITLE, "${whichSaldo}.csv")
                             }
                             startActivityForResult(intent, REQUEST_CODE_EXPORT)
                         }
                         1 -> {
-                            // Import data
-                            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                                addCategory(Intent.CATEGORY_OPENABLE)
-                                type = "text/comma-separated-values"
+                            // Only admin can import data
+                            if (isAdmin) {
+                                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                    addCategory(Intent.CATEGORY_OPENABLE)
+                                    type = "text/comma-separated-values"
+                                }
+                                startActivityForResult(intent, REQUEST_CODE_IMPORT)
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Anda tidak memiliki akses untuk mengimport data",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            startActivityForResult(intent, REQUEST_CODE_IMPORT)
                         }
                     }
                 }

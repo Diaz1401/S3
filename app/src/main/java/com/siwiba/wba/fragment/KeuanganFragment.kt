@@ -103,6 +103,7 @@ class KeuanganFragment : Fragment() {
         }
 
         binding.dokumen.setOnClickListener {
+            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
             AlertDialog.Builder(requireContext())
                 .setTitle("Pilih Aksi")
                 .setItems(arrayOf("Export Data", "Import Data")) { _, which ->
@@ -112,17 +113,26 @@ class KeuanganFragment : Fragment() {
                             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                                 addCategory(Intent.CATEGORY_OPENABLE)
                                 type = "text/comma-separated-values"
-                                putExtra(Intent.EXTRA_TITLE, "data.csv")
+                                putExtra(Intent.EXTRA_TITLE, "${whichSaldo}.csv")
                             }
                             startActivityForResult(intent, REQUEST_CODE_EXPORT)
                         }
                         1 -> {
-                            // Import data
-                            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                                addCategory(Intent.CATEGORY_OPENABLE)
-                                type = "text/comma-separated-values"
+                            // Only admin can import data
+                            if (isAdmin) {
+                                // Import data
+                                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                                    addCategory(Intent.CATEGORY_OPENABLE)
+                                    type = "text/comma-separated-values"
+                                }
+                                startActivityForResult(intent, REQUEST_CODE_IMPORT)
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Anda tidak memiliki akses untuk mengimport data",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            startActivityForResult(intent, REQUEST_CODE_IMPORT)
                         }
                     }
                 }

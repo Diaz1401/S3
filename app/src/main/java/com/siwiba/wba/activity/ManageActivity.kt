@@ -81,60 +81,72 @@ class ManageActivity : AppCompatActivity() {
                 Toast.makeText(this, "Lengkapi semua kolom", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             firestore.collection("saldo")
-                .document(whichSaldo)
+                .document("utama")
                 .get()
                 .addOnSuccessListener { document ->
-                    var saldo = document.getLong("saldo") ?: 0
-
-                    saldo -= kredit.toInt()
-//                    saldo += debit.toInt()
-
+                    val saldoUtama = document.getLong("saldo") ?: 0
+                    if (kredit.toInt() > saldoUtama) {
+                        Toast.makeText(this, "Kredit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
                     firestore.collection("saldo")
                         .document(whichSaldo)
-                        .collection("data")
-                        .orderBy("no", Query.Direction.DESCENDING)
-                        .limit(1)
                         .get()
-                        .addOnSuccessListener { documents ->
-                            var newNo = 1
-                            if (!documents.isEmpty) {
-                                val highestNo = documents.documents[0].getLong("no") ?: 0
-                                newNo = highestNo.toInt() + 1
-                            }
+                        .addOnSuccessListener { document ->
+                            var saldo = document.getLong("saldo") ?: 0
 
-                            val data = mapOf(
-                                "no" to newNo,
-                                "keterangan" to keterangan,
-                                "debit" to debit,
-                                "kredit" to kredit.toInt(),
-                                "tanggal" to tanggal
-                            )
+                            saldo -= kredit.toInt()
+//                          saldo += debit.toInt()
 
                             firestore.collection("saldo")
                                 .document(whichSaldo)
                                 .collection("data")
-                                .document(newNo.toString())
-                                .set(data)
-                                .addOnSuccessListener {
+                                .orderBy("no", Query.Direction.DESCENDING)
+                                .limit(1)
+                                .get()
+                                .addOnSuccessListener { documents ->
+                                    var newNo = 1
+                                    if (!documents.isEmpty) {
+                                        val highestNo = documents.documents[0].getLong("no") ?: 0
+                                        newNo = highestNo.toInt() + 1
+                                    }
+
+                                    val data = mapOf(
+                                        "no" to newNo,
+                                        "keterangan" to keterangan,
+                                        "debit" to debit,
+                                        "kredit" to kredit.toInt(),
+                                        "tanggal" to tanggal
+                                    )
+
                                     firestore.collection("saldo")
                                         .document(whichSaldo)
-                                        .update("saldo", saldo)
+                                        .collection("data")
+                                        .document(newNo.toString())
+                                        .set(data)
                                         .addOnSuccessListener {
+                                            firestore.collection("saldo")
+                                                .document(whichSaldo)
+                                                .update("saldo", saldo)
+                                                .addOnSuccessListener {
 //                                            if (whichSaldo != "utama") {
 //                                                updateUtamaSaldo(debit, -kredit.toInt())
 //                                            } else {
-                                                Toast.makeText(this, "Sukses menambahkan data", Toast.LENGTH_SHORT).show()
-                                                finish()
+                                                    Toast.makeText(this, "Sukses menambahkan data", Toast.LENGTH_SHORT).show()
+                                                    finish()
 //                                            }
+                                                }
+                                                .addOnFailureListener {
+                                                    Toast.makeText(this, "Gagal memperbarui saldo", Toast.LENGTH_SHORT).show()
+                                                }
                                         }
                                         .addOnFailureListener {
-                                            Toast.makeText(this, "Gagal memperbarui saldo", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
                                         }
                                 }
                                 .addOnFailureListener {
-                                    Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
                                 }
                         }
                         .addOnFailureListener {
@@ -142,8 +154,10 @@ class ManageActivity : AppCompatActivity() {
                         }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gagal mengambil saldo utama", Toast.LENGTH_SHORT).show()
                 }
+
+
         }
     }
 

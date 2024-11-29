@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.Query
 import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
+import com.siwiba.wba.activity.BpjsActivity.Companion
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
@@ -38,6 +39,7 @@ class BpjsActivity : AppCompatActivity() {
     private var selectedPeriod: String = "Total"
     private val whichSaldo = "bpjs"
     private lateinit var sharedPreferences: SharedPreferences
+    private var editor: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +55,14 @@ class BpjsActivity : AppCompatActivity() {
         // Load profile picture from SharedPreferences
         loadProfilePicture()
 
+        // Set editor
+        editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+
         binding.tambah.setOnClickListener {
             val intent = Intent(this, ManageActivity::class.java)
             intent.putExtra("mode", 1)
             intent.putExtra("whichSaldo", whichSaldo)
+            intent.putExtra("editor", editor)
             startActivity(intent)
         }
 
@@ -157,6 +163,7 @@ class BpjsActivity : AppCompatActivity() {
                                                 "keterangan" to saldoItem.keterangan,
                                                 "debit" to saldoItem.debit,
                                                 "kredit" to saldoItem.kredit,
+                                                "editor" to saldoItem.editor,
                                                 "tanggal" to saldoItem.tanggal
                                             )
                                             saldo -= saldoItem.kredit
@@ -202,9 +209,9 @@ class BpjsActivity : AppCompatActivity() {
     private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
         contentResolver.openOutputStream(uri)?.use { outputStream ->
             val writer = CSVWriter(OutputStreamWriter(outputStream))
-            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Tanggal"))
+            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Editor", "Tanggal"))
             for (saldo in data) {
-                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.tanggal))
+                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.editor.toString(), saldo.tanggal))
             }
             writer.close()
         }
@@ -222,7 +229,8 @@ class BpjsActivity : AppCompatActivity() {
                     keterangan = nextLine!![1],
                     debit = nextLine!![2].toInt(),
                     kredit = nextLine!![3].toInt(),
-                    tanggal = nextLine!![4]
+                    editor = nextLine!![4],
+                    tanggal = nextLine!![5]
                 )
                 data.add(saldo)
             }
@@ -266,6 +274,7 @@ class BpjsActivity : AppCompatActivity() {
         columns.add(Column("keterangan", "Keterangan"))
         columns.add(Column("debit", "Debit"))
         columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("editor", "Editor"))
         columns.add(Column("tanggal", "Tanggal"))
 
         // Clear existing views
@@ -283,6 +292,7 @@ class BpjsActivity : AppCompatActivity() {
                 intent.putExtra("keterangan", saldoClicked.keterangan)
                 intent.putExtra("debit", saldoClicked.debit)
                 intent.putExtra("kredit", saldoClicked.kredit)
+                intent.putExtra("editor", saldoClicked.editor)
                 intent.putExtra("tanggal", saldoClicked.tanggal)
                 startActivity(intent)
             }

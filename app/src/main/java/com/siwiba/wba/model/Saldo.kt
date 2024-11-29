@@ -6,5 +6,6 @@ data class Saldo(
     val debit: Int = 0,
     val kredit: Int = 0,
     val saldo: Int = 0,
+    val editor: String = "",
     val tanggal: String = ""
 )

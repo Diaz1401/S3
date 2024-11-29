@@ -2,6 +2,7 @@ package com.siwiba.wba.activity
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +33,9 @@ class ManageAdminActivity : AppCompatActivity() {
             finish()
         }
         when (mode) {
-            1 -> setupAddMode(saldo)
+            1 -> {
+                setupAddMode(saldo)
+            }
             2 -> {
                 loadData()
                 setupDeleteMode(saldo)
@@ -76,6 +79,7 @@ class ManageAdminActivity : AppCompatActivity() {
             val debit = binding.etDebit.text.toString()
             val kredit = binding.etKredit.text.toString()
             val tanggal = binding.etTanggal.text.toString()
+            val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
 
             if (keterangan.isEmpty() || (kredit.isEmpty() && debit.isEmpty()) || tanggal.isEmpty()) {
                 Toast.makeText(this, "Lengkapi semua kolom", Toast.LENGTH_SHORT).show()
@@ -109,6 +113,7 @@ class ManageAdminActivity : AppCompatActivity() {
                                 "keterangan" to keterangan,
                                 "debit" to debit.toInt(),
                                 "kredit" to kredit.toInt(),
+                                "editor" to editor,
                                 "tanggal" to tanggal
                             )
 
@@ -220,11 +225,16 @@ class ManageAdminActivity : AppCompatActivity() {
             val no = intent.getIntExtra("no", 0)
             val kredit = intent.getIntExtra("kredit", 0)
             val debit = intent.getIntExtra("debit", 0)
+            val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
+
 
             val newKeterangan = binding.etKeterangan.text.toString()
             val newKredit = binding.etKredit.text.toString().toInt()
             val newDebit = binding.etDebit.text.toString().toInt()
             val newTanggal = binding.etTanggal.text.toString()
+            val newEditor = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                .getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+            val editorToSave = if (editor != newEditor) "$editor, $newEditor" else editor
 
             if (newKeterangan.isEmpty() || newDebit.toString().isEmpty() || newKredit.toString().isEmpty() || newTanggal.isEmpty()) {
                 Toast.makeText(this, "Lengkapi semua kolom", Toast.LENGTH_SHORT).show()
@@ -234,6 +244,7 @@ class ManageAdminActivity : AppCompatActivity() {
                     "keterangan" to newKeterangan,
                     "debit" to newDebit,
                     "kredit" to newKredit,
+                    "editor" to editorToSave,
                     "tanggal" to newTanggal
                 )
 

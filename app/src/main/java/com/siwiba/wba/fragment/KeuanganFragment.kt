@@ -38,6 +38,7 @@ class KeuanganFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
     private val whichSaldo = "utama"
+    private var editor: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +58,8 @@ class KeuanganFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {
             val intent = Intent(activity, GajiActivity::class.java)
@@ -95,6 +98,7 @@ class KeuanganFragment : Fragment() {
                 val intent = Intent(activity, ManageAdminActivity::class.java)
                 intent.putExtra("mode", 1)
                 intent.putExtra("whichSaldo", whichSaldo)
+                intent.putExtra("editor", editor)
                 startActivity(intent)
             } else {
                 Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk menambah data", Toast.LENGTH_SHORT).show()
@@ -191,6 +195,7 @@ class KeuanganFragment : Fragment() {
                                                 "keterangan" to saldoItem.keterangan,
                                                 "debit" to saldoItem.debit,
                                                 "kredit" to saldoItem.kredit,
+                                                "editor" to saldoItem.editor,
                                                 "tanggal" to saldoItem.tanggal
                                             )
                                             saldo -= saldoItem.kredit
@@ -230,9 +235,9 @@ class KeuanganFragment : Fragment() {
     private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
         requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
             val writer = CSVWriter(OutputStreamWriter(outputStream))
-            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Tanggal"))
+            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Editor", "Tanggal"))
             for (saldo in data) {
-                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.tanggal))
+                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.editor.toString(), saldo.tanggal))
             }
             writer.close()
         }
@@ -250,7 +255,8 @@ class KeuanganFragment : Fragment() {
                     keterangan = nextLine!![1],
                     debit = nextLine!![2].toInt(),
                     kredit = nextLine!![3].toInt(),
-                    tanggal = nextLine!![4]
+                    editor = nextLine!![4],
+                    tanggal = nextLine!![5]
                 )
                 data.add(saldo)
             }
@@ -305,6 +311,7 @@ class KeuanganFragment : Fragment() {
         columns.add(Column("keterangan", "Keterangan"))
         columns.add(Column("debit", "Debit"))
         columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("editor", "Editor"))
         columns.add(Column("tanggal", "Tanggal"))
 
         // Clear existing views
@@ -322,6 +329,7 @@ class KeuanganFragment : Fragment() {
                 intent.putExtra("keterangan", saldoClicked.keterangan)
                 intent.putExtra("debit", saldoClicked.debit)
                 intent.putExtra("kredit", saldoClicked.kredit)
+                intent.putExtra("editor", saldoClicked.editor)
                 intent.putExtra("tanggal", saldoClicked.tanggal)
                 startActivity(intent)
             }

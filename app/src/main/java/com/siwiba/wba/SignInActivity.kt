@@ -21,19 +21,17 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val uid = sharedPref.getString("uid", null)
-        if (!uid.isNullOrEmpty() && uid.isNotBlank()) {
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        if (user != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-            return
         }
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         binding.btnSignIn.setOnClickListener {

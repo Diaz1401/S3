@@ -98,6 +98,7 @@
             android:paddingStart="@dimen/_18sdp"
             android:paddingEnd="@dimen/_18sdp"
             android:textSize="@dimen/_12sdp"
+            android:fontFamily="monospace"
             android:background="@drawable/outline" />
         <EditText
             android:id="@+id/inputConfirmPasswordSignUp"
@@ -112,6 +113,7 @@
             android:paddingStart="@dimen/_18sdp"
             android:paddingEnd="@dimen/_18sdp"
             android:textSize="@dimen/_12sdp"
+            android:fontFamily="monospace"
             android:background="@drawable/outline" />
         <TextView
             android:layout_width="match_parent"

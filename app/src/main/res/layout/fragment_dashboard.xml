@@ -76,22 +76,12 @@
             android:layout_marginStart="@dimen/_90sdp"
             android:layout_marginTop="@dimen/_36sdp"/>
 
-        <TextView
-            android:id="@+id/txtId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/colorGreyLight"
-            android:layout_marginStart="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_84sdp"/>
-
         <LinearLayout
             android:id="@+id/layoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_114sdp"
+            android:layout_marginTop="@dimen/_84sdp"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/_12sdp"
@@ -114,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_132sdp"
+            android:layout_marginTop="@dimen/_102sdp"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/_12sdp"
@@ -139,14 +129,14 @@
             android:text="Pilih waktu:"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_162sdp"
+            android:layout_marginTop="@dimen/_132sdp"
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginBottom="@dimen/_18sdp" />
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spinnerPeriode"
-            android:layout_marginTop="@dimen/_162sdp"
+            android:layout_marginTop="@dimen/_132sdp"
             android:layout_marginStart="@dimen/_84sdp"/>
     </FrameLayout>
 

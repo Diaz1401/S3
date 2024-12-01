@@ -39,16 +39,16 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(KeuanganFragment())
                     true
                 }
+                R.id.navigation_profil -> {
+                    loadFragment(ProfilFragment())
+                    true
+                }
 //                R.id.navigation_absen -> {
 //                    loadFragment(AbsenFragment())
 //                    true
 //                }
 //                R.id.navigation_analisis -> {
 //                    loadFragment(AnalisisFragment())
-//                    true
-//                }
-//                R.id.navigation_profil -> {
-//                    loadFragment(ProfilFragment())
 //                    true
 //                }
                 else -> false

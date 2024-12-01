@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 
 class DashboardFragment : Fragment() {
 
@@ -37,6 +38,7 @@ class DashboardFragment : Fragment() {
     private val binding get() = _binding!!
     private var selectedPeriod: String = "Seminggu"
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +46,7 @@ class DashboardFragment : Fragment() {
     ): View? {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -52,23 +55,16 @@ class DashboardFragment : Fragment() {
         displayUserData()
         setupSpinners()
 
-        binding.spinnerPeriode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedPeriod = parent.getItemAtPosition(position).toString()
-                fetchAllSaldoData()
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
         binding.imglogOut.setOnClickListener {
             AlertDialog.Builder(requireContext())
-                .setTitle("Sign Out")
+                .setTitle("Log Out")
                 .setMessage("Apakah anda yakin untuk logout?")
                 .setPositiveButton("Ya") { dialog, _ ->
                     val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val editor = sharedPref.edit()
                     editor.clear()
                     editor.apply()
+                    auth.signOut()
                     val intent = Intent(requireContext(), SignInActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -87,13 +83,11 @@ class DashboardFragment : Fragment() {
         val name = sharedPref.getString("name", "Name not found")
         val email = sharedPref.getString("email", "Email not found")
         val address = sharedPref.getString("address", "Address not found")
-        val uid = sharedPref.getString("uid", "UID not found")
         val profileImage = sharedPref.getString("profileImage", null)
 
         binding.txtName.text = name
         binding.txtEmail.text = email
         binding.txtAddress.text = address
-        binding.txtId.text = uid
 
         if (profileImage != null) {
             val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)

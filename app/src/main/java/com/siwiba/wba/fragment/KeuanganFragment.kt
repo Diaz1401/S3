@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.FragmentKeuanganBinding
@@ -30,6 +31,8 @@ import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import com.google.firebase.firestore.QuerySnapshot
+import com.siwiba.R
 
 class KeuanganFragment : Fragment() {
 
@@ -167,61 +170,53 @@ class KeuanganFragment : Fragment() {
                         val importedData = importDataFromCSV(uri)
                         firestore.collection("saldo")
                             .document(whichSaldo)
+                            .collection("data")
+                            .orderBy("no", Query.Direction.DESCENDING)
+                            .limit(1)
                             .get()
                             .addOnSuccessListener { document ->
-                                var saldo = document.getLong("saldo") ?: 0
+                                var newNo = 1
+                                var lastSaldo = 0
+                                if (!document.isEmpty) {
+                                    val highestNo = document.documents[0].getLong("no") ?: 1
+                                    newNo = highestNo.toInt() + 1
+                                    lastSaldo = document.documents[0].getLong("saldo")?.toInt() ?: 0
+                                }
 
-                                firestore.collection("saldo")
+                                val batch = firestore.batch()
+                                val collectionRef = firestore.collection("saldo")
                                     .document(whichSaldo)
                                     .collection("data")
-                                    .orderBy("no", Query.Direction.DESCENDING)
-                                    .limit(1)
-                                    .get()
-                                    .addOnSuccessListener { documents ->
-                                        var newNo = 1
-                                        if (!documents.isEmpty) {
-                                            val highestNo = documents.documents[0].getLong("no") ?: 0
-                                            newNo = highestNo.toInt() + 1
-                                        }
 
-                                        val batch = firestore.batch()
-                                        val collectionRef = firestore.collection("saldo")
-                                            .document(whichSaldo)
-                                            .collection("data")
+                                importedData.forEach { saldoItem ->
+                                    lastSaldo += saldoItem.debit - saldoItem.kredit
+                                    val datas = mapOf(
+                                        "no" to newNo,
+                                        "keterangan" to saldoItem.keterangan,
+                                        "debit" to saldoItem.debit,
+                                        "kredit" to saldoItem.kredit,
+                                        "saldo" to lastSaldo,
+                                        "editor" to saldoItem.editor,
+                                        "tanggal" to saldoItem.tanggal
+                                    )
+                                    val docRef = collectionRef.document(newNo.toString())
+                                    batch.set(docRef, datas)
+                                    newNo++
+                                }
 
-                                        importedData.forEach { saldoItem ->
-                                            val data = mapOf(
-                                                "no" to newNo,
-                                                "keterangan" to saldoItem.keterangan,
-                                                "debit" to saldoItem.debit,
-                                                "kredit" to saldoItem.kredit,
-                                                "editor" to saldoItem.editor,
-                                                "tanggal" to saldoItem.tanggal
-                                            )
-                                            saldo -= saldoItem.kredit
-                                            val docRef = collectionRef.document(newNo.toString())
-                                            batch.set(docRef, data)
-                                            newNo++
-                                        }
-
-                                        batch.commit().addOnSuccessListener {
-                                            firestore.collection("saldo")
-                                                .document(whichSaldo)
-                                                .update("saldo", saldo)
-                                                .addOnSuccessListener {
-                                                    Toast.makeText(requireContext(), "Berhasil menyimpan data", Toast.LENGTH_SHORT).show()
-                                                    fetchSaldoData()
-                                                }
-                                                .addOnFailureListener {
-                                                    Toast.makeText(requireContext(), "Gagal memperbarui saldo", Toast.LENGTH_SHORT).show()
-                                                }
-                                        }.addOnFailureListener {
-                                            Toast.makeText(requireContext(), "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(requireContext(), "Gagal mengambil data", Toast.LENGTH_SHORT).show()
-                                    }
+                                batch.commit().addOnSuccessListener {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Berhasil menyimpan data",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }.addOnFailureListener {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Gagal menyimpan data",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                             .addOnFailureListener {
                                 Toast.makeText(requireContext(), "Gagal mengambil data", Toast.LENGTH_SHORT).show()
@@ -235,9 +230,9 @@ class KeuanganFragment : Fragment() {
     private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
         requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
             val writer = CSVWriter(OutputStreamWriter(outputStream))
-            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Editor", "Tanggal"))
+            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Saldo", "Editor", "Tanggal"))
             for (saldo in data) {
-                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.editor.toString(), saldo.tanggal))
+                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.saldo.toString(), saldo.editor, saldo.tanggal))
             }
             writer.close()
         }
@@ -245,6 +240,7 @@ class KeuanganFragment : Fragment() {
 
     private fun importDataFromCSV(uri: Uri): List<Saldo> {
         val data = mutableListOf<Saldo>()
+
         requireContext().contentResolver.openInputStream(uri)?.use { inputStream ->
             val reader = CSVReader(InputStreamReader(inputStream))
             reader.readNext() // Skip header
@@ -255,8 +251,9 @@ class KeuanganFragment : Fragment() {
                     keterangan = nextLine!![1],
                     debit = nextLine!![2].toInt(),
                     kredit = nextLine!![3].toInt(),
-                    editor = nextLine!![4],
-                    tanggal = nextLine!![5]
+                    saldo = 0,
+                    editor = nextLine!![5],
+                    tanggal = nextLine!![6]
                 )
                 data.add(saldo)
             }
@@ -296,7 +293,7 @@ class KeuanganFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 val saldoList = documents.toObjects(Saldo::class.java)
                 populateDataTable(saldoList)
-                calculateTotalSaldo(saldoList)
+                calculateTotalSaldo()
             }
             .addOnFailureListener { exception ->
                 // Handle any errors
@@ -316,6 +313,8 @@ class KeuanganFragment : Fragment() {
 
         // Clear existing views
         binding.dataTable.removeAllViews()
+        val customColor = ContextCompat.getColor(requireContext(), R.color.wba_light)
+        binding.dataTable.setBackgroundColor(customColor)
 
         binding.dataTable.setTable(columns, saldoList, isActionButtonShow = sharedPreferences.getBoolean("isAdmin", false))
 
@@ -336,37 +335,40 @@ class KeuanganFragment : Fragment() {
         })
     }
 
-    private fun calculateTotalSaldo(saldoList: List<Saldo>) {
+    private fun calculateTotalSaldo() {
         val binding = _binding ?: return // Ensure binding is not null
 
         var totalSaldo = 0
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
-        val saldoArray = arrayOf("gaji", "bpjs", "kas", "logistik", "pajak", "pinjaman")
-        val tasks = mutableListOf<Task<*>>()
+        val saldoArray = arrayOf("utama", "gaji", "bpjs", "kas", "logistik", "pajak", "pinjaman")
 
-        // Calculate total debit and kredit for "utama"
-        for (saldo in saldoList) {
-            totalSaldoDebit += saldo.debit
-            totalSaldoKredit += saldo.kredit
-        }
-
-        saldoArray.forEach { saldo ->
-            val task = firestore.collection("saldo")
+        val tasks = saldoArray.map { saldo ->
+            firestore.collection("saldo")
                 .document(saldo)
+                .collection("data")
+                .orderBy("no", Query.Direction.DESCENDING)
                 .get()
-                .continueWith { task ->
-                    val saldoValue = task.result?.getLong("saldo")?.toInt() ?: 0
-                    totalSaldoKredit += -saldoValue
-                }
-            tasks.add(task)
         }
 
-        Tasks.whenAllComplete(tasks).addOnCompleteListener {
-            totalSaldo = totalSaldoDebit - totalSaldoKredit
-            binding.txtTotal.text = "Rp $totalSaldo"
-            binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
-            binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
+        Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                tasks.forEach { t ->
+                    val documents = (t.result as QuerySnapshot).documents
+                    val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
+                    totalSaldo += saldo
+                    documents.forEach { document ->
+                        val debit = document.getLong("debit")?.toInt() ?: 0
+                        val kredit = document.getLong("kredit")?.toInt() ?: 0
+
+                        totalSaldoDebit += debit
+                        totalSaldoKredit += kredit
+                    }
+                }
+                binding.txtTotal.text = "Rp $totalSaldo"
+                binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
+                binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
+            }
         }
     }
 

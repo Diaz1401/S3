@@ -70,9 +70,7 @@ class DashboardFragment : Fragment() {
                     requireActivity().finish()
                     dialog.dismiss()
                 }
-                .setNegativeButton("Tidak") { dialog, _ ->
-                    dialog.dismiss()
-                }
+                .setNegativeButton("Tidak", null)
                 .create()
                 .show()
         }

@@ -1,5 +1,6 @@
 package com.siwiba.wba.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -144,10 +145,10 @@ class ProfilFragment : Fragment() {
                 .show()
         }
         binding.layoutLogOut.setOnClickListener {
-            androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            AlertDialog.Builder(requireContext())
                 .setTitle("Keluar")
                 .setMessage("Apakah anda yakin untuk keluar?")
-                .setPositiveButton("Yes") { dialog, _ ->
+                .setPositiveButton("Ya") { dialog, _ ->
                     val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val editor = sharedPref.edit()
                     editor.clear()
@@ -158,7 +159,7 @@ class ProfilFragment : Fragment() {
                     requireActivity().finish()
                     dialog.dismiss()
                 }
-                .setNegativeButton("No", null)
+                .setNegativeButton("Tidak", null)
                 .create()
                 .show()
         }

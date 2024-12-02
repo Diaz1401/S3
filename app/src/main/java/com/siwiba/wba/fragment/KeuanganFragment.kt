@@ -341,35 +341,29 @@ class KeuanganFragment : Fragment() {
         var totalSaldo = 0
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
-        val saldoArray = arrayOf("utama", "gaji", "bpjs", "kas", "logistik", "pajak", "pinjaman")
 
-        val tasks = saldoArray.map { saldo ->
-            firestore.collection("saldo")
-                .document(saldo)
-                .collection("data")
-                .orderBy("no", Query.Direction.DESCENDING)
-                .get()
-        }
+        firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
+            .orderBy("no", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
+                totalSaldo += saldo
+                documents.forEach { document ->
+                    val debit = document.getLong("debit")?.toInt() ?: 0
+                    val kredit = document.getLong("kredit")?.toInt() ?: 0
 
-        Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                tasks.forEach { t ->
-                    val documents = (t.result as QuerySnapshot).documents
-                    val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
-                    totalSaldo += saldo
-                    documents.forEach { document ->
-                        val debit = document.getLong("debit")?.toInt() ?: 0
-                        val kredit = document.getLong("kredit")?.toInt() ?: 0
-
-                        totalSaldoDebit += debit
-                        totalSaldoKredit += kredit
-                    }
+                    totalSaldoDebit += debit
+                    totalSaldoKredit += kredit
                 }
                 binding.txtTotal.text = "Rp $totalSaldo"
                 binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
                 binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
             }
-        }
+            .addOnFailureListener { exception ->
+                // Handle any errors
+            }
     }
 
     override fun onDestroyView() {

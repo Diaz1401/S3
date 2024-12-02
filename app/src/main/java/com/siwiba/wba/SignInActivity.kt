@@ -116,7 +116,29 @@ class SignInActivity : AppCompatActivity() {
         val provider = OAuthProvider.newBuilder("google.com")
         auth.startActivityForSignInWithProvider(this, provider.build())
             .addOnCompleteListener { task ->
-                handleSignInResult(task)
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.let {
+                        firestore.collection("users").document(it.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    handleSignInResult(task)
+                                } else {
+                                    Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
+                                    auth.signOut()
+                                    val intent = Intent(this, SignUpActivity::class.java)
+                                    intent.putExtra("completeSignUp", true)
+                                    intent.putExtra("user", user)
+                                    startActivity(intent)
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 

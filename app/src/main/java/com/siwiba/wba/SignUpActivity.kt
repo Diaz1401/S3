@@ -30,6 +30,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private var encodedImage: String? = null
+    private var completeSignUp: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +40,19 @@ class SignUpActivity : AppCompatActivity() {
         auth = Firebase.auth
         firestore = FirebaseFirestore.getInstance()
 
+        completeSignUp = intent.getBooleanExtra("completeSignUp", false)
+
+        if (completeSignUp) {
+            binding.txtTitle.text = "Lengkapi Profil"
+            binding.btnSignUp.text = "SIMPAN DATA"
+            binding.imgGoogle.visibility = View.GONE
+            binding.inputEmailSignUp.visibility = View.GONE
+            binding.inputPasswordSignUp.visibility = View.GONE
+            binding.inputConfirmPasswordSignUp.visibility = View.GONE
+            binding.txtOrSignUp.visibility = View.GONE
+            binding.layoutSignIn.visibility = View.GONE
+        }
+
         binding.layoutProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -46,23 +60,37 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.btnSignUp.setOnClickListener {
-            val name = binding.inputNameSignUp.text.toString()
-            val email = binding.inputEmailSignUp.text.toString()
-            val address = binding.inputAlamat.text.toString()
-            val password = binding.inputPasswordSignUp.text.toString()
-            val confirmPassword = binding.inputConfirmPasswordSignUp.text.toString()
+            if (completeSignUp) {
+                if (encodedImage == null) {
+                    Toast.makeText(this, "Atur foto profil", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (binding.inputNameSignUp.text.toString().isEmpty()) {
+                    Toast.makeText(this, "Masukan nama", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (binding.inputAlamat.text.toString().isEmpty()) {
+                    Toast.makeText(this, "Masukan alamat", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val user = intent.getParcelableExtra<FirebaseUser>("user")
+                saveUserData(user!!)
+            } else {
+                val name = binding.inputNameSignUp.text.toString()
+                val email = binding.inputEmailSignUp.text.toString()
+                val address = binding.inputAlamat.text.toString()
+                val password = binding.inputPasswordSignUp.text.toString()
+                val confirmPassword = binding.inputConfirmPasswordSignUp.text.toString()
 
-            if (isValidSignUpDetails(name, email, address, password, confirmPassword)) {
-                signUpWithEmail(email, password)
+                if (isValidSignUpDetails(name, email, address, password, confirmPassword)) {
+                    signUpWithEmail(email, password)
+                }
             }
+            finish()
         }
 
         binding.imgGoogle.setOnClickListener {
-            if (isProfileComplete()) {
-                signInWithGoogle()
-            } else {
-                Toast.makeText(this, "Masukan nama, alamat, dan foto profil terlebih dahulu.", Toast.LENGTH_SHORT).show()
-            }
+            signInWithGoogle()
         }
     }
 
@@ -93,7 +121,30 @@ class SignUpActivity : AppCompatActivity() {
         val provider = OAuthProvider.newBuilder("google.com")
         auth.startActivityForSignInWithProvider(this, provider.build())
             .addOnCompleteListener { task ->
-                handleSignInResult(task)
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.let {
+                        firestore.collection("users").document(it.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    handleSignInResult(task)
+                                } else {
+                                    Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
+                                    auth.signOut()
+                                    val intent = Intent(this, SignUpActivity::class.java)
+                                    intent.putExtra("completeSignUp", true)
+                                    intent.putExtra("user", user)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
@@ -181,11 +232,5 @@ class SignUpActivity : AppCompatActivity() {
             }
             else -> true
         }
-    }
-
-    private fun isProfileComplete(): Boolean {
-        val name = binding.inputNameSignUp.text.toString()
-        val address = binding.inputAlamat.text.toString()
-        return name.isNotEmpty() && address.isNotEmpty() && encodedImage != null
     }
 }

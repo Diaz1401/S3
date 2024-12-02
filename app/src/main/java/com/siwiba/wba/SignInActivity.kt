@@ -2,13 +2,18 @@ package com.siwiba.wba
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.MainActivity
 import com.siwiba.databinding.ActivitySignInBinding
@@ -17,17 +22,20 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var oneTapClient: SignInClient
+    private val REQ_ONE_TAP = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+    //        val user = auth.currentUser
+    //        if (user != null) {
+    //            val intent = Intent(this, MainActivity::class.java)
+    //            startActivity(intent)
+    //            finish()
+    //        }
+        oneTapClient = Identity.getSignInClient(this)
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -66,6 +74,50 @@ class SignInActivity : AppCompatActivity() {
                             Toast.makeText(this, "Gagal mengirim link reset password: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQ_ONE_TAP) {
+            try {
+                val credential = oneTapClient.getSignInCredentialFromIntent(data)
+                val idToken = credential.googleIdToken
+                if (idToken != null) {
+                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                    auth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                val user = auth.currentUser
+                                user?.let {
+                                    firestore.collection("users").document(it.uid).get()
+                                        .addOnSuccessListener { document ->
+                                            if (document.exists()) {
+                                                handleSignInResult(task)
+                                            } else {
+                                                Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
+                                                auth.signOut()
+                                                val intent = Intent(this, SignUpActivity::class.java)
+                                                intent.putExtra("completeSignUp", true)
+                                                intent.putExtra("user", user)
+                                                startActivity(intent)
+                                            }
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
+                            } else {
+                                Toast.makeText(this, "Sign in failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                } else {
+                    Toast.makeText(this, "No ID token!", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: ApiException) {
+                Toast.makeText(this, "Sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -113,32 +165,28 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun signInWithGoogle() {
-        val provider = OAuthProvider.newBuilder("google.com")
-        auth.startActivityForSignInWithProvider(this, provider.build())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    user?.let {
-                        firestore.collection("users").document(it.uid).get()
-                            .addOnSuccessListener { document ->
-                                if (document.exists()) {
-                                    handleSignInResult(task)
-                                } else {
-                                    Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
-                                    auth.signOut()
-                                    val intent = Intent(this, SignUpActivity::class.java)
-                                    intent.putExtra("completeSignUp", true)
-                                    intent.putExtra("user", user)
-                                    startActivity(intent)
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
-                            }
-                    }
-                } else {
-                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+        val signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId("998660010411-qpggmqtjfp8j6m9qs2m785lnlv2el9b3.apps.googleusercontent.com")
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
+            .build()
+
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener { result ->
+                try {
+                    startIntentSenderForResult(
+                        result.pendingIntent.intentSender, REQ_ONE_TAP, null, 0, 0, 0, null
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    Toast.makeText(this, "Failed to start sign in: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to start sign in: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -15,17 +15,6 @@
         android:layout_marginTop="@dimen/_18sdp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imglogOut"
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:background="@drawable/background_bulat_wba_dark"
-            android:scaleType="centerCrop"
-            android:src="@drawable/baseline_power_settings_new_24"
-            app:riv_oval="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +23,9 @@
             android:textColor="@color/colorGreyDark"
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginEnd="@dimen/_18sdp"
-            app:layout_constraintStart_toEndOf="@id/imglogOut"
-            app:layout_constraintEnd_toStartOf="@id/imgLogo"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgLogo"

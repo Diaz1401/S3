@@ -16,12 +16,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/btnBack"
+            android:id="@+id/btnBackToHome"
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
             android:background="@drawable/background_bulat_wba_dark"
             android:scaleType="centerCrop"
-            android:src="@drawable/baseline_arrow_back_24_white"
+            android:src="@drawable/ic_dashboard_wba_light"
+            android:paddingBottom="@dimen/_3sdp"
             app:riv_oval="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -34,8 +35,8 @@
             android:textColor="@color/colorGreyDark"
             android:layout_marginStart="@dimen/_18sdp"
             android:layout_marginEnd="@dimen/_18sdp"
-            app:layout_constraintStart_toEndOf="@id/btnBack"
-            app:layout_constraintEnd_toStartOf="@id/imgLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -52,9 +52,6 @@ class BpjsActivity : AppCompatActivity() {
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
 
-        // Load profile picture from SharedPreferences
-        loadProfilePicture()
-
         // Set editor
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
@@ -117,6 +114,9 @@ class BpjsActivity : AppCompatActivity() {
                     }
                 }
                 .show()
+        }
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 
@@ -356,15 +356,6 @@ class BpjsActivity : AppCompatActivity() {
                 binding.txtDebit.text = "Total Debit Rp $totalSaldoDebit"
                 binding.txtKredit.text = "Total Kredit Rp $totalSaldoKredit"
             }
-        }
-    }
-
-    private fun loadProfilePicture() {
-        val profileImage = sharedPreferences.getString("profileImage", null)
-        if (profileImage != null) {
-            val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-            binding.imgProfile.setImageBitmap(bitmap)
         }
     }
 

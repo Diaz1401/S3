@@ -54,26 +54,6 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         displayUserData()
         setupSpinners()
-
-        binding.imglogOut.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Log Out")
-                .setMessage("Apakah anda yakin untuk logout?")
-                .setPositiveButton("Ya") { dialog, _ ->
-                    val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                    val editor = sharedPref.edit()
-                    editor.clear()
-                    editor.apply()
-                    auth.signOut()
-                    val intent = Intent(requireContext(), SignInActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                    dialog.dismiss()
-                }
-                .setNegativeButton("Tidak", null)
-                .create()
-                .show()
-        }
     }
 
     private fun displayUserData() {

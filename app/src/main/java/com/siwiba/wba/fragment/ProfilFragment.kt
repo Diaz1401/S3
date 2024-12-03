@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.siwiba.R
 import com.siwiba.databinding.FragmentProfilBinding
 import com.siwiba.wba.SignInActivity
 import com.siwiba.wba.activity.AboutActivity
@@ -114,9 +115,6 @@ class ProfilFragment : Fragment() {
             clipboard.setPrimaryClip(clip)
             Toast.makeText(requireContext(), "UID copied to clipboard", Toast.LENGTH_SHORT).show()
         }
-        binding.btnBack.setOnClickListener {
-            requireActivity().finish()
-        }
         binding.layoutResetPassword.setOnClickListener {
             androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle("Atur ulang kata sandi.")
@@ -167,6 +165,13 @@ class ProfilFragment : Fragment() {
             // Intent to AboutActivity
             val intent = Intent(requireContext(), AboutActivity::class.java)
             startActivity(intent)
+        }
+        binding.btnBackToHome.setOnClickListener {
+            // Navigate back to the dashboard fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, DashboardFragment())
+                .addToBackStack(null)
+                .commit()
         }
         return binding.root
     }

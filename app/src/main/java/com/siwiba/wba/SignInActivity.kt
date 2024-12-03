@@ -196,9 +196,6 @@ class SignInActivity : AppCompatActivity() {
             user?.let {
                 getUserData(it.uid)
                 Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
             }
         } else {
             Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()

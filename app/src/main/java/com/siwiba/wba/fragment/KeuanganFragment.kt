@@ -145,8 +145,13 @@ class KeuanganFragment : Fragment() {
                 }
                 .show()
         }
-
-        loadProfilePicture()
+        binding.btnBackToHome.setOnClickListener {
+            // Navigate back to the dashboard fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, DashboardFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     companion object {
@@ -276,15 +281,6 @@ class KeuanganFragment : Fragment() {
             }
     }
 
-    private fun loadProfilePicture() {
-        val profilePicture = sharedPreferences.getString("profileImage", null)
-        if (profilePicture != null) {
-            val decodedString = Base64.decode(profilePicture, Base64.DEFAULT)
-            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-            binding.imgProfile.setImageBitmap(decodedByte)
-        }
-    }
-
     private fun fetchSaldoData() {
         firestore.collection("saldo")
             .document(whichSaldo)
@@ -308,6 +304,7 @@ class KeuanganFragment : Fragment() {
         columns.add(Column("keterangan", "Keterangan"))
         columns.add(Column("debit", "Debit"))
         columns.add(Column("kredit", "Kredit"))
+        columns.add(Column("saldo", "Saldo"))
         columns.add(Column("editor", "Editor"))
         columns.add(Column("tanggal", "Tanggal"))
 
@@ -328,6 +325,7 @@ class KeuanganFragment : Fragment() {
                 intent.putExtra("keterangan", saldoClicked.keterangan)
                 intent.putExtra("debit", saldoClicked.debit)
                 intent.putExtra("kredit", saldoClicked.kredit)
+                intent.putExtra("saldo", saldoClicked.saldo)
                 intent.putExtra("editor", saldoClicked.editor)
                 intent.putExtra("tanggal", saldoClicked.tanggal)
                 startActivity(intent)

@@ -1,7 +1,6 @@
 package com.siwiba.wba
 
 import android.content.Intent
-import android.content.IntentSender
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -14,15 +13,10 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -37,8 +31,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private var encodedImage: String? = null
     private var completeSignUp: Boolean = false
-    private lateinit var oneTapClient: SignInClient
-    private val REQ_ONE_TAP = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +39,6 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         firestore = FirebaseFirestore.getInstance()
-        oneTapClient = Identity.getSignInClient(this)
 
         completeSignUp = intent.getBooleanExtra("completeSignUp", false)
 
@@ -103,51 +94,6 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQ_ONE_TAP) {
-            try {
-                val credential = oneTapClient.getSignInCredentialFromIntent(data)
-                val idToken = credential.googleIdToken
-                if (idToken != null) {
-                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                    auth.signInWithCredential(firebaseCredential)
-                        .addOnCompleteListener(this) { task ->
-                            if (task.isSuccessful) {
-                                val user = auth.currentUser
-                                user?.let {
-                                    firestore.collection("users").document(it.uid).get()
-                                        .addOnSuccessListener { document ->
-                                            if (document.exists()) {
-                                                handleSignInResult(task)
-                                            } else {
-                                                Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
-                                                auth.signOut()
-                                                val intent = Intent(this, SignUpActivity::class.java)
-                                                intent.putExtra("completeSignUp", true)
-                                                intent.putExtra("user", user)
-                                                startActivity(intent)
-                                                finish()
-                                            }
-                                        }
-                                        .addOnFailureListener { exception ->
-                                            Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
-                                        }
-                                }
-                            } else {
-                                Toast.makeText(this, "Sign in failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                } else {
-                    Toast.makeText(this, "No ID token!", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: ApiException) {
-                Toast.makeText(this, "Sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun signUpWithEmail(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -172,28 +118,33 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signInWithGoogle() {
-        val signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId("998660010411-qpggmqtjfp8j6m9qs2m785lnlv2el9b3.apps.googleusercontent.com")
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
-            .build()
-
-        oneTapClient.beginSignIn(signInRequest)
-            .addOnSuccessListener { result ->
-                try {
-                    startIntentSenderForResult(
-                        result.pendingIntent.intentSender, REQ_ONE_TAP, null, 0, 0, 0, null
-                    )
-                } catch (e: IntentSender.SendIntentException) {
-                    Toast.makeText(this, "Failed to start sign in: ${e.message}", Toast.LENGTH_SHORT).show()
+        val provider = OAuthProvider.newBuilder("google.com")
+        auth.startActivityForSignInWithProvider(this, provider.build())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.let {
+                        firestore.collection("users").document(it.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    handleSignInResult(task)
+                                } else {
+                                    Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
+                                    auth.signOut()
+                                    val intent = Intent(this, SignUpActivity::class.java)
+                                    intent.putExtra("completeSignUp", true)
+                                    intent.putExtra("user", user)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                } else {
+                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to start sign in: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -34,7 +34,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_60sdp"
         android:layout_marginLeft="@dimen/_12sdp"
         android:layout_marginRight="@dimen/_12sdp"
@@ -61,12 +60,11 @@
                 android:gravity="center" />
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/cbMakeAdmin"
-            android:layout_marginHorizontal="@dimen/_12sdp"
+        <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_24sdp"
-            android:text="Admin" />
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerJabatan"
+            android:background="@drawable/outline" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/layoutShowOptions"

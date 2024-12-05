@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.siwiba" />
-                  <option name="mobileSdkAppId" value="1:998660010411:android:e6d2913ce69630a2abe2ee" />
-                  <option name="projectId" value="siwiba-3402c" />
-                  <option name="projectNumber" value="998660010411" />
+                  <option name="mobileSdkAppId" value="1:1018466602793:android:383b1709c947b30f71b138" />
+                  <option name="projectId" value="sistem-informasi-pt-wba" />
+                  <option name="projectNumber" value="1018466602793" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

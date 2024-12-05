@@ -107,28 +107,27 @@ class SignInActivity : AppCompatActivity() {
 
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { document ->
-                if (document != null) {
-                    val name = document.getString("name")
-                    val email = document.getString("email")
-                    val address = document.getString("address")
-                    val profileImage = document.getString("profileImage")
-                    val isAdmin = document.getBoolean("isAdmin") ?: false
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val address = document.getString("address") ?: ""
+                val profileImage = document.getString("profileImage") ?: ""
+                val isAdmin = document.getBoolean("isAdmin") ?: false
+                val jabatan = document.getLong("jabatan")?.toInt() ?: 0
 
-                    with(sharedPref.edit()) {
-                        putString("name", name)
-                        putString("email", email)
-                        putString("address", address)
-                        putString("profileImage", profileImage)
-                        putBoolean("isAdmin", isAdmin)
-                        apply()
-                    }
-                    // Start MainActivity after successfully getting user data
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(this, "Data pengguna tidak ditemukan", Toast.LENGTH_SHORT).show()
+                with(sharedPref.edit()) {
+                    putString("name", name)
+                    putString("email", email)
+                    putString("address", address)
+                    putString("profileImage", profileImage)
+                    putInt("jabatan", jabatan)
+                    putBoolean("isAdmin", isAdmin)
+                    apply()
                 }
+
+                // Start MainActivity after successfully getting user data
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Gagal mengambil data pengguna: ${exception.message}", Toast.LENGTH_SHORT).show()

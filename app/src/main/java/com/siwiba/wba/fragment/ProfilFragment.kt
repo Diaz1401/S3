@@ -42,6 +42,10 @@ class ProfilFragment : Fragment() {
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         _binding = FragmentProfilBinding.inflate(inflater, container, false)
+        val isAdmin = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getBoolean("isAdmin", false)
+        if (isAdmin) {
+            binding.layoutManageAkun.visibility = View.VISIBLE
+        }
         binding.imgEdit.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

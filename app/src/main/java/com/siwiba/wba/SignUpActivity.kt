@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Patterns
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -24,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 import com.siwiba.databinding.ActivitySignUpBinding
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
+import android.widget.AdapterView
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -45,12 +47,9 @@ class SignUpActivity : AppCompatActivity() {
         if (completeSignUp) {
             binding.txtTitle.text = "Lengkapi Profil"
             binding.btnSignUp.text = "SIMPAN DATA"
-//            binding.imgGoogle.visibility = View.GONE
             binding.inputEmailSignUp.visibility = View.GONE
             binding.inputPasswordSignUp.visibility = View.GONE
             binding.inputConfirmPasswordSignUp.visibility = View.GONE
-//            binding.txtOrSignUp.visibility = View.GONE
-//            binding.layoutSignIn.visibility = View.GONE
         }
 
         binding.layoutProfile.setOnClickListener {
@@ -77,16 +76,37 @@ class SignUpActivity : AppCompatActivity() {
                 saveUserData(user!!)
             } else {
                 val name = binding.inputNameSignUp.text.toString()
+                val jabatan = binding.spinnerJabatan.selectedItemPosition
                 val email = binding.inputEmailSignUp.text.toString()
                 val address = binding.inputAlamat.text.toString()
                 val password = binding.inputPasswordSignUp.text.toString()
                 val confirmPassword = binding.inputConfirmPasswordSignUp.text.toString()
 
-                if (isValidSignUpDetails(name, email, address, password, confirmPassword)) {
+                if (isValidSignUpDetails(name, email, jabatan, address, password, confirmPassword)) {
                     signUpWithEmail(email, password)
                 }
             }
             finish()
+        }
+
+        // Set up the Spinner with the options
+        val jabatanArray = arrayOf("Jabatan", "Direktur", "Direktur Operasional", "General Manager", "Karyawan")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, jabatanArray)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerJabatan.adapter = adapter
+
+        binding.spinnerJabatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // Display the selected item text on text view
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                if (selectedItem == "Jabatan") {
+                    Toast.makeText(this@SignUpActivity, "Pilih jabatan terlebih dahulu", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
         }
     }
 
@@ -160,6 +180,8 @@ class SignUpActivity : AppCompatActivity() {
     private fun saveUserData(user: FirebaseUser) {
         val userData = hashMapOf(
             "name" to binding.inputNameSignUp.text.toString(),
+            "jabatan" to binding.spinnerJabatan.selectedItemPosition,
+            "isAdmin" to (binding.spinnerJabatan.selectedItemPosition < 4),
             "email" to user.email,
             "address" to binding.inputAlamat.text.toString(),
             "profileImage" to encodedImage,
@@ -205,10 +227,14 @@ class SignUpActivity : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
-    private fun isValidSignUpDetails(name: String, email: String, address: String, password: String, confirmPassword: String): Boolean {
+    private fun isValidSignUpDetails(name: String, email: String, jabatan: Int, address: String, password: String, confirmPassword: String): Boolean {
         return when {
             name.isEmpty() -> {
                 Toast.makeText(this, "Masukan nama", Toast.LENGTH_SHORT).show()
+                false
+            }
+            jabatan == 0 -> {
+                Toast.makeText(this, "Pilih jabatan terlebih dahulu", Toast.LENGTH_SHORT).show()
                 false
             }
             email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
@@ -227,6 +253,7 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
                 false
             }
+
             else -> true
         }
     }

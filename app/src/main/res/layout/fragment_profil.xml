@@ -250,6 +250,7 @@
             android:id="@+id/layoutManageAkun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:gravity="center"
             android:clickable="true"
             android:focusable="true"
@@ -301,11 +302,13 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginStart="@dimen/_36sdp"
                 android:hint="Password"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:id="@+id/inputPassword"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_36sdp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/colorGreyLighter"
                     android:imeOptions="actionDone"
@@ -322,27 +325,31 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginStart="@dimen/_36sdp"
                 android:hint="Confirm Password"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
                     android:id="@+id/inputConfirmPassword"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/colorGreyLighter"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:background="@drawable/outline"
+                    android:fontFamily="monospace"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:paddingStart="@dimen/_18sdp"
                     android:paddingEnd="@dimen/_18sdp"
-                    android:textSize="@dimen/_12ssp"
-                    android:fontFamily="monospace"
-                    android:background="@drawable/outline" />
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/colorGreyLighter"
+                    android:textSize="@dimen/_12ssp" />
             </com.google.android.material.textfield.TextInputLayout>
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSimpanPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginStart="@dimen/_36sdp"
+                app:cornerRadius="@dimen/_6sdp"
                 android:text="Simpan Password"/>
         </LinearLayout>
         <LinearLayout

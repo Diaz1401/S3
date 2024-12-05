@@ -11,6 +11,9 @@ import com.siwiba.R
 import com.siwiba.wba.model.Account
 import android.app.AlertDialog
 import android.content.Context
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.EmailAuthProvider
@@ -21,6 +24,7 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
     RecyclerView.Adapter<AccountAdapter.AccountViewHolder>() {
 
     private var filteredAccounts: List<Account> = accounts
+    private var setup = true
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
@@ -36,7 +40,7 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
         val layoutOptions: LinearLayout = itemView.findViewById(R.id.layoutOptions)
         val layoutShowOptions: LinearLayout = itemView.findViewById(R.id.layoutShowOptions)
         val layoutDelete: LinearLayout = itemView.findViewById(R.id.layoutDelete)
-        val cbMakeAdmin: CheckBox = itemView.findViewById(R.id.cbMakeAdmin)
+        val spinnerJabatan: Spinner = itemView.findViewById(R.id.spinnerJabatan)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
@@ -47,9 +51,18 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
     override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
         val account = filteredAccounts[position]
         val context = holder.itemView.context
+
+        // Setup the spinner
+        val jabatanArray = arrayOf("Direktur", "Direktur Operasional", "General Manager", "Karyawan")
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, jabatanArray)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        holder.spinnerJabatan.onItemSelectedListener = null
+        holder.spinnerJabatan.setSelection(account.jabatan - 1)
+        holder.spinnerJabatan.adapter = adapter
         holder.txtName.text = account.name
         holder.txtEmail.text = account.email
-        holder.cbMakeAdmin.isChecked = account.isAdmin
+
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
@@ -99,30 +112,39 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
                 .show()
         }
 
-        holder.cbMakeAdmin.setOnCheckedChangeListener { _, isChecked ->
-            listener.onMakeAdminClick(account)
-            AlertDialog.Builder(context)
-                .setTitle("Update Admin Status")
-                .setMessage("Are you sure you want to update the admin status?")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    account.isAdmin = isChecked
-                    holder.itemView.post {
-                        notifyItemChanged(position)
+        holder.spinnerJabatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (setup) {
+                    setup = false
+                    return
+                }
+                listener.onMakeAdminClick(account)
+                AlertDialog.Builder(context)
+                    .setTitle("Ubah Jabatan")
+                    .setMessage("Apakah anda yakin ingin mengubah jabatan?")
+                    .setPositiveButton("Ya") { dialog, _ ->
+                        account.jabatan = position + 1
+                        holder.itemView.post {
+                            notifyItemChanged(position)
+                        }
+                        firestore.collection("users").document(account.id).update("jabatan", position + 1)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Berhasil mengubah jabatan", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(context, "Gagal mengubah jabatan: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        dialog.dismiss()
                     }
-                    firestore.collection("users").document(account.id).update("isAdmin", isChecked)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Berhasil mengubah status admin", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { exception ->
-                            Toast.makeText(context, "Gagal mengubah status admin: ${exception.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    dialog.dismiss()
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
         }
     }
 

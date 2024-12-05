@@ -26,25 +26,34 @@
             android:src="@drawable/logowba"
             android:contentDescription="Logo"/>
 
-        <EditText
-            android:id="@+id/inputEmailSignIn"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:background="@drawable/outline"
+            android:layout_marginTop="@dimen/_12sdp"
             android:hint="Email"
-            android:imeOptions="actionNext"
-            android:inputType="textEmailAddress"
-            android:paddingStart="@dimen/_18sdp"
-            android:paddingEnd="@dimen/_18sdp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/colorGreyLighter"
-            android:textSize="@dimen/_12ssp" />
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/inputEmailSignIn"
+                android:layout_height="@dimen/_36sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGreyLighter"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/_18sdp"
+                android:paddingEnd="@dimen/_18sdp"
+                android:textSize="@dimen/_12ssp"
+                android:focusable="true"
+                android:background="@drawable/outline" />
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:hint="Password"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:endIconMode="password_toggle">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

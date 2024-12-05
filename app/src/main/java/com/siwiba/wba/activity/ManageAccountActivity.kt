@@ -59,9 +59,10 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
                     val account = Account(
                         id = document.id,
                         name = document.getString("name") ?: "",
+                        jabatan = document.getLong("jabatan")?.toInt() ?: 0,
+                        isAdmin = document.getBoolean("isAdmin") ?: false,
                         email = document.getString("email") ?: "",
-                        password = document.getString("password") ?: "",
-                        isAdmin = document.getBoolean("isAdmin") ?: false
+                        password = document.getString("password") ?: ""
                     )
                     accounts.add(account)
                 }

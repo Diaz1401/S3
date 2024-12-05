@@ -7,7 +7,10 @@ plugins {
 android {
     signingConfigs {
         create("release") {
-            storeFile = file("C:\\Users\\Diaz\\Documents\\release.jks")
+            storeFile = file("C:\\Users\\ASUS\\Downloads\\release.jks")
+            storePassword = "siwiba"
+            keyAlias = "release"
+            keyPassword = "siwiba"
         }
     }
     namespace = "com.siwiba"
@@ -21,7 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig = signingConfigs.getByName("release")
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {

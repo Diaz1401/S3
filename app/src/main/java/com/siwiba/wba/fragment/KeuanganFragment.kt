@@ -33,6 +33,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import com.google.firebase.firestore.QuerySnapshot
 import com.siwiba.R
+import java.text.DecimalFormat
 
 class KeuanganFragment : Fragment() {
 
@@ -42,6 +43,7 @@ class KeuanganFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val whichSaldo = "utama"
     private var editor: String = ""
+    private val decimalFormat = DecimalFormat("#,###")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -334,8 +336,6 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun calculateTotalSaldo() {
-        val binding = _binding ?: return // Ensure binding is not null
-
         var totalSaldo = 0
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
@@ -346,21 +346,21 @@ class KeuanganFragment : Fragment() {
             .orderBy("no", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
-                totalSaldo += saldo
-                documents.forEach { document ->
+                for (document in documents) {
                     val debit = document.getLong("debit")?.toInt() ?: 0
                     val kredit = document.getLong("kredit")?.toInt() ?: 0
-
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit
+                    totalSaldo += debit - kredit
                 }
-                binding.txtTotal.text = "Rp $totalSaldo"
-                binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
-                binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
+
+                // Set formatted total, debit, kredit with "Rp" in front
+                binding.txtTotal.text = "Rp ${decimalFormat.format(totalSaldo)}"
+                binding.txtTotalDebit.text = "Rp ${decimalFormat.format(totalSaldoDebit)}"
+                binding.txtTotalKredit.text = "Rp ${decimalFormat.format(totalSaldoKredit)}"
             }
             .addOnFailureListener { exception ->
-                // Handle any errors
+                // Handle failure
             }
     }
 

@@ -188,6 +188,8 @@ class ManageAdminActivity : AppCompatActivity() {
         val tanggal = intent.getStringExtra("tanggal")
         binding.etKeterangan.setText(keterangan)
         // disable kredit, debit and tanggal
+
+
         binding.etKredit.setText(kredit.toString())
         binding.etKredit.isEnabled = false
         binding.etDebit.setText(debit.toString())

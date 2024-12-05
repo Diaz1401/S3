@@ -34,6 +34,7 @@ import com.siwiba.wba.fragment.KeuanganFragment
 import com.siwiba.wba.fragment.KeuanganFragment.Companion
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 class GajiActivity : AppCompatActivity() {
@@ -44,6 +45,7 @@ class GajiActivity : AppCompatActivity() {
     private val whichSaldo = "gaji"
     private lateinit var sharedPreferences: SharedPreferences
     private var editor: String = ""
+    private val decimalFormat = DecimalFormat("#,###")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -338,29 +340,28 @@ class GajiActivity : AppCompatActivity() {
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
 
-        val tasks =  firestore.collection("saldo")
+        firestore.collection("saldo")
             .document(whichSaldo)
             .collection("data")
             .orderBy("no", Query.Direction.DESCENDING)
             .get()
-
-        Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val documents = task.result?.map { it.result as QuerySnapshot }?.flatMap { it.documents } ?: emptyList()
-                val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
-                totalSaldo += saldo
-                documents.forEach { document ->
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
                     val debit = document.getLong("debit")?.toInt() ?: 0
                     val kredit = document.getLong("kredit")?.toInt() ?: 0
-
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit
+                    totalSaldo += debit - kredit
                 }
-                binding.txtTotal.text = "Rp $totalSaldo"
-                binding.txtDebit.text = "Total Debit Rp $totalSaldoDebit"
-                binding.txtKredit.text = "Total Kredit Rp $totalSaldoKredit"
+
+                // Set formatted total, debit, kredit with "Rp" in front
+                binding.txtTotal.text = "Rp ${decimalFormat.format(totalSaldo)}"
+                binding.txtDebit.text = "Rp ${decimalFormat.format(totalSaldoDebit)}"
+                binding.txtKredit.text = "Rp ${decimalFormat.format(totalSaldoKredit)}"
             }
-        }
+            .addOnFailureListener { exception ->
+                // Handle failure
+            }
     }
 
     override fun onResume() {

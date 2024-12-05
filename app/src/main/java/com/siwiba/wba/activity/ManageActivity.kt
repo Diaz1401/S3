@@ -11,8 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.siwiba.databinding.ActivityManageBinding
 import com.siwiba.wba.model.Saldo
-import java.util.Calendar
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class ManageActivity : AppCompatActivity() {
@@ -20,7 +20,6 @@ class ManageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManageBinding
     private lateinit var firestore: FirebaseFirestore
     private var mode: Int = 0
-    private val debit: Int = 0
     private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,10 +75,21 @@ class ManageActivity : AppCompatActivity() {
         binding.ivTanggal.setOnClickListener {
             datePickerDialog.show()
         }
+
         if (isAdmin) {
             binding.etDebit.visibility = View.VISIBLE
         } else {
             binding.etDebit.visibility = View.GONE
+        }
+
+        // Tombol Delete hanya muncul di mode Update
+        if (mode == 2) {
+            binding.btnDelete.visibility = View.VISIBLE
+            binding.btnDelete.setOnClickListener {
+                showDeleteConfirmationDialog(saldo)
+            }
+        } else {
+            binding.btnDelete.visibility = View.GONE
         }
     }
 
@@ -103,7 +113,11 @@ class ManageActivity : AppCompatActivity() {
                             lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
                         }
                         if (debit > lastSaldoUtama) {
-                            Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "Penambahan debit tidak boleh lebih besar dari saldo utama",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         } else {
                             firestore.collection("saldo")
                                 .document(whichSaldo)
@@ -120,7 +134,11 @@ class ManageActivity : AppCompatActivity() {
                                         newNo++
                                     }
                                     if (kredit > lastSaldo) {
-                                        Toast.makeText(this, "Kredit tidak boleh lebih besar dari saldo $whichSaldo", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this,
+                                            "Kredit tidak boleh lebih besar dari saldo $whichSaldo",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     } else {
                                         val keterangan = binding.etKeterangan.text.toString()
                                         val tanggal = binding.etTanggal.text.toString()
@@ -148,64 +166,7 @@ class ManageActivity : AppCompatActivity() {
                                                     "Sukses menambahkan data pada saldo $whichSaldo",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
-                                                if (debit > 0) {
-                                                    // reduce latest saldo utama based on debit addition
-                                                    firestore.collection("saldo")
-                                                        .document("utama")
-                                                        .collection("data")
-                                                        .orderBy("no", Query.Direction.DESCENDING)
-                                                        .limit(1)
-                                                        .get()
-                                                        .addOnSuccessListener { document ->
-                                                            lastSaldoUtama = 0
-                                                            newNo = 1
-                                                            val kreditSaldoUtama = debit
-                                                            if (!document.isEmpty) {
-                                                                lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
-                                                                newNo = document.documents[0].getLong("no")?.toInt() ?: 1
-                                                                newNo++
-                                                            }
-                                                            val newSaldoUtama = lastSaldoUtama - kreditSaldoUtama
-                                                            val dataUtama = mapOf(
-                                                                "no" to newNo,
-                                                                "keterangan" to "Kredit saldo utama ke saldo $whichSaldo",
-                                                                "debit" to 0,
-                                                                "kredit" to kreditSaldoUtama,
-                                                                "saldo" to newSaldoUtama,
-                                                                "editor" to editor,
-                                                                "tanggal" to tanggal
-                                                            )
-                                                            firestore.collection("saldo")
-                                                                .document("utama")
-                                                                .collection("data")
-                                                                .document(newNo.toString())
-                                                                .set(dataUtama)
-                                                                .addOnSuccessListener {
-                                                                    Toast.makeText(
-                                                                        this,
-                                                                        "Sukses mengurangi saldo utama",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
-                                                                    finish()
-                                                                }
-                                                                .addOnFailureListener {
-                                                                    Toast.makeText(
-                                                                        this,
-                                                                        "Gagal mengurangi saldo utama",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
-                                                                }
-                                                        }
-                                                        .addOnFailureListener {
-                                                            Toast.makeText(
-                                                                this,
-                                                                "Gagal mengambil saldo utama terakhir",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
-                                                        }
-                                                } else {
-                                                    finish()
-                                                }
+                                                finish()
                                             }
                                             .addOnFailureListener {
                                                 Toast.makeText(
@@ -216,17 +177,7 @@ class ManageActivity : AppCompatActivity() {
                                             }
                                     }
                                 }
-                                .addOnFailureListener {
-                                    Toast.makeText(
-                                        this,
-                                        "Gagal mengambil saldo $whichSaldo terakhir",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
                         }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Gagal mengambil saldo utama terakhir", Toast.LENGTH_SHORT).show()
                     }
             }
         }
@@ -234,67 +185,40 @@ class ManageActivity : AppCompatActivity() {
 
     private fun setupUpdateMode(whichSaldo: String) {
         binding.btnSave.setOnClickListener {
-            if (checkInput()) {
-                val no = intent.getIntExtra("no", 0)
-                val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
-                val kredit = intent.getIntExtra("kredit", 0)
-                val debit = intent.getIntExtra("debit", 0)
-                val saldo = intent.getIntExtra("saldo", 0)
-                val tanggal = intent.getStringExtra("tanggal") ?: ""
-
-                val newKeterangan = binding.etKeterangan.text.toString()
-                val newEditor = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                    .getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
-
-                val editorToSave = if (editor != newEditor) "$editor, $newEditor" else editor
-
-                if (newKeterangan.isEmpty()) {
-                    Toast.makeText(this, "Lengkapi kolom keterangan", Toast.LENGTH_SHORT).show()
-                } else {
-                    val data = mapOf(
-                        "no" to no,
-                        "keterangan" to newKeterangan,
-                        "debit" to debit,
-                        "kredit" to kredit,
-                        "saldo" to saldo,
-                        "editor" to editorToSave,
-                        "tanggal" to tanggal
-                    )
-
-                    firestore.collection("saldo")
-                        .document(whichSaldo)
-                        .collection("data")
-                        .document(no.toString())
-                        .set(data)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Sukses memperbarui data", Toast.LENGTH_SHORT).show()
-                            finish()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Gagal memperbarui data", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
+            // Logika update
         }
     }
 
-    private fun checkInput(): Boolean {
-        if (isAdmin) {
-            if (binding.etDebit.text.isEmpty()) {
-                Toast.makeText(this, "Lengkapi kolom debit", Toast.LENGTH_SHORT).show()
-                return false
+    private fun showDeleteConfirmationDialog(whichSaldo: String) {
+        val no = intent.getIntExtra("no", 0)
+        AlertDialog.Builder(this)
+            .setTitle("Konfirmasi Hapus")
+            .setMessage("Apakah Anda yakin ingin menghapus data ini?")
+            .setPositiveButton("Ya") { _, _ ->
+                deleteData(whichSaldo, no)
             }
-        }
+            .setNegativeButton("Tidak", null)
+            .show()
+    }
+
+    private fun deleteData(whichSaldo: String, no: Int) {
+        firestore.collection("saldo")
+            .document(whichSaldo)
+            .collection("data")
+            .document(no.toString())
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Data berhasil dihapus", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Gagal menghapus data", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun checkInput(): Boolean {
         if (binding.etKredit.text.isEmpty()) {
             Toast.makeText(this, "Lengkapi kolom kredit", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.etKeterangan.text.isEmpty()) {
-            Toast.makeText(this, "Lengkapi kolom keterangan", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (binding.etTanggal.text.isEmpty()) {
-            Toast.makeText(this, "Lengkapi kolom tanggal", Toast.LENGTH_SHORT).show()
             return false
         }
         return true
@@ -303,13 +227,8 @@ class ManageActivity : AppCompatActivity() {
     private fun loadData() {
         val keterangan = intent.getStringExtra("keterangan")
         val kredit = intent.getIntExtra("kredit", 0)
-        val tanggal = intent.getStringExtra("tanggal")
         binding.etKeterangan.setText(keterangan)
-        // disable kredit and tanggal
         binding.etKredit.setText(kredit.toString())
         binding.etKredit.isEnabled = false
-        binding.etTanggal.setText(tanggal)
-        binding.etTanggal.isEnabled = false
-        binding.ivTanggal.isEnabled = false
     }
 }

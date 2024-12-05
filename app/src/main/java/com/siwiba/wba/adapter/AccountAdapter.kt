@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.siwiba.R
 import com.siwiba.wba.model.Account
@@ -15,8 +14,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -24,9 +21,10 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
     RecyclerView.Adapter<AccountAdapter.AccountViewHolder>() {
 
     private var filteredAccounts: List<Account> = accounts
-    private var setup = true
+    private var isLoading = false
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private var isCancel = false
 
     interface OnAccountClickListener {
         fun onEditClick(account: Account)
@@ -56,10 +54,10 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
         val jabatanArray = arrayOf("Direktur", "Direktur Operasional", "General Manager", "Karyawan")
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, jabatanArray)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        holder.spinnerJabatan.onItemSelectedListener = null
-        holder.spinnerJabatan.setSelection(account.jabatan - 1)
         holder.spinnerJabatan.adapter = adapter
+
+        holder.spinnerJabatan.setSelection(account.jabatan - 1, false)
+
         holder.txtName.text = account.name
         holder.txtEmail.text = account.email
 
@@ -114,8 +112,8 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
 
         holder.spinnerJabatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (setup) {
-                    setup = false
+                if (isCancel) {
+                    isCancel = false
                     return
                 }
                 listener.onMakeAdminClick(account)
@@ -124,9 +122,6 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
                     .setMessage("Apakah anda yakin ingin mengubah jabatan?")
                     .setPositiveButton("Ya") { dialog, _ ->
                         account.jabatan = position + 1
-                        holder.itemView.post {
-                            notifyItemChanged(position)
-                        }
                         firestore.collection("users").document(account.id).update("jabatan", position + 1)
                             .addOnSuccessListener {
                                 Toast.makeText(context, "Berhasil mengubah jabatan", Toast.LENGTH_SHORT).show()
@@ -136,7 +131,9 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
                             }
                         dialog.dismiss()
                     }
-                    .setNegativeButton("No") { dialog, _ ->
+                    .setNegativeButton("Tidak") { dialog, _ ->
+                        isCancel = true
+                        holder.spinnerJabatan.setSelection(account.jabatan - 1, false)
                         dialog.dismiss()
                     }
                     .create()

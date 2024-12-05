@@ -84,4 +84,5 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
     override fun onMakeAdminClick(account: Account) {
         // Handle make admin
     }
+
 }

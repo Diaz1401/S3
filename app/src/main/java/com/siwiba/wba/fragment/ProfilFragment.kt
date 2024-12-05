@@ -23,6 +23,7 @@ import com.siwiba.R
 import com.siwiba.databinding.FragmentProfilBinding
 import com.siwiba.wba.SignInActivity
 import com.siwiba.wba.activity.AboutActivity
+import com.siwiba.wba.activity.ManageAccountActivity
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 
@@ -116,31 +117,7 @@ class ProfilFragment : Fragment() {
             Toast.makeText(requireContext(), "UID copied to clipboard", Toast.LENGTH_SHORT).show()
         }
         binding.layoutResetPassword.setOnClickListener {
-            androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Atur ulang kata sandi.")
-                .setMessage("Apakah anda yakin untuk mengatur ulang kata sandi akun ini?")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    auth.sendPasswordResetEmail(auth.currentUser?.email!!)
-                        .addOnSuccessListener {
-                            Toast.makeText(requireContext(), "Link atur ulang kata sandi terkirim!", Toast.LENGTH_SHORT).show()
-                            auth.signOut()
-                            val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                            val editor = sharedPref.edit()
-                            editor.clear()
-                            editor.apply()
-                            val intent = Intent(requireContext(), SignInActivity::class.java)
-                            startActivity(intent)
-                            requireActivity().finish()
-                            dialog.dismiss()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(requireContext(), "Link atur ulang kata sandi gagal terkirim!", Toast.LENGTH_SHORT).show()
-                            dialog.dismiss()
-                        }
-                }
-                .setNegativeButton("No", null)
-                .create()
-                .show()
+            binding.layoutPassword.visibility = if (binding.layoutPassword.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
         binding.layoutLogOut.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -172,6 +149,38 @@ class ProfilFragment : Fragment() {
                 .replace(R.id.fragment_container, DashboardFragment())
                 .addToBackStack(null)
                 .commit()
+        }
+        binding.layoutManageAkun.setOnClickListener {
+            // Navigate to ManageAccountActivity
+            val intent = Intent(requireContext(), ManageAccountActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnSimpanPassword.setOnClickListener {
+            val password = binding.inputPassword.text.toString()
+            val confirmPassword = binding.inputConfirmPassword.text.toString()
+            if (password != confirmPassword) {
+                Toast.makeText(requireContext(), "Password tidak cocok", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.currentUser?.updatePassword(password)
+                    ?.addOnSuccessListener {
+                        firestore.collection("users").document(auth.currentUser?.uid!!)
+                            .update("password", password)
+                            .addOnSuccessListener {
+                                Toast.makeText(requireContext(), "Password berhasil diubah", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Gagal mengubah password: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    ?.addOnFailureListener {
+                        Toast.makeText(requireContext(), "Gagal mengubah password: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            Toast.makeText(requireContext(), "Tolong masuk kembali", Toast.LENGTH_SHORT).show()
+            auth.signOut()
+            val intent = Intent(requireContext(), SignInActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
         }
         return binding.root
     }

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.SIWIBA"
         tools:targetApi="31">
         <activity
+            android:name=".wba.activity.ManageAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.activity.AboutActivity"
             android:exported="false" />
         <activity

@@ -45,12 +45,12 @@ class SignUpActivity : AppCompatActivity() {
         if (completeSignUp) {
             binding.txtTitle.text = "Lengkapi Profil"
             binding.btnSignUp.text = "SIMPAN DATA"
-            binding.imgGoogle.visibility = View.GONE
+//            binding.imgGoogle.visibility = View.GONE
             binding.inputEmailSignUp.visibility = View.GONE
             binding.inputPasswordSignUp.visibility = View.GONE
             binding.inputConfirmPasswordSignUp.visibility = View.GONE
-            binding.txtOrSignUp.visibility = View.GONE
-            binding.layoutSignIn.visibility = View.GONE
+//            binding.txtOrSignUp.visibility = View.GONE
+//            binding.layoutSignIn.visibility = View.GONE
         }
 
         binding.layoutProfile.setOnClickListener {
@@ -87,10 +87,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
             finish()
-        }
-
-        binding.imgGoogle.setOnClickListener {
-            signInWithGoogle()
         }
     }
 
@@ -167,6 +163,7 @@ class SignUpActivity : AppCompatActivity() {
             "email" to user.email,
             "address" to binding.inputAlamat.text.toString(),
             "profileImage" to encodedImage,
+            "password" to binding.inputPasswordSignUp.text.toString(),
             "isAdmin" to false
         )
 

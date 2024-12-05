@@ -42,32 +42,6 @@ class SignInActivity : AppCompatActivity() {
                 signIn()
             }
         }
-
-        binding.imgGoogle.setOnClickListener {
-            signInWithGoogle()
-        }
-
-        binding.txtSignUp.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.txtResetPassword.setOnClickListener {
-            val email = binding.inputEmailSignIn.text.toString()
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Masukan email", Toast.LENGTH_SHORT).show()
-                binding.inputEmailSignIn.requestFocus()
-            } else {
-                auth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, "Link reset password telah dikirim ke email", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Gagal mengirim link reset password: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-            }
-        }
     }
 
     private fun isValidSignInDetails(email: String, password: String): Boolean {
@@ -105,36 +79,6 @@ class SignInActivity : AppCompatActivity() {
                             Toast.makeText(this, "Verifikasi email terlebih dahulu", Toast.LENGTH_SHORT).show()
                             auth.signOut()
                         }
-                    }
-                } else {
-                    Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    private fun signInWithGoogle() {
-        val provider = OAuthProvider.newBuilder("google.com")
-        auth.startActivityForSignInWithProvider(this, provider.build())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    user?.let {
-                        firestore.collection("users").document(it.uid).get()
-                            .addOnSuccessListener { document ->
-                                if (document.exists()) {
-                                    handleSignInResult(task)
-                                } else {
-                                    Toast.makeText(this, "Lengkapi data terlebih dahulu", Toast.LENGTH_SHORT).show()
-                                    auth.signOut()
-                                    val intent = Intent(this, SignUpActivity::class.java)
-                                    intent.putExtra("completeSignUp", true)
-                                    intent.putExtra("user", user)
-                                    startActivity(intent)
-                                }
-                            }
-                            .addOnFailureListener { exception ->
-                                Toast.makeText(this, "Gagal memeriksa akun: ${exception.message}", Toast.LENGTH_SHORT).show()
-                            }
                     }
                 } else {
                     Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()

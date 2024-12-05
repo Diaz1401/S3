@@ -29,11 +29,13 @@
             android:id="@+id/layoutProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_18sdp">
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imgProfile"
                 android:layout_width="@dimen/_64sdp"
                 android:layout_height="@dimen/_64sdp"
+                android:layout_gravity="center"
                 android:background="@drawable/background_bulat_white"
                 android:scaleType="centerCrop"
                 app:riv_oval="true"/>
@@ -42,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Add image"
+                android:text="Atur Foto Profil"
                 android:textColor="@color/colorGreyDark"
                 android:textSize="@dimen/_12ssp"/>
         </FrameLayout>
@@ -53,7 +55,7 @@
             android:layout_marginTop="@dimen/_24sdp"
             android:textColor="@color/black"
             android:textColorHint="@color/colorGreyLighter"
-            android:hint="Name"
+            android:hint="Nama"
             android:imeOptions="actionNext"
             android:paddingStart="@dimen/_18sdp"
             android:paddingEnd="@dimen/_18sdp"
@@ -86,95 +88,55 @@
             android:paddingEnd="@dimen/_18sdp"
             android:textSize="@dimen/_12sdp"
             android:background="@drawable/outline" />
-        <EditText
-            android:id="@+id/inputPasswordSignUp"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/colorGreyLighter"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingStart="@dimen/_18sdp"
-            android:paddingEnd="@dimen/_18sdp"
-            android:textSize="@dimen/_12sdp"
-            android:fontFamily="monospace"
-            android:background="@drawable/outline" />
-        <EditText
-            android:id="@+id/inputConfirmPasswordSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/colorGreyLighter"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingStart="@dimen/_18sdp"
-            android:paddingEnd="@dimen/_18sdp"
-            android:textSize="@dimen/_12sdp"
-            android:fontFamily="monospace"
-            android:background="@drawable/outline" />
-        <TextView
-            android:id="@+id/txtOrSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Atau Sign Up dengan"
-            android:textAlignment="center"
-            android:textColor="@color/colorGreyLighter"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center_horizontal"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/layoutSocial"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="horizontal">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imgGoogle"
-                android:layout_width="@dimen/_36sdp"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/inputPasswordSignUp"
                 android:layout_height="@dimen/_36sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:src="@drawable/logo_google"
-                android:scaleType="centerCrop"
-                android:clickable="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGreyLighter"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/_18sdp"
+                android:paddingEnd="@dimen/_18sdp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="monospace"
                 android:focusable="true"
-                app:riv_oval="true"/>
-        </LinearLayout>
-
+                android:background="@drawable/outline" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:hint="Password"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/inputConfirmPasswordSignUp"
+                android:layout_height="@dimen/_36sdp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGreyLighter"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/_18sdp"
+                android:paddingEnd="@dimen/_18sdp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="monospace"
+                android:focusable="true"
+                android:background="@drawable/outline" />
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_48sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="Sign Up"
+            android:layout_marginTop="@dimen/_36sdp"
+            android:text="Buat Akun"
             android:textSize="@dimen/_12ssp"
             app:cornerRadius="@dimen/_12sdp"/>
-        <LinearLayout
-            android:id="@+id/layoutSignIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sudah punya akun? "
-                android:textColor="@color/colorGreyLighter"
-                android:textSize="@dimen/_12ssp"/>
-            <TextView
-                android:id="@+id/txtSignIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/wba_dark"
-                android:text=" Sign in"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:textSize="@dimen/_12ssp"/>
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

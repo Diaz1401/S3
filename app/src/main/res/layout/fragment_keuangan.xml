@@ -249,49 +249,54 @@
             android:layout_marginTop="@dimen/_156sdp"
             android:layout_marginStart="@dimen/_18sdp"/>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <LinearLayout
             android:id="@+id/btnTambah"
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
-            android:clickable="true"
-            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_gravity="end"
-            android:src="@drawable/baseline_add_box_24_grey"
             android:layout_marginTop="@dimen/_108sdp"
-            android:layout_marginEnd="@dimen/_36sdp"/>
-        <TextView
-            android:id="@+id/txtTambah"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tambah saldo utama"
-            android:layout_gravity="end"
-            android:textSize="@dimen/_8ssp"
-            android:textColor="@color/colorGreyLight"
-            android:layout_marginTop="@dimen/_144sdp"
-            android:layout_marginEnd="@dimen/_18sdp"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/dokumen"
-            android:layout_width="@dimen/_36sdp"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_marginEnd="@dimen/_24sdp"
+            android:gravity="center"
             android:clickable="true"
-            android:focusable="true"
-            android:layout_gravity="end"
-            android:src="@drawable/baseline_edit_document_24"
-            android:layout_marginTop="@dimen/_162sdp"
-            android:layout_marginEnd="@dimen/_36sdp"/>
+            android:focusable="true">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:src="@drawable/baseline_add_box_24_grey"/>
+            <TextView
+                android:id="@+id/txtTambah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah saldo utama"
+                android:textSize="@dimen/_8ssp"
+                android:textColor="@color/colorGreyLight"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtDokumen"
+        <LinearLayout
+            android:id="@+id/dokumen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Export/Import"
-            android:textSize="@dimen/_8ssp"
+            android:orientation="vertical"
             android:layout_gravity="end"
-            android:textColor="@color/colorGreyLight"
-            android:layout_marginTop="@dimen/_198sdp"
-            android:layout_marginEnd="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_18sdp"/>
+            android:layout_marginTop="@dimen/_174sdp"
+            android:layout_marginEnd="@dimen/_36sdp"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:src="@drawable/baseline_edit_document_24"/>
+            <TextView
+                android:id="@+id/txtDokumen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Export/Import"
+                android:textSize="@dimen/_8ssp"
+                android:textColor="@color/colorGreyLight"/>
+        </LinearLayout>
     </FrameLayout>
     <ScrollView
         android:layout_width="match_parent"

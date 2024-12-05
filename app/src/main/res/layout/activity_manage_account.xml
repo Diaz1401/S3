@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wba_light"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/layoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/wba_dark">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/btnBack"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_arrow_back_24_white"
+            android:paddingBottom="@dimen/_3sdp"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_48sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginVertical="@dimen/_6sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/background_kotak_white"
+            app:queryHint="Cari . . ."
+            app:iconifiedByDefault="false"/>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAccounts"
+        app:layout_constraintTop_toBottomOf="@id/layoutSearch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <FrameLayout
+        android:id="@+id/layoutTambah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_36sdp"
+        android:layout_marginBottom="@dimen/_36sdp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/background_kotak_white_sharper">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_48sdp"
+            android:src="@drawable/baseline_add_box_24"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

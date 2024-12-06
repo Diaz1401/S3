@@ -336,6 +336,7 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun calculateTotalSaldo() {
+        val binding = _binding ?: return // Ensure binding is not null
         var totalSaldo = 0
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0

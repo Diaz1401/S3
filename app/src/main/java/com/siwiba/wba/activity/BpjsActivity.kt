@@ -352,9 +352,10 @@ class BpjsActivity : AppCompatActivity() {
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit
                 }
-                binding.txtTotal.text = "Rp $totalSaldo"
-                binding.txtDebit.text = "Total Debit Rp $totalSaldoDebit"
-                binding.txtKredit.text = "Total Kredit Rp $totalSaldoKredit"
+                // Set formatted total, debit, kredit with "Rp" in front
+                binding.txtTotal.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtDebit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtKredit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
             }
         }
     }

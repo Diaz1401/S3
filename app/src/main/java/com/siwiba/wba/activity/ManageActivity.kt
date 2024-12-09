@@ -14,6 +14,14 @@ import com.siwiba.wba.model.Saldo
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.SimpleDateFormat
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
+import android.widget.EditText
+import com.siwiba.util.Format
 
 class ManageActivity : AppCompatActivity() {
 
@@ -81,6 +89,8 @@ class ManageActivity : AppCompatActivity() {
         } else {
             binding.etDebit.visibility = View.GONE
         }
+        binding.etKredit.addTextChangedListener(Format().createTextWatcher(binding.etKredit))
+        binding.etDebit.addTextChangedListener(Format().createTextWatcher(binding.etDebit))
     }
 
     private fun setupAddMode(whichSaldo: String) {

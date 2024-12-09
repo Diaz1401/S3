@@ -141,55 +141,237 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartUtama"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartGaji"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisUtama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartUtama"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisUtama"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisUtama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartUtama"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartBpjs"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisGaji"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartGaji"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisGaji"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisGaji"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartGaji"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                app:layout_constraintTop_toBottomOf="@id/lineChartGaji"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartKas"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisBpjs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartBpjs"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisBpjs"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisBpjs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartBpjs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                app:layout_constraintTop_toBottomOf="@id/lineChartBpjs"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartLogistik"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisKas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartKas"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisKas"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisKas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartKas"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                app:layout_constraintTop_toBottomOf="@id/lineChartKas"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartPajak"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisLogistik"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartLogistik"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisLogistik"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisLogistik"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartLogistik"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                app:layout_constraintTop_toBottomOf="@id/lineChartKas"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChartPinjaman"
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisPajak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartPajak"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisPajak"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisPajak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartPajak"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                app:layout_constraintTop_toBottomOf="@id/lineChartPajak"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginHorizontal="@dimen/_18sdp"/>
+                android:layout_marginHorizontal="@dimen/_18sdp">
+                <TextView
+                    android:id="@+id/labelYAxisPinjaman"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Nominal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartPinjaman"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    app:layout_constraintTop_toBottomOf="@id/labelYAxisPinjaman"
+                    android:layout_marginTop="@dimen/_6sdp" />
+                <TextView
+                    android:id="@+id/labelXAxisPinjaman"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tanggal"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintTop_toBottomOf="@id/lineChartPinjaman"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/_6sdp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import android.util.Log
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
+import com.siwiba.util.Format
 
 class DashboardFragment : Fragment() {
 
@@ -144,7 +146,7 @@ class DashboardFragment : Fragment() {
             )
         }.sortedBy { dateFormat.parse(it.tanggal) }
 
-        return if (aggregatedData.size > 10) aggregatedData.takeLast(10) else aggregatedData
+        return if (aggregatedData.size > 8) aggregatedData.takeLast(8) else aggregatedData
     }
 
     private fun updateLineChart(dataList: List<Saldo>, chart: LineChart) {
@@ -158,7 +160,7 @@ class DashboardFragment : Fragment() {
             dates.add(data.tanggal)
         }
 
-        val dataSet = LineDataSet(entries, "Saldo Data")
+        val dataSet = LineDataSet(entries, "")
         dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
         dataSet.setDrawFilled(true)
         dataSet.fillAlpha = 110
@@ -174,19 +176,35 @@ class DashboardFragment : Fragment() {
         val lineData = LineData(dataSet)
         chart.data = lineData
 
+        // Configure X Axis
         val xAxis: XAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.valueFormatter = IndexAxisValueFormatter(dates)
+        xAxis.valueFormatter = IndexAxisValueFormatter(dates) // Menampilkan tanggal sebagai label pada sumbu X
+        xAxis.textSize = 12f
+        xAxis.labelRotationAngle = -45f
 
+        // Configure Y Axis (Left)
         val yAxisLeft: YAxis = chart.axisLeft
         yAxisLeft.setDrawGridLines(false)
+        yAxisLeft.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return Format().formatCurrency(value.toInt().toString(), true)
+            }
+        }
+        yAxisLeft.textSize = 12f
 
+        // Disable Y Axis (Right)
         val yAxisRight: YAxis = chart.axisRight
-        yAxisRight.setDrawGridLines(false)
+        yAxisRight.isEnabled = false
 
-        chart.invalidate() // Refresh chart
+        // Add Chart Description (Manual labels for axes)
+        chart.description.isEnabled = false // Nonaktifkan deskripsi bawaan
+        chart.setExtraOffsets(10f, 10f, 10f, 20f) // Tambahkan margin bawah untuk label manual
+
+        // Refresh chart
+        chart.invalidate()
     }
 
     override fun onDestroyView() {

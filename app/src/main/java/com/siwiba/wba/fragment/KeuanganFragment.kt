@@ -33,6 +33,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import com.google.firebase.firestore.QuerySnapshot
 import com.siwiba.R
+import com.siwiba.util.Format
 
 class KeuanganFragment : Fragment() {
 
@@ -355,9 +356,10 @@ class KeuanganFragment : Fragment() {
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit
                 }
-                binding.txtTotal.text = "Rp $totalSaldo"
-                binding.txtTotalDebit.text = "Total Debit Rp $totalSaldoDebit"
-                binding.txtTotalKredit.text = "Total Kredit Rp $totalSaldoKredit"
+                // Set formatted total, debit, kredit with "Rp" in front
+                binding.txtTotal.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtTotalDebit.text = "Rp ${Format().formatCurrency(totalSaldoDebit.toString())}"
+                binding.txtTotalKredit.text = "Rp ${Format().formatCurrency(totalSaldoKredit.toString())}"
             }
             .addOnFailureListener { exception ->
                 // Handle any errors

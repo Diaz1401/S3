@@ -1,40 +1,36 @@
 package com.siwiba.wba.activity
+
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.Gson
+import com.opencsv.CSVReader
+import com.opencsv.CSVWriter
 import com.siwiba.R
 import com.siwiba.databinding.ActivityPinjamanBinding
 import com.siwiba.wba.model.Saldo
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Calendar
-import java.util.Locale
-import android.util.Base64
-import android.widget.Toast
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-import com.opencsv.CSVReader
-import com.opencsv.CSVWriter
-import com.siwiba.wba.fragment.KeuanganFragment
-import com.siwiba.wba.fragment.KeuanganFragment.Companion
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PinjamanActivity : AppCompatActivity() {
 
@@ -339,10 +335,10 @@ class PinjamanActivity : AppCompatActivity() {
         var totalSaldoKredit = 0
 
         val tasks =  firestore.collection("saldo")
-            .document(whichSaldo)
-            .collection("data")
-            .orderBy("no", Query.Direction.DESCENDING)
-            .get()
+                .document(whichSaldo)
+                .collection("data")
+                .orderBy("no", Query.Direction.DESCENDING)
+                .get()
 
         Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -356,9 +352,10 @@ class PinjamanActivity : AppCompatActivity() {
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit
                 }
-                binding.txtTotal.text = "Rp $totalSaldo"
-                binding.txtDebit.text = "Total Debit Rp $totalSaldoDebit"
-                binding.txtKredit.text = "Total Kredit Rp $totalSaldoKredit"
+                // Set formatted total, debit, kredit with "Rp" in front
+                binding.txtTotal.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtDebit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtKredit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
             }
         }
     }

@@ -122,13 +122,16 @@ class AccountAdapter(private var accounts: List<Account>, private val listener: 
                     .setMessage("Apakah anda yakin ingin mengubah jabatan?")
                     .setPositiveButton("Ya") { dialog, _ ->
                         account.jabatan = position + 1
-                        firestore.collection("users").document(account.id).update("jabatan", position + 1)
-                            .addOnSuccessListener {
-                                Toast.makeText(context, "Berhasil mengubah jabatan", Toast.LENGTH_SHORT).show()
-                            }
-                            .addOnFailureListener { exception ->
-                                Toast.makeText(context, "Gagal mengubah jabatan: ${exception.message}", Toast.LENGTH_SHORT).show()
-                            }
+                        firestore.collection("users").document(account.id).update(
+                            mapOf(
+                                "jabatan" to position + 1,
+                                "isAdmin" to (position + 1 < 4)
+                            )
+                        ).addOnSuccessListener {
+                            Toast.makeText(context, "Berhasil mengubah jabatan", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener { exception ->
+                            Toast.makeText(context, "Gagal mengubah jabatan: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        }
                         dialog.dismiss()
                     }
                     .setNegativeButton("Tidak") { dialog, _ ->

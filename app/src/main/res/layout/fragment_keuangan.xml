@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/wba_light"
+    android:background="@color/siwiba_light"
     android:layout_gravity="center_horizontal">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,15 +14,11 @@
         android:layout_marginTop="@dimen/_18sdp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/btnBackToHome"
+        <com.google.android.material.button.MaterialButton
             android:layout_width="@dimen/_36sdp"
             android:layout_height="@dimen/_36sdp"
-            android:background="@drawable/background_bulat_wba_dark"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_dashboard_wba_light"
-            android:paddingBottom="@dimen/_3sdp"
-            app:riv_oval="true"
+            android:id="@+id/btnBackToHome"
+            android:background="@drawable/ic_dashboard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -48,256 +44,263 @@
             app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_kotak_wba"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardElevation="@dimen/_6sdp"
         app:layout_constraintTop_toBottomOf="@id/topInfo"
         android:layout_marginTop="@dimen/_18sdp"
-        android:layout_marginHorizontal="@dimen/_18sdp">
-
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:background="@drawable/background_kotak_wba">
         <FrameLayout
-            android:layout_height="@dimen/_78sdp"
             android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_18sdp"
-            android:alpha="0.4"
-            android:background="@drawable/background_kotak_white_no_border"/>
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:layout_marginHorizontal="@dimen/_24sdp">
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_height="@dimen/_78sdp"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_18sdp"
+                android:alpha="0.4"
+                android:background="@drawable/background_kotak_white_no_border"/>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginHorizontal="@dimen/_24sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/frameGaji"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/icongaji2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gaji"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/framePajak"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/iconpajak2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pajak"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameLogistik"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/iconlogistik2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Logistik"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameBpjs"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/iconbpjs2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bpjs"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameKas"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/iconkas2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kas"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/framePinjaman"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp">
+                        <ImageView
+                            android:layout_width="@dimen/_42sdp"
+                            android:layout_height="@dimen/_42sdp"
+                            android:src="@drawable/iconpinjaman2"
+                            android:background="@android:color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pinjaman"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/siwiba_light"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_42sdp"
+                            />
+                    </FrameLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TOTAL"
+                android:textStyle="bold"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/_108sdp"
+                android:layout_marginStart="@dimen/_18sdp"/>
+
+            <TextView
+                android:id="@+id/txtTotalDebit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DEBIT"
+                android:textStyle="bold|italic"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/colorGreyLight"
+                android:layout_marginTop="@dimen/_138sdp"
+                android:layout_marginStart="@dimen/_18sdp"/>
+
+            <TextView
+                android:id="@+id/txtTotalKredit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KREDIT"
+                android:textStyle="bold|italic"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/colorGreyLight"
+                android:layout_marginTop="@dimen/_156sdp"
+                android:layout_marginStart="@dimen/_18sdp"/>
 
             <LinearLayout
+                android:id="@+id/btnTambah"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:id="@+id/frameGaji"
-                    android:clickable="true"
-                    android:focusable="true"
+                android:orientation="vertical"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_108sdp"
+                android:layout_marginEnd="@dimen/_24sdp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_36sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:src="@drawable/baseline_add_box_24_grey"/>
+                <TextView
+                    android:id="@+id/txtTambah"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/icongaji2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gaji"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/framePajak"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/iconpajak2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pajak"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameLogistik"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/iconlogistik2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Logistik"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameBpjs"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/iconbpjs2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bpjs"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameKas"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/iconkas2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kas"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/framePinjaman"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_12sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_42sdp"
-                        android:src="@drawable/iconpinjaman2"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pinjaman"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/wba_light"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_42sdp"
-                        />
-                </FrameLayout>
+                    android:text="Tambah saldo utama"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@color/colorGreyLight"/>
             </LinearLayout>
-        </HorizontalScrollView>
-        <TextView
-            android:id="@+id/txtTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TOTAL"
-            android:textStyle="bold"
-            android:textSize="@dimen/_18ssp"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_108sdp"
-            android:layout_marginStart="@dimen/_18sdp"/>
 
-        <TextView
-            android:id="@+id/txtTotalDebit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DEBIT"
-            android:textStyle="bold|italic"
-            android:textSize="@dimen/_10ssp"
-            android:textColor="@color/colorGreyLight"
-            android:layout_marginTop="@dimen/_138sdp"
-            android:layout_marginStart="@dimen/_18sdp"/>
-
-        <TextView
-            android:id="@+id/txtTotalKredit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="KREDIT"
-            android:textStyle="bold|italic"
-            android:textSize="@dimen/_10ssp"
-            android:textColor="@color/colorGreyLight"
-            android:layout_marginTop="@dimen/_156sdp"
-            android:layout_marginStart="@dimen/_18sdp"/>
-
-        <LinearLayout
-            android:id="@+id/btnTambah"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/_108sdp"
-            android:layout_marginEnd="@dimen/_24sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_36sdp"
-                android:layout_height="@dimen/_36sdp"
-                android:src="@drawable/baseline_add_box_24_grey"/>
-            <TextView
-                android:id="@+id/txtTambah"
+            <LinearLayout
+                android:id="@+id/dokumen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tambah saldo utama"
-                android:textSize="@dimen/_8ssp"
-                android:textColor="@color/colorGreyLight"/>
-        </LinearLayout>
+                android:orientation="vertical"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_174sdp"
+                android:layout_marginEnd="@dimen/_36sdp"
+                android:layout_marginBottom="@dimen/_18sdp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_36sdp"
+                    android:layout_height="@dimen/_36sdp"
+                    android:src="@drawable/baseline_edit_document_24"/>
+                <TextView
+                    android:id="@+id/txtDokumen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Export/Import"
+                    android:textSize="@dimen/_8ssp"
+                    android:textColor="@color/colorGreyLight"/>
+            </LinearLayout>
+        </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/dokumen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/_174sdp"
-            android:layout_marginEnd="@dimen/_36sdp"
-            android:layout_marginBottom="@dimen/_18sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_36sdp"
-                android:layout_height="@dimen/_36sdp"
-                android:src="@drawable/baseline_edit_document_24"/>
-            <TextView
-                android:id="@+id/txtDokumen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Export/Import"
-                android:textSize="@dimen/_8ssp"
-                android:textColor="@color/colorGreyLight"/>
-        </LinearLayout>
-    </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -305,8 +308,7 @@
         android:layout_marginTop="@dimen/_18sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true"
-        android:scrollbars="none"
-        >
+        android:scrollbars="none" >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

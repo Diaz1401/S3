@@ -4,11 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -26,11 +23,11 @@ import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
 import com.siwiba.R
 import com.siwiba.databinding.ActivityPajakBinding
+import com.siwiba.util.Format
+import com.siwiba.util.ThemeMode
 import com.siwiba.wba.model.Saldo
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PajakActivity : AppCompatActivity() {
 
@@ -42,6 +39,8 @@ class PajakActivity : AppCompatActivity() {
     private var editor: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         binding = ActivityPajakBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -66,7 +65,7 @@ class PajakActivity : AppCompatActivity() {
         // Set up Spinner
         val periods = arrayOf("Total", "Seminggu", "Sebulan", "Setahun")
         val adapter = ArrayAdapter(this, R.layout.item_spinner_periode, periods)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = adapter
         binding.txtPeriode.text = "Untuk $selectedPeriod Terakhir"
 

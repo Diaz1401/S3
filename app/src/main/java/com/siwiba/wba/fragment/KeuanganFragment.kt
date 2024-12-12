@@ -4,34 +4,29 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.FragmentKeuanganBinding
 import com.siwiba.wba.activity.*
+import com.siwiba.MainActivity
 import com.siwiba.wba.model.Saldo
-import android.util.Base64
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
 import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import com.google.firebase.firestore.QuerySnapshot
 import com.siwiba.R
 import com.siwiba.util.Format
 
@@ -311,7 +306,7 @@ class KeuanganFragment : Fragment() {
 
         // Clear existing views
         binding.dataTable.removeAllViews()
-        val customColor = ContextCompat.getColor(requireContext(), R.color.wba_light)
+        val customColor = ContextCompat.getColor(requireContext(), R.color.siwiba_light)
         binding.dataTable.setBackgroundColor(customColor)
 
         binding.dataTable.setTable(columns, saldoList, isActionButtonShow = sharedPreferences.getBoolean("isAdmin", false))

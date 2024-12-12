@@ -78,8 +78,8 @@ class DashboardFragment : Fragment() {
 
     private fun setupSpinners() {
         val periods = arrayOf("Perminggu", "Perbulan", "Pertahun")
-        val periodAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, periods)
-        periodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val periodAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner_periode, periods)
+        periodAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = periodAdapter
 
         binding.spinnerPeriode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

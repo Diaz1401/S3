@@ -6,6 +6,5 @@
     android:ellipsize="marquee"
     android:singleLine="true"
     android:textColor="?android:attr/textColorPrimary"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:textSize="16sp" />
+    android:padding="@dimen/_6sdp"
+    android:textSize="@dimen/_12ssp" />

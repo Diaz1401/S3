@@ -46,7 +46,7 @@ class ProfilFragment : Fragment() {
         if (isAdmin) {
             binding.layoutManageAkun.visibility = View.VISIBLE
         }
-        binding.imgEdit.setOnClickListener {
+        binding.layoutProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             setProfileImage.launch(intent)
@@ -113,7 +113,7 @@ class ProfilFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to update address", Toast.LENGTH_SHORT).show()
                 }
         }
-        binding.btnCopyUID.setOnClickListener {
+        binding.layoutUID.setOnClickListener {
             val uid = binding.txtId.text.toString()
             val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText("UID", uid)

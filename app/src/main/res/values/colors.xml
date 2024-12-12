@@ -5,6 +5,9 @@
     <color name="colorGreyDark">#FF333333</color>
     <color name="colorGreyLighter">#666666</color>
     <color name="colorGreyLight">#FFD8D8D8</color>
-    <color name="wba_light">#FFF1EFEA</color>
-    <color name="wba_dark">#FF7F152E</color>
+    <color name="siwiba_light">#FFF1EFEA</color>
+    <color name="wba">#FF7F152E</color>
+    <color name="wba_lighter">#FB667A</color>
+    <color name="kwi">#FF0B2F9F</color>
+    <color name="kwi_lighter">#5577E0</color>
 </resources>

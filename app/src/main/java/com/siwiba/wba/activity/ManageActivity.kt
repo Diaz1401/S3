@@ -1,6 +1,5 @@
 package com.siwiba.wba.activity
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -10,18 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.siwiba.databinding.ActivityManageBinding
-import com.siwiba.wba.model.Saldo
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.SimpleDateFormat
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
-import android.widget.EditText
 import com.siwiba.util.Format
+import com.siwiba.util.ThemeMode
 
 class ManageActivity : AppCompatActivity() {
 
@@ -32,6 +24,8 @@ class ManageActivity : AppCompatActivity() {
     private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         binding = ActivityManageBinding.inflate(layoutInflater)
         setContentView(binding.root)

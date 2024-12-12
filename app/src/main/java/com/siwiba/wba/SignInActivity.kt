@@ -1,17 +1,22 @@
 package com.siwiba.wba
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.MainActivity
+import com.siwiba.R
 import com.siwiba.databinding.ActivitySignInBinding
+import com.siwiba.util.ThemeMode
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
@@ -19,6 +24,8 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
@@ -42,6 +49,35 @@ class SignInActivity : AppCompatActivity() {
                 signIn()
             }
         }
+
+        binding.imgWBA.setOnClickListener {
+            themeMode.applyTheme("WBA")
+        }
+
+        binding.imgKWI.setOnClickListener {
+            themeMode.applyTheme("KWI")
+        }
+
+        if (themeMode.getSavedTheme() == R.style.Base_Theme_WBA) {
+            zoomImage(binding.imgKWI, binding.imgWBA )
+        } else {
+            zoomImage(binding.imgWBA, binding.imgKWI)
+        }
+    }
+
+    private fun zoomImage(zoomIn: AppCompatImageView, zoomOut: AppCompatImageView) {
+        val scaleXsmall = ObjectAnimator.ofFloat(zoomIn, "scaleX", 0.8f)
+        val scaleYsmall = ObjectAnimator.ofFloat(zoomIn, "scaleY", 0.8f)
+        val scaleXbig = ObjectAnimator.ofFloat(zoomOut, "scaleX", 1.25f)
+        val scaleYbig = ObjectAnimator.ofFloat(zoomOut, "scaleY", 1.25f)
+        scaleXsmall.duration = 100
+        scaleYsmall.duration = 100
+        scaleXbig.duration = 100
+        scaleYbig.duration = 100
+
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleXsmall, scaleYsmall, scaleXbig, scaleYbig)
+        animatorSet.start()
     }
 
     private fun isValidSignInDetails(email: String, password: String): Boolean {

@@ -9,7 +9,7 @@
     android:overScrollMode="never"
     android:padding="@dimen/_12sdp"
     android:scrollbars="none"
-    android:background="@color/wba_light"
+    android:background="@color/siwiba_light"
     tools:context=".wba.SignUpActivity">
 
     <LinearLayout

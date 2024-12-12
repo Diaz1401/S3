@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".wba.activity.ManageAdminActivity"
-    android:background="@color/wba_light">
+    android:background="@color/siwiba_light">
 
     <EditText
         android:id="@+id/etKeterangan"
@@ -61,11 +61,10 @@
         android:layout_marginEnd="@dimen/_6sdp"
         android:layout_marginStart="@dimen/_18sdp"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ivTanggal"
         android:layout_width="@dimen/_36sdp"
         android:layout_height="@dimen/_36sdp"
-        android:src="@drawable/baseline_calendar_month_24"
         android:paddingTop="@dimen/_2sdp"
         android:paddingBottom="@dimen/_4sdp"
         android:paddingHorizontal="@dimen/_2sdp"
@@ -75,9 +74,7 @@
         app:layout_constraintTop_toBottomOf="@id/etKredit"
         app:layout_constraintStart_toEndOf="@id/etTanggal"
         app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/background_kotak_wba"/>
+        android:background="@drawable/baseline_calendar_month_24"/>
 
     <LinearLayout
         android:layout_width="match_parent"

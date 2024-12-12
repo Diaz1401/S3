@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.ActivityManageAccountBinding
+import com.siwiba.util.ThemeMode
 import com.siwiba.wba.SignUpActivity
 import com.siwiba.wba.adapter.AccountAdapter
 import com.siwiba.wba.model.Account
@@ -18,6 +19,8 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
     private val accounts = mutableListOf<Account>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         binding = ActivityManageAccountBinding.inflate(layoutInflater)
         firestore = FirebaseFirestore.getInstance()

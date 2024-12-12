@@ -7,11 +7,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.siwiba.R
 import com.siwiba.databinding.ActivityAboutBinding
+import com.siwiba.util.ThemeMode
 
 class AboutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityAboutBinding.inflate(layoutInflater)

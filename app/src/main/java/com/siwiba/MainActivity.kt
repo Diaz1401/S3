@@ -1,7 +1,10 @@
 package com.siwiba
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -11,6 +14,7 @@ import com.siwiba.wba.fragment.DashboardFragment
 import com.siwiba.wba.fragment.KeuanganFragment
 import com.siwiba.wba.fragment.AnalisisFragment
 import com.siwiba.wba.fragment.ProfilFragment
+import com.siwiba.util.ThemeMode
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -43,14 +49,6 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(ProfilFragment())
                     true
                 }
-//                R.id.navigation_absen -> {
-//                    loadFragment(AbsenFragment())
-//                    true
-//                }
-//                R.id.navigation_analisis -> {
-//                    loadFragment(AnalisisFragment())
-//                    true
-//                }
                 else -> false
             }
         }

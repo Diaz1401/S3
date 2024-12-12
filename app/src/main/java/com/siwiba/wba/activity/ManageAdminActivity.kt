@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.siwiba.databinding.ActivityManageAdminBinding
+import com.siwiba.util.ThemeMode
 import com.siwiba.wba.model.Saldo
 import java.util.Calendar
 import java.text.SimpleDateFormat
@@ -22,6 +23,8 @@ class ManageAdminActivity : AppCompatActivity() {
     private val whichSaldo: String = "utama"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val themeMode = ThemeMode(this)
+        setTheme(themeMode.getSavedTheme())
         super.onCreate(savedInstanceState)
         binding = ActivityManageAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)

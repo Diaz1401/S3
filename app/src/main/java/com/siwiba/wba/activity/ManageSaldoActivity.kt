@@ -16,12 +16,12 @@ import java.util.Locale
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.AppMode
 
-class ManageActivity : AppCompatActivity() {
+class ManageSaldoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManageBinding
     private lateinit var firestore: FirebaseFirestore
     private var mode: Int = 0
-    private val debit: Int = 0
+    private var debit: Int = 0
     private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,13 +41,10 @@ class ManageActivity : AppCompatActivity() {
 
         mode = intent.getIntExtra("mode", 0)
         val saldo = intent.getStringExtra("whichSaldo") ?: ""
-        if (saldo.isEmpty()) {
-            Toast.makeText(this, "Invalid mode or saldo", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        val utama = saldo == "utama"
         when (mode) {
             1 -> {
-                setupAddMode(saldo)
+                setupAddMode(saldo, utama)
             }
             2 -> {
                 loadData()
@@ -92,14 +89,19 @@ class ManageActivity : AppCompatActivity() {
         binding.etDebit.addTextChangedListener(NumberFormat().createTextWatcher(binding.etDebit))
     }
 
-    private fun setupAddMode(whichSaldo: String) {
+    private fun setupAddMode(whichSaldo: String, utama: Boolean) {
         binding.btnSave.setOnClickListener {
             if (checkInput()) {
                 var debit = 0
                 if (isAdmin) {
-                    debit = binding.etDebit.text.toString().toInt()
+                    val parsedDebit = NumberFormat().parseNumber(binding.etDebit.text.toString())
+                    debit = parsedDebit?.toInt() ?: 0
                 }
-                val kredit = binding.etKredit.text.toString().toInt()
+                val parsedKredit = NumberFormat().parseNumber(binding.etKredit.text.toString())
+                val kredit = parsedKredit?.toInt() ?: 0
+                /*
+                 * Fetch the latest saldo utama
+                 */
                 firestore.collection("saldo")
                     .document("utama")
                     .collection("data")
@@ -111,9 +113,12 @@ class ManageActivity : AppCompatActivity() {
                         if (!document.isEmpty) {
                             lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
                         }
-                        if (debit > lastSaldoUtama) {
+                        if ((debit > lastSaldoUtama) && !utama) {
                             Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
                         } else {
+                            /*
+                             * Fetch the latest selected saldo
+                             */
                             firestore.collection("saldo")
                                 .document(whichSaldo)
                                 .collection("data")
@@ -134,18 +139,20 @@ class ManageActivity : AppCompatActivity() {
                                         val keterangan = binding.etKeterangan.text.toString()
                                         val tanggal = binding.etTanggal.text.toString()
                                         val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
-                                        val saldoToSave = lastSaldo + debit - kredit
+                                        lastSaldo += debit - kredit
 
                                         val data = mapOf(
                                             "no" to newNo,
                                             "keterangan" to keterangan,
                                             "debit" to debit,
                                             "kredit" to kredit,
-                                            "saldo" to saldoToSave,
+                                            "saldo" to lastSaldo,
                                             "editor" to editor,
                                             "tanggal" to tanggal
                                         )
-
+                                        /*
+                                         * Save the data to the selected saldo
+                                         */
                                         firestore.collection("saldo")
                                             .document(whichSaldo)
                                             .collection("data")
@@ -157,8 +164,10 @@ class ManageActivity : AppCompatActivity() {
                                                     "Sukses menambahkan data pada saldo $whichSaldo",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
-                                                if (debit > 0) {
-                                                    // reduce latest saldo utama based on debit addition
+                                                if ((debit > 0) && !utama) {
+                                                    /*
+                                                     * Reduce latest saldo utama based on debit addition
+                                                     */
                                                     firestore.collection("saldo")
                                                         .document("utama")
                                                         .collection("data")
@@ -174,16 +183,19 @@ class ManageActivity : AppCompatActivity() {
                                                                 newNo = document.documents[0].getLong("no")?.toInt() ?: 1
                                                                 newNo++
                                                             }
-                                                            val newSaldoUtama = lastSaldoUtama - kreditSaldoUtama
+                                                            lastSaldoUtama -= kreditSaldoUtama
                                                             val dataUtama = mapOf(
                                                                 "no" to newNo,
                                                                 "keterangan" to "Kredit saldo utama ke saldo $whichSaldo",
                                                                 "debit" to 0,
                                                                 "kredit" to kreditSaldoUtama,
-                                                                "saldo" to newSaldoUtama,
+                                                                "saldo" to lastSaldoUtama,
                                                                 "editor" to editor,
                                                                 "tanggal" to tanggal
                                                             )
+                                                            /*
+                                                             * Save the data to saldo utama
+                                                             */
                                                             firestore.collection("saldo")
                                                                 .document("utama")
                                                                 .collection("data")
@@ -315,6 +327,8 @@ class ManageActivity : AppCompatActivity() {
         val tanggal = intent.getStringExtra("tanggal")
         binding.etKeterangan.setText(keterangan)
         // disable kredit and tanggal
+        binding.etDebit.setText(debit.toString())
+        binding.etDebit.isEnabled = false
         binding.etKredit.setText(kredit.toString())
         binding.etKredit.isEnabled = false
         binding.etTanggal.setText(tanggal)

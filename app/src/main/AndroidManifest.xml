@@ -28,10 +28,7 @@
             android:name=".wba.activity.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".wba.activity.ManageAdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.ManageActivity"
+            android:name=".wba.activity.ManageSaldoActivity"
             android:exported="false" />
         <activity
             android:name=".wba.SignUpActivity"

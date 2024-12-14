@@ -5,6 +5,9 @@ import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.text.ParseException
+import java.util.Locale
 
 class NumberFormat {
     fun createTextWatcher(editText: EditText): TextWatcher {
@@ -46,6 +49,16 @@ class NumberFormat {
             }
             val decimalFormat = DecimalFormat("#,###", decimalFormatSymbols)
             decimalFormat.format(cleanString.toLong())
+        }
+    }
+
+    fun parseNumber(input: String): Number? {
+        val format = NumberFormat.getInstance(Locale.GERMANY)
+        return try {
+            format.parse(input)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            null
         }
     }
 }

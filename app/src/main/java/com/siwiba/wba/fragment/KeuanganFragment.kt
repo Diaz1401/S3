@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.FragmentKeuanganBinding
 import com.siwiba.wba.activity.*
-import com.siwiba.MainActivity
 import com.siwiba.wba.model.Saldo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
@@ -100,7 +99,7 @@ class KeuanganFragment : Fragment() {
             // if user if admin allow click else show toast not allowed
             val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
             if (isAdmin) {
-                val intent = Intent(activity, ManageAdminActivity::class.java)
+                val intent = Intent(activity, ManageSaldoActivity::class.java)
                 intent.putExtra("mode", 1)
                 intent.putExtra("whichSaldo", whichSaldo)
                 intent.putExtra("editor", editor)
@@ -320,7 +319,7 @@ class KeuanganFragment : Fragment() {
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
                 val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
-                val intent = Intent(activity, ManageAdminActivity::class.java)
+                val intent = Intent(activity, ManageSaldoActivity::class.java)
                 intent.putExtra("mode", 2)
                 intent.putExtra("whichSaldo", whichSaldo)
                 intent.putExtra("no", saldoClicked.no)

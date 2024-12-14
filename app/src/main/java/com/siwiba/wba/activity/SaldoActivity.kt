@@ -61,7 +61,7 @@ class SaldoActivity : AppCompatActivity() {
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.tambah.setOnClickListener {
-            val intent = Intent(this, ManageActivity::class.java)
+            val intent = Intent(this, ManageSaldoActivity::class.java)
             intent.putExtra("mode", 1)
             intent.putExtra("whichSaldo", whichSaldo)
             intent.putExtra("editor", editor)
@@ -329,7 +329,7 @@ class SaldoActivity : AppCompatActivity() {
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
                 val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
-                val intent = Intent(applicationContext, ManageActivity::class.java)
+                val intent = Intent(applicationContext, ManageSaldoActivity::class.java)
                 intent.putExtra("mode", 2)
                 intent.putExtra("whichSaldo", whichSaldo)
                 intent.putExtra("no", saldoClicked.no)

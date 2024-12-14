@@ -34,7 +34,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
 import com.siwiba.util.NumberFormat
 
-class DashboardFragment : Fragment() {
+class DashboardFragment(private val firestoreSaldo: String) : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -103,7 +103,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun fetchSaldoData(which: String, chart: LineChart) {
-        firestore.collection("saldo")
+        firestore.collection(firestoreSaldo)
             .document(which)
             .collection("data")
             .get()

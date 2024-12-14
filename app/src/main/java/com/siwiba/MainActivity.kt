@@ -16,13 +16,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private var firestoreSaldo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
         if (appMode.getAppMode()) {
             setTheme(R.style.Base_Theme_WBA)
+            firestoreSaldo = "saldo_wba"
         } else {
             setTheme(R.style.Base_Theme_KWI)
+            firestoreSaldo = "saldo_kwi"
         }
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -37,11 +40,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_dashboard -> {
-                    loadFragment(DashboardFragment())
+                    loadFragment(DashboardFragment(firestoreSaldo))
                     true
                 }
                 R.id.navigation_keuangan -> {
-                    loadFragment(KeuanganFragment())
+                    loadFragment(KeuanganFragment(firestoreSaldo))
                     true
                 }
                 R.id.navigation_profil -> {

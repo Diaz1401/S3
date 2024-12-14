@@ -19,9 +19,10 @@ import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.siwiba.R
+import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.databinding.FragmentProfilBinding
 import com.siwiba.wba.SignInActivity
+import com.siwiba.MainActivity
 import com.siwiba.wba.activity.AboutActivity
 import com.siwiba.wba.activity.ManageAccountActivity
 import java.io.ByteArrayOutputStream
@@ -133,9 +134,11 @@ class ProfilFragment : Fragment() {
                     editor.clear()
                     editor.apply()
                     auth.signOut()
-                    val intent = Intent(requireContext(), SignInActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    activity?.let {
+                        val intent = Intent(it, SignInActivity::class.java)
+                        startActivity(intent)
+                        it.finish()
+                    }
                     dialog.dismiss()
                 }
                 .setNegativeButton("Tidak", null)
@@ -144,20 +147,25 @@ class ProfilFragment : Fragment() {
         }
         binding.layoutTentangAplikasi.setOnClickListener {
             // Intent to AboutActivity
-            val intent = Intent(requireContext(), AboutActivity::class.java)
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, AboutActivity::class.java)
+                startActivity(intent)
+            }
         }
         binding.btnBackToHome.setOnClickListener {
             // Navigate back to the dashboard fragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DashboardFragment())
-                .addToBackStack(null)
-                .commit()
+            activity?.let {
+                val intent = Intent(it, MainActivity::class.java)
+                startActivity(intent)
+                it.finish()
+            }
         }
         binding.layoutManageAkun.setOnClickListener {
             // Navigate to ManageAccountActivity
-            val intent = Intent(requireContext(), ManageAccountActivity::class.java)
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, ManageAccountActivity::class.java)
+                startActivity(intent)
+            }
         }
         binding.btnSimpanPassword.setOnClickListener {
             val password = binding.inputPassword.text.toString()
@@ -171,6 +179,17 @@ class ProfilFragment : Fragment() {
                             .update("password", password)
                             .addOnSuccessListener {
                                 Toast.makeText(requireContext(), "Password berhasil diubah", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Tolong masuk kembali", Toast.LENGTH_SHORT).show()
+                                val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                                val editor = sharedPref.edit()
+                                editor.clear()
+                                editor.apply()
+                                auth.signOut()
+                                activity?.let {
+                                    val intent = Intent(it, SignInActivity::class.java)
+                                    startActivity(intent)
+                                    it.finish()
+                                }
                             }
                             .addOnFailureListener {
                                 Toast.makeText(requireContext(), "Gagal mengubah password: ${it.message}", Toast.LENGTH_SHORT).show()
@@ -180,11 +199,6 @@ class ProfilFragment : Fragment() {
                         Toast.makeText(requireContext(), "Gagal mengubah password: ${it.message}", Toast.LENGTH_SHORT).show()
                     }
             }
-            Toast.makeText(requireContext(), "Tolong masuk kembali", Toast.LENGTH_SHORT).show()
-            auth.signOut()
-            val intent = Intent(requireContext(), SignInActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
         }
         return binding.root
     }

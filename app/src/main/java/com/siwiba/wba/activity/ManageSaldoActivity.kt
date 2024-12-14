@@ -23,13 +23,16 @@ class ManageSaldoActivity : AppCompatActivity() {
     private var mode: Int = 0
     private var debit: Int = 0
     private var isAdmin: Boolean = false
+    private var firestoreSaldo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
         if (appMode.getAppMode()) {
             setTheme(R.style.Base_Theme_WBA)
+            firestoreSaldo = "saldo_wba"
         } else {
             setTheme(R.style.Base_Theme_KWI)
+            firestoreSaldo = "saldo_kwi"
         }
         super.onCreate(savedInstanceState)
         binding = ActivityManageBinding.inflate(layoutInflater)
@@ -102,7 +105,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                 /*
                  * Fetch the latest saldo utama
                  */
-                firestore.collection("saldo")
+                firestore.collection(firestoreSaldo)
                     .document("utama")
                     .collection("data")
                     .orderBy("no", Query.Direction.DESCENDING)
@@ -119,7 +122,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                             /*
                              * Fetch the latest selected saldo
                              */
-                            firestore.collection("saldo")
+                            firestore.collection(firestoreSaldo)
                                 .document(whichSaldo)
                                 .collection("data")
                                 .orderBy("no", Query.Direction.DESCENDING)
@@ -153,7 +156,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                                         /*
                                          * Save the data to the selected saldo
                                          */
-                                        firestore.collection("saldo")
+                                        firestore.collection(firestoreSaldo)
                                             .document(whichSaldo)
                                             .collection("data")
                                             .document(newNo.toString())
@@ -168,7 +171,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                                                     /*
                                                      * Reduce latest saldo utama based on debit addition
                                                      */
-                                                    firestore.collection("saldo")
+                                                    firestore.collection(firestoreSaldo)
                                                         .document("utama")
                                                         .collection("data")
                                                         .orderBy("no", Query.Direction.DESCENDING)
@@ -196,7 +199,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                                                             /*
                                                              * Save the data to saldo utama
                                                              */
-                                                            firestore.collection("saldo")
+                                                            firestore.collection(firestoreSaldo)
                                                                 .document("utama")
                                                                 .collection("data")
                                                                 .document(newNo.toString())
@@ -281,8 +284,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                         "editor" to editorToSave,
                         "tanggal" to tanggal
                     )
-
-                    firestore.collection("saldo")
+                    firestore.collection(firestoreSaldo)
                         .document(whichSaldo)
                         .collection("data")
                         .document(no.toString())

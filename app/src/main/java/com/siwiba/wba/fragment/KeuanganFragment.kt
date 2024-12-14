@@ -24,15 +24,19 @@ import com.google.firebase.firestore.Query
 import com.google.gson.Gson
 import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
+import com.siwiba.MainActivity
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import com.siwiba.R
+import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.util.NumberFormat
 
-class KeuanganFragment : Fragment() {
+class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
 
     private var _binding: FragmentKeuanganBinding? = null
     private val binding get() = _binding!!
+    private var _binding_main: ActivityMainBinding? = null
+    private val binding_main get() = _binding_main!!
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
     private val whichSaldo = "utama"
@@ -43,6 +47,7 @@ class KeuanganFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
+        _binding_main = ActivityMainBinding.inflate(inflater, container, false)
         firestore = FirebaseFirestore.getInstance()
         return binding.root
     }
@@ -60,50 +65,64 @@ class KeuanganFragment : Fragment() {
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "gaji")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "gaji")
+                startActivity(intent)
+            }
         }
 
         binding.framePajak.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "pajak")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "pajak")
+                startActivity(intent)
+            }
         }
 
         binding.framePinjaman.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "pinjaman")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "pinjaman")
+                startActivity(intent)
+            }
         }
 
         binding.frameKas.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "kas")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "kas")
+                startActivity(intent)
+            }
         }
 
         binding.frameBpjs.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "bpjs")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "bpjs")
+                startActivity(intent)
+            }
         }
 
         binding.frameLogistik.setOnClickListener {
-            val intent = Intent(activity, SaldoActivity::class.java)
-            intent.putExtra("whichSaldo", "logistik")
-            startActivity(intent)
+            activity?.let {
+                val intent = Intent(it, SaldoActivity::class.java)
+                intent.putExtra("whichSaldo", "logistik")
+                startActivity(intent)
+            }
         }
 
         binding.btnTambah.setOnClickListener {
             // if user if admin allow click else show toast not allowed
             val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
             if (isAdmin) {
-                val intent = Intent(activity, ManageSaldoActivity::class.java)
-                intent.putExtra("mode", 1)
-                intent.putExtra("whichSaldo", whichSaldo)
-                intent.putExtra("editor", editor)
-                startActivity(intent)
+                activity?.let {
+                    val intent = Intent(it, ManageSaldoActivity::class.java)
+                    intent.putExtra("mode", 1)
+                    intent.putExtra("whichSaldo", whichSaldo)
+                    intent.putExtra("editor", editor)
+                    startActivity(intent)
+                }
             } else {
                 Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk menambah data", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -147,11 +166,11 @@ class KeuanganFragment : Fragment() {
                 .show()
         }
         binding.btnBackToHome.setOnClickListener {
-            // Navigate back to the dashboard fragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DashboardFragment())
-                .addToBackStack(null)
-                .commit()
+            activity?.let {
+                val intent = Intent(it, MainActivity::class.java)
+                startActivity(intent)
+                it.finish()
+            }
         }
     }
 
@@ -174,7 +193,7 @@ class KeuanganFragment : Fragment() {
                 REQUEST_CODE_IMPORT -> {
                     data.data?.let { uri ->
                         val importedData = importDataFromCSV(uri)
-                        firestore.collection("saldo")
+                        firestore.collection(firestoreSaldo)
                             .document(whichSaldo)
                             .collection("data")
                             .orderBy("no", Query.Direction.DESCENDING)
@@ -190,7 +209,7 @@ class KeuanganFragment : Fragment() {
                                 }
 
                                 val batch = firestore.batch()
-                                val collectionRef = firestore.collection("saldo")
+                                val collectionRef = firestore.collection(firestoreSaldo)
                                     .document(whichSaldo)
                                     .collection("data")
 
@@ -269,7 +288,7 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun fetchCsvSaldoData(): Task<List<Saldo>> {
-        return firestore.collection("saldo")
+        return firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .get()
@@ -283,7 +302,7 @@ class KeuanganFragment : Fragment() {
     }
 
     private fun fetchSaldoData() {
-        firestore.collection("saldo")
+        firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .get()
@@ -319,17 +338,19 @@ class KeuanganFragment : Fragment() {
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
                 val saldoClicked = Gson().fromJson(dataStr, Saldo::class.java)
-                val intent = Intent(activity, ManageSaldoActivity::class.java)
-                intent.putExtra("mode", 2)
-                intent.putExtra("whichSaldo", whichSaldo)
-                intent.putExtra("no", saldoClicked.no)
-                intent.putExtra("keterangan", saldoClicked.keterangan)
-                intent.putExtra("debit", saldoClicked.debit)
-                intent.putExtra("kredit", saldoClicked.kredit)
-                intent.putExtra("saldo", saldoClicked.saldo)
-                intent.putExtra("editor", saldoClicked.editor)
-                intent.putExtra("tanggal", saldoClicked.tanggal)
-                startActivity(intent)
+                activity?.let {
+                    val intent = Intent(it, ManageSaldoActivity::class.java)
+                    intent.putExtra("mode", 2)
+                    intent.putExtra("whichSaldo", whichSaldo)
+                    intent.putExtra("no", saldoClicked.no)
+                    intent.putExtra("keterangan", saldoClicked.keterangan)
+                    intent.putExtra("debit", saldoClicked.debit)
+                    intent.putExtra("kredit", saldoClicked.kredit)
+                    intent.putExtra("saldo", saldoClicked.saldo)
+                    intent.putExtra("editor", saldoClicked.editor)
+                    intent.putExtra("tanggal", saldoClicked.tanggal)
+                    startActivity(intent)
+                }
             }
         })
     }
@@ -341,7 +362,7 @@ class KeuanganFragment : Fragment() {
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
 
-        firestore.collection("saldo")
+        firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .orderBy("no", Query.Direction.DESCENDING)

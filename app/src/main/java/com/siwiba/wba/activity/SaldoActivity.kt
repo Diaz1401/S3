@@ -38,13 +38,16 @@ class SaldoActivity : AppCompatActivity() {
     private var selectedPeriod: String = "Total"
     private lateinit var sharedPreferences: SharedPreferences
     private var editor: String = ""
+    private var firestoreSaldo: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
         if (appMode.getAppMode()) {
             setTheme(R.style.Base_Theme_WBA)
+            firestoreSaldo = "saldo_wba"
         } else {
             setTheme(R.style.Base_Theme_KWI)
+            firestoreSaldo = "saldo_kwi"
         }
         super.onCreate(savedInstanceState)
         binding = ActivitySaldoBinding.inflate(layoutInflater)
@@ -188,7 +191,7 @@ class SaldoActivity : AppCompatActivity() {
             reader.close()
         }
 
-        firestore.collection("saldo")
+        firestore.collection(firestoreSaldo)
             .document("utama")
             .collection("data")
             .orderBy("no", Query.Direction.DESCENDING)
@@ -203,7 +206,7 @@ class SaldoActivity : AppCompatActivity() {
                     newNoUtama++
                 }
 
-                firestore.collection("saldo")
+                firestore.collection(firestoreSaldo)
                     .document(whichSaldo)
                     .collection("data")
                     .orderBy("no", Query.Direction.DESCENDING)
@@ -219,7 +222,7 @@ class SaldoActivity : AppCompatActivity() {
                         }
 
                         val batch = firestore.batch()
-                        val collectionRef = firestore.collection("saldo")
+                        val collectionRef = firestore.collection(firestoreSaldo)
                             .document(whichSaldo)
                             .collection("data")
 
@@ -258,7 +261,7 @@ class SaldoActivity : AppCompatActivity() {
                                     "editor" to saldoItem.editor,
                                     "tanggal" to saldoItem.tanggal
                                 )
-                                val docRefUtama = firestore.collection("saldo")
+                                val docRefUtama = firestore.collection(firestoreSaldo)
                                     .document("utama")
                                     .collection("data")
                                     .document(newNoUtama.toString())
@@ -283,7 +286,7 @@ class SaldoActivity : AppCompatActivity() {
     }
 
     private fun fetchCsvSaldoData(): Task<List<Saldo>> {
-        return firestore.collection("saldo")
+        return firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .get()
@@ -297,7 +300,7 @@ class SaldoActivity : AppCompatActivity() {
     }
 
     private fun fetchSaldoData() {
-        firestore.collection("saldo")
+        firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .get()
@@ -349,7 +352,7 @@ class SaldoActivity : AppCompatActivity() {
         var totalSaldoDebit = 0
         var totalSaldoKredit = 0
 
-        val tasks =  firestore.collection("saldo")
+        val tasks =  firestore.collection(firestoreSaldo)
             .document(whichSaldo)
             .collection("data")
             .orderBy("no", Query.Direction.DESCENDING)

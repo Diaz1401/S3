@@ -28,7 +28,7 @@ import com.opencsv.CSVWriter
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import com.siwiba.R
-import com.siwiba.util.Format
+import com.siwiba.util.NumberFormat
 
 class KeuanganFragment : Fragment() {
 
@@ -61,32 +61,38 @@ class KeuanganFragment : Fragment() {
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {
-            val intent = Intent(activity, GajiActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "gaji")
             startActivity(intent)
         }
 
         binding.framePajak.setOnClickListener {
-            val intent = Intent(activity, PajakActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "pajak")
             startActivity(intent)
         }
 
         binding.framePinjaman.setOnClickListener {
-            val intent = Intent(activity, PinjamanActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "pinjaman")
             startActivity(intent)
         }
 
         binding.frameKas.setOnClickListener {
-            val intent = Intent(activity, KasActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "kas")
             startActivity(intent)
         }
 
         binding.frameBpjs.setOnClickListener {
-            val intent = Intent(activity, BpjsActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "bpjs")
             startActivity(intent)
         }
 
         binding.frameLogistik.setOnClickListener {
-            val intent = Intent(activity, LogistikActivity::class.java)
+            val intent = Intent(activity, SaldoActivity::class.java)
+            intent.putExtra("whichSaldo", "logistik")
             startActivity(intent)
         }
 
@@ -352,9 +358,9 @@ class KeuanganFragment : Fragment() {
                     totalSaldoKredit += kredit
                 }
                 // Set formatted total, debit, kredit with "Rp" in front
-                binding.txtTotal.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
-                binding.txtTotalDebit.text = "Rp ${Format().formatCurrency(totalSaldoDebit.toString())}"
-                binding.txtTotalKredit.text = "Rp ${Format().formatCurrency(totalSaldoKredit.toString())}"
+                binding.txtTotal.text = "Rp ${NumberFormat().formatCurrency(totalSaldo.toString())}"
+                binding.txtTotalDebit.text = "Rp ${NumberFormat().formatCurrency(totalSaldoDebit.toString())}"
+                binding.txtTotalKredit.text = "Rp ${NumberFormat().formatCurrency(totalSaldoKredit.toString())}"
             }
             .addOnFailureListener { exception ->
                 // Handle any errors

@@ -11,12 +11,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.MainActivity
 import com.siwiba.R
 import com.siwiba.databinding.ActivitySignInBinding
-import com.siwiba.util.ThemeMode
+import com.siwiba.util.AppMode
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
@@ -24,8 +23,12 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themeMode = ThemeMode(this)
-        setTheme(themeMode.getSavedTheme())
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
@@ -51,14 +54,14 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.imgWBA.setOnClickListener {
-            themeMode.applyTheme("WBA")
+            appMode.setAppMode(true)
         }
 
         binding.imgKWI.setOnClickListener {
-            themeMode.applyTheme("KWI")
+            appMode.setAppMode(false)
         }
 
-        if (themeMode.getSavedTheme() == R.style.Base_Theme_WBA) {
+        if (appMode.getAppMode()) {
             zoomImage(binding.imgKWI, binding.imgWBA )
         } else {
             zoomImage(binding.imgWBA, binding.imgKWI)

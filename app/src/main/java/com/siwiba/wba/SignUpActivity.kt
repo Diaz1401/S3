@@ -26,6 +26,8 @@ import com.siwiba.databinding.ActivitySignUpBinding
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import android.widget.AdapterView
+import com.siwiba.R
+import com.siwiba.util.AppMode
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -35,6 +37,12 @@ class SignUpActivity : AppCompatActivity() {
     private var completeSignUp: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)

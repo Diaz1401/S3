@@ -12,12 +12,4 @@
         android:id="@+id/navigation_profil"
         android:icon="@drawable/ic_profil"
         android:title="Profil" />
-<!--    <item-->
-<!--        android:id="@+id/navigation_absen"-->
-<!--        android:icon="@drawable/ic_laporan"-->
-<!--        android:title="Absen" />-->
-<!--    <item-->
-<!--        android:id="@+id/navigation_analisis"-->
-<!--        android:icon="@drawable/ic_pengaturan"-->
-<!--        android:title="Analisis" />-->
 </menu>

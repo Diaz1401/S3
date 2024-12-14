@@ -1,6 +1,5 @@
 package com.siwiba.wba.activity
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -8,9 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.siwiba.R
 import com.siwiba.databinding.ActivityManageAdminBinding
-import com.siwiba.util.ThemeMode
-import com.siwiba.wba.model.Saldo
+import com.siwiba.util.AppMode
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -23,8 +22,12 @@ class ManageAdminActivity : AppCompatActivity() {
     private val whichSaldo: String = "utama"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themeMode = ThemeMode(this)
-        setTheme(themeMode.getSavedTheme())
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
         binding = ActivityManageAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)

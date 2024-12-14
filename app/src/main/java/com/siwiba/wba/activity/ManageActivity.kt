@@ -8,12 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.siwiba.R
 import com.siwiba.databinding.ActivityManageBinding
 import java.util.Calendar
 import java.text.SimpleDateFormat
 import java.util.Locale
-import com.siwiba.util.Format
-import com.siwiba.util.ThemeMode
+import com.siwiba.util.NumberFormat
+import com.siwiba.util.AppMode
 
 class ManageActivity : AppCompatActivity() {
 
@@ -24,8 +25,12 @@ class ManageActivity : AppCompatActivity() {
     private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themeMode = ThemeMode(this)
-        setTheme(themeMode.getSavedTheme())
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
         binding = ActivityManageBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -83,8 +88,8 @@ class ManageActivity : AppCompatActivity() {
         } else {
             binding.etDebit.visibility = View.GONE
         }
-        binding.etKredit.addTextChangedListener(Format().createTextWatcher(binding.etKredit))
-        binding.etDebit.addTextChangedListener(Format().createTextWatcher(binding.etDebit))
+        binding.etKredit.addTextChangedListener(NumberFormat().createTextWatcher(binding.etKredit))
+        binding.etDebit.addTextChangedListener(NumberFormat().createTextWatcher(binding.etDebit))
     }
 
     private fun setupAddMode(whichSaldo: String) {

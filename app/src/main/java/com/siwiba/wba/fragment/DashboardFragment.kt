@@ -32,7 +32,7 @@ import java.util.Locale
 import android.util.Log
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
-import com.siwiba.util.Format
+import com.siwiba.util.NumberFormat
 
 class DashboardFragment : Fragment() {
 
@@ -190,7 +190,7 @@ class DashboardFragment : Fragment() {
         yAxisLeft.setDrawGridLines(false)
         yAxisLeft.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return Format().formatCurrency(value.toInt().toString(), true)
+                return NumberFormat().formatCurrency(value.toInt().toString(), true)
             }
         }
         yAxisLeft.textSize = 12f

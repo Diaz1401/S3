@@ -22,28 +22,34 @@ import com.google.gson.Gson
 import com.opencsv.CSVReader
 import com.opencsv.CSVWriter
 import com.siwiba.R
-import com.siwiba.databinding.ActivityKasBinding
-import com.siwiba.util.Format
-import com.siwiba.util.ThemeMode
+import com.siwiba.databinding.ActivitySaldoBinding
+import com.siwiba.util.NumberFormat
+import com.siwiba.util.AppMode
 import com.siwiba.wba.model.Saldo
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.util.Locale
 
-class KasActivity : AppCompatActivity() {
+class SaldoActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityKasBinding
+    private lateinit var binding: ActivitySaldoBinding
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var whichSaldo: String
     private var selectedPeriod: String = "Total"
-    private val whichSaldo = "kas"
     private lateinit var sharedPreferences: SharedPreferences
     private var editor: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themeMode = ThemeMode(this)
-        setTheme(themeMode.getSavedTheme())
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
-        binding = ActivityKasBinding.inflate(layoutInflater)
+        binding = ActivitySaldoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        whichSaldo = intent.getStringExtra("whichSaldo") ?: "utama"
 
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
@@ -117,6 +123,7 @@ class KasActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+        setTitle()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -137,6 +144,15 @@ class KasActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setTitle() {
+        val title = if (whichSaldo == "utama") {
+            "Saldo Utama"
+        } else {
+            "Saldo ${whichSaldo.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}"
+        }
+        binding.txtTitle.text = title
     }
 
     private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
@@ -334,10 +350,10 @@ class KasActivity : AppCompatActivity() {
         var totalSaldoKredit = 0
 
         val tasks =  firestore.collection("saldo")
-                .document(whichSaldo)
-                .collection("data")
-                .orderBy("no", Query.Direction.DESCENDING)
-                .get()
+            .document(whichSaldo)
+            .collection("data")
+            .orderBy("no", Query.Direction.DESCENDING)
+            .get()
 
         Tasks.whenAllComplete(tasks).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -352,9 +368,9 @@ class KasActivity : AppCompatActivity() {
                     totalSaldoKredit += kredit
                 }
                 // Set formatted total, debit, kredit with "Rp" in front
-                binding.txtTotal.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
-                binding.txtDebit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
-                binding.txtKredit.text = "Rp ${Format().formatCurrency(totalSaldo.toString())}"
+                binding.txtTotal.text = "Rp ${NumberFormat().formatCurrency(totalSaldo.toString())}"
+                binding.txtDebit.text = "Rp ${NumberFormat().formatCurrency(totalSaldo.toString())}"
+                binding.txtKredit.text = "Rp ${NumberFormat().formatCurrency(totalSaldo.toString())}"
             }
         }
     }

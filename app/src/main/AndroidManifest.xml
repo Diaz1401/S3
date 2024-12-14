@@ -19,6 +19,9 @@
         android:theme="@style/Theme.SIWIBA"
         tools:targetApi="31">
         <activity
+            android:name=".wba.activity.SaldoActivity"
+            android:exported="false" />
+        <activity
             android:name=".wba.activity.ManageAccountActivity"
             android:exported="false" />
         <activity
@@ -29,24 +32,6 @@
             android:exported="false" />
         <activity
             android:name=".wba.activity.ManageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.BpjsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.LogistikActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.GajiActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.KasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.PajakActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wba.activity.PinjamanActivity"
             android:exported="false" />
         <activity
             android:name=".wba.SignUpActivity"

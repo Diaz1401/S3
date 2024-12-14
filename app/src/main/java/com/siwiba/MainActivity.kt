@@ -1,20 +1,15 @@
 package com.siwiba
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.databinding.ActivityMainBinding
-import com.siwiba.wba.fragment.AbsenFragment
 import com.siwiba.wba.fragment.DashboardFragment
 import com.siwiba.wba.fragment.KeuanganFragment
-import com.siwiba.wba.fragment.AnalisisFragment
 import com.siwiba.wba.fragment.ProfilFragment
-import com.siwiba.util.ThemeMode
+import com.siwiba.util.AppMode
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,8 +18,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val themeMode = ThemeMode(this)
-        setTheme(themeMode.getSavedTheme())
+        val appMode = AppMode(this)
+        if (appMode.getAppMode()) {
+            setTheme(R.style.Base_Theme_WBA)
+        } else {
+            setTheme(R.style.Base_Theme_KWI)
+        }
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)

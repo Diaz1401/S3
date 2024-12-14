@@ -6,7 +6,7 @@ import android.widget.EditText
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-class Format {
+class NumberFormat {
     fun createTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

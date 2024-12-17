@@ -222,6 +222,29 @@
                         android:layout_marginTop="@dimen/_42sdp"
                         />
                 </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/frameTagihan"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_12sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_42sdp"
+                        android:layout_height="@dimen/_42sdp"
+                        android:src="@drawable/icon_tagihan"
+                        android:background="@android:color/transparent" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tagihan"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/siwiba_light"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_42sdp"
+                        />
+                </FrameLayout>
             </LinearLayout>
         </HorizontalScrollView>
 

@@ -27,11 +27,12 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
             setTheme(R.style.Base_Theme_KWI)
         }
         super.onCreate(savedInstanceState)
+
         binding = ActivityManageAccountBinding.inflate(layoutInflater)
         firestore = FirebaseFirestore.getInstance()
         setContentView(binding.root)
 
-        accountAdapter = AccountAdapter(accounts, this)
+        accountAdapter = AccountAdapter(accounts, this, this)
         binding.recyclerViewAccounts.adapter = accountAdapter
         binding.recyclerViewAccounts.layoutManager = LinearLayoutManager(this)
 
@@ -68,6 +69,13 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
                         id = document.id,
                         name = document.getString("name") ?: "",
                         jabatan = document.getLong("jabatan")?.toInt() ?: 0,
+                        scopeMode = document.getLong("scopeMode")?.toInt() ?: 0,
+                        scopeGaji = document.getBoolean("scopeGaji") ?: false,
+                        scopePajak = document.getBoolean("scopePajak") ?: false,
+                        scopePinjaman = document.getBoolean("scopePinjaman") ?: false,
+                        scopeKas = document.getBoolean("scopeKas") ?: false,
+                        scopeLogistik = document.getBoolean("scopeLogistik") ?: false,
+                        scopeBpjs = document.getBoolean("scopeBpjs") ?: false,
                         isAdmin = document.getBoolean("isAdmin") ?: false,
                         email = document.getString("email") ?: "",
                         password = document.getString("password") ?: ""

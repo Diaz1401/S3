@@ -51,6 +51,7 @@
         android:id="@+id/profilCard"
         app:cardCornerRadius="@dimen/_12sdp"
         app:cardElevation="@dimen/_6sdp"
+        android:backgroundTint="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/topInfo"
         android:layout_marginTop="@dimen/_18sdp"
         android:layout_marginHorizontal="@dimen/_18sdp">

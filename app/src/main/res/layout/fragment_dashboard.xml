@@ -41,98 +41,94 @@
         android:id="@+id/profil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_kotak_wba"
+        android:backgroundTint="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/topInfo"
         android:layout_marginTop="@dimen/_18sdp"
         android:layout_marginHorizontal="@dimen/_18sdp"
         app:cardCornerRadius="@dimen/_12sdp"
         app:cardElevation="@dimen/_6sdp">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:background="@drawable/background_bulat_white"
-                android:scaleType="centerCrop"
-                app:riv_oval="true"/>
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NAME"
-                android:textSize="@dimen/_18ssp"
-                android:textStyle="bold"
-                android:textColor="@color/siwiba_light"
-                android:layout_marginStart="@dimen/_90sdp"
-                android:layout_marginTop="@dimen/_36sdp"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_18sdp"
+            android:background="@drawable/background_bulat_white"
+            android:scaleType="centerCrop"
+            app:riv_oval="true"/>
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NAME"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            android:textColor="@color/siwiba_light"
+            android:layout_marginStart="@dimen/_90sdp"
+            android:layout_marginTop="@dimen/_36sdp"/>
 
-            <LinearLayout
-                android:id="@+id/layoutEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_84sdp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_12sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="0dp"
-                    android:src="@drawable/baseline_mail_outline_24_white"/>
-                <TextView
-                    android:id="@+id/txtEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="EMAIL"
-                    android:textSize="@dimen/_12ssp"
-                    android:textColor="@color/siwiba_light"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/_12sdp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_102sdp"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_12sdp"
-                    android:layout_height="@dimen/_12sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="0dp"
-                    android:src="@drawable/baseline_location_pin_24_white"/>
-                <TextView
-                    android:id="@+id/txtAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ADDRESS"
-                    android:textSize="@dimen/_12ssp"
-                    android:textColor="@color/siwiba_light"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_12sdp" />
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_84sdp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/baseline_mail_outline_24_white"/>
             <TextView
-                android:id="@+id/txtPilihPeriode"
+                android:id="@+id/txtEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pilih waktu:"
+                android:text="EMAIL"
                 android:textSize="@dimen/_12ssp"
-                android:textColor="@color/white"
-                android:layout_marginTop="@dimen/_132sdp"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginBottom="@dimen/_18sdp" />
-            <Spinner
+                android:textColor="@color/siwiba_light"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_12sdp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_102sdp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="0dp"
+                android:src="@drawable/baseline_location_pin_24_white"/>
+            <TextView
+                android:id="@+id/txtAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinnerPeriode"
-                android:layout_marginTop="@dimen/_132sdp"
-                android:layout_marginStart="@dimen/_84sdp"/>
-        </FrameLayout>
+                android:text="ADDRESS"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/siwiba_light"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_12sdp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/txtPilihPeriode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih waktu:"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_132sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginBottom="@dimen/_18sdp" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerPeriode"
+            android:layout_marginTop="@dimen/_132sdp"
+            android:layout_marginStart="@dimen/_84sdp"/>
 
     </com.google.android.material.card.MaterialCardView>
 

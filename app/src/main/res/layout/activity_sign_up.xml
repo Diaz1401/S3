@@ -75,6 +75,12 @@
             android:layout_height="@dimen/_36sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:background="@drawable/outline" />
+        <Spinner
+            android:id="@+id/spinnerScope"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:background="@drawable/outline" />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"

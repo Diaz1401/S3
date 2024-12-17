@@ -10,17 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.MainActivity
 import com.siwiba.R
 import com.siwiba.databinding.ActivitySignInBinding
 import com.siwiba.util.AppMode
+import com.siwiba.util.RefreshData
+import com.siwiba.wba.activity.ManageAccountActivity
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var refreshData: RefreshData
+    private var scopeMode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
@@ -32,17 +37,40 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        refreshData = RefreshData(this, firestore)
         val user = auth.currentUser
+
+        // Reauthenticate user if already signed in
         if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            val sharedPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            val email = sharedPrefs.getString("email", "") ?: ""
+            val password = sharedPrefs.getString("password", "") ?: ""
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                val credential = EmailAuthProvider.getCredential(email, password)
+                user.reauthenticate(credential)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            refreshData.getUserData(user.uid)
+                            if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                when (scopeMode) {
+                                    1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                                    2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            Toast.makeText(this, "Reautentikasi gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
         }
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        firestore = FirebaseFirestore.getInstance()
 
         binding.btnSignIn.setOnClickListener {
             val email = binding.inputEmailSignIn.text.toString()
@@ -67,6 +95,7 @@ class SignInActivity : AppCompatActivity() {
             zoomImage(binding.imgWBA, binding.imgKWI)
         }
     }
+
 
     private fun zoomImage(zoomIn: AppCompatImageView, zoomOut: AppCompatImageView) {
         val scaleXsmall = ObjectAnimator.ofFloat(zoomIn, "scaleX", 0.8f)
@@ -113,10 +142,19 @@ class SignInActivity : AppCompatActivity() {
                     user?.let {
                         if (it.isEmailVerified) {
                             Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
-                            getUserData(it.uid)
+                            refreshData.getUserData(it.uid)
+                            if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                when (scopeMode) {
+                                    1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                                    2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         } else {
-                            Toast.makeText(this, "Verifikasi email terlebih dahulu", Toast.LENGTH_SHORT).show()
-                            auth.signOut()
+                            Toast.makeText(this, "Email belum diverifikasi", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } else {
@@ -129,47 +167,20 @@ class SignInActivity : AppCompatActivity() {
         if (task.isSuccessful) {
             val user = auth.currentUser
             user?.let {
-                getUserData(it.uid)
-                Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
+                refreshData.getUserData(it.uid)
+                if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    when (scopeMode) {
+                        1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                        2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         } else {
             Toast.makeText(this, "Sign In gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun getUserData(uid: String) {
-        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putString("uid", uid)
-            apply()
-        }
-
-        firestore.collection("users").document(uid).get()
-            .addOnSuccessListener { document ->
-                val name = document.getString("name") ?: ""
-                val email = document.getString("email") ?: ""
-                val address = document.getString("address") ?: ""
-                val profileImage = document.getString("profileImage") ?: ""
-                val isAdmin = document.getBoolean("isAdmin") ?: false
-                val jabatan = document.getLong("jabatan")?.toInt() ?: 0
-
-                with(sharedPref.edit()) {
-                    putString("name", name)
-                    putString("email", email)
-                    putString("address", address)
-                    putString("profileImage", profileImage)
-                    putInt("jabatan", jabatan)
-                    putBoolean("isAdmin", isAdmin)
-                    apply()
-                }
-
-                // Start MainActivity after successfully getting user data
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Gagal mengambil data pengguna: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 }

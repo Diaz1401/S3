@@ -92,15 +92,21 @@ class SignUpActivity : AppCompatActivity() {
 
                 if (isValidSignUpDetails(name, email, jabatan, address, password, confirmPassword)) {
                     signUpWithEmail(email, password)
+                    finish()
                 }
             }
-            finish()
         }
+
+        //Setup spinnerScope
+        val scopeArray = arrayOf("WBA & KWI", "WBA", "KWI")
+        val adapterScope = ArrayAdapter(this, R.layout.item_spinner_black, scopeArray)
+        adapterScope.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        binding.spinnerScope.adapter = adapterScope
 
         // Set up the Spinner with the options
         val jabatanArray = arrayOf("Jabatan", "Direktur", "Direktur Operasional", "General Manager", "Karyawan")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, jabatanArray)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(this, R.layout.item_spinner_black, jabatanArray)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerJabatan.adapter = adapter
 
         binding.spinnerJabatan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -190,11 +196,11 @@ class SignUpActivity : AppCompatActivity() {
             "name" to binding.inputNameSignUp.text.toString(),
             "jabatan" to binding.spinnerJabatan.selectedItemPosition,
             "isAdmin" to (binding.spinnerJabatan.selectedItemPosition < 4),
+            "scopeMode" to binding.spinnerScope.selectedItemPosition,
             "email" to user.email,
             "address" to binding.inputAlamat.text.toString(),
             "profileImage" to encodedImage,
-            "password" to binding.inputPasswordSignUp.text.toString(),
-            "isAdmin" to false
+            "password" to binding.inputPasswordSignUp.text.toString()
         )
 
         firestore.collection("users").document(user.uid)

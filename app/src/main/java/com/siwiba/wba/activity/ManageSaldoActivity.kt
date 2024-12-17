@@ -95,13 +95,13 @@ class ManageSaldoActivity : AppCompatActivity() {
     private fun setupAddMode(whichSaldo: String, utama: Boolean) {
         binding.btnSave.setOnClickListener {
             if (checkInput()) {
-                var debit = 0
+                var debit = 0L
                 if (isAdmin) {
                     val parsedDebit = NumberFormat().parseNumber(binding.etDebit.text.toString())
-                    debit = parsedDebit?.toInt() ?: 0
+                    debit = parsedDebit?.toLong() ?: 0
                 }
                 val parsedKredit = NumberFormat().parseNumber(binding.etKredit.text.toString())
-                val kredit = parsedKredit?.toInt() ?: 0
+                val kredit = parsedKredit?.toLong() ?: 0
                 /*
                  * Fetch the latest saldo utama
                  */
@@ -112,9 +112,9 @@ class ManageSaldoActivity : AppCompatActivity() {
                     .limit(1)
                     .get()
                     .addOnSuccessListener { document ->
-                        var lastSaldoUtama = 0
+                        var lastSaldoUtama = 0L
                         if (!document.isEmpty) {
-                            lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
+                            lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
                         }
                         if ((debit > lastSaldoUtama) && !utama) {
                             Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
@@ -129,11 +129,11 @@ class ManageSaldoActivity : AppCompatActivity() {
                                 .limit(1)
                                 .get()
                                 .addOnSuccessListener { documents ->
-                                    var lastSaldo = 0
-                                    var newNo = 1
+                                    var lastSaldo = 0L
+                                    var newNo = 1L
                                     if (!documents.isEmpty) {
-                                        lastSaldo = documents.documents[0].getLong("saldo")?.toInt() ?: 0
-                                        newNo = documents.documents[0].getLong("no")?.toInt() ?: 1
+                                        lastSaldo = documents.documents[0].getLong("saldo") ?: 0
+                                        newNo = documents.documents[0].getLong("no") ?: 1
                                         newNo++
                                     }
                                     if (kredit > lastSaldo) {
@@ -182,8 +182,8 @@ class ManageSaldoActivity : AppCompatActivity() {
                                                             newNo = 1
                                                             val kreditSaldoUtama = debit
                                                             if (!document.isEmpty) {
-                                                                lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
-                                                                newNo = document.documents[0].getLong("no")?.toInt() ?: 1
+                                                                lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
+                                                                newNo = document.documents[0].getLong("no") ?: 1
                                                                 newNo++
                                                             }
                                                             lastSaldoUtama -= kreditSaldoUtama

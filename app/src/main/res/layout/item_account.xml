@@ -17,7 +17,7 @@
         android:text="Name"
         android:textSize="@dimen/_12ssp"
         android:layout_marginTop="@dimen/_12sdp"
-        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp"
         android:textStyle="bold" />
 
     <TextView
@@ -26,16 +26,16 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorGreyDark"
         android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_12sdp"
         android:text="Email"
         android:textSize="@dimen/_10ssp" />
 
     <LinearLayout
         android:id="@+id/layoutOptions"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_marginTop="@dimen/_60sdp"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_6sdp"
             android:gravity="center">
             <com.google.android.material.button.MaterialButton
                 android:clickable="false"
@@ -69,12 +69,146 @@
         </LinearLayout>
 
         <Spinner
+            android:id="@+id/spinnerJabatan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerJabatan"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginHorizontal="@dimen/_6sdp"
             android:background="@drawable/outline" />
+        <Spinner
+            android:id="@+id/spinnerScope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginHorizontal="@dimen/_6sdp"
+            android:background="@drawable/outline" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/txtScope"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atur akses:"
+        android:textStyle="bold"
+        android:textColor="@color/colorGreyDark"
+        android:layout_marginTop="@dimen/_107sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"/>
+    <LinearLayout
+        android:id="@+id/layoutScope"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_134sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp">
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbGaji"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_8ssp"
+                android:textColor="@color/colorGreyDark"
+                android:text="Gaji"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbPajak"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_8ssp"
+                android:textColor="@color/colorGreyDark"
+                android:text="Pajak"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbKas"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:textSize="@dimen/_8ssp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreyDark"
+                android:text="Kas"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbPinjaman"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreyDark"
+                android:textSize="@dimen/_8ssp"
+                android:text="Pinjaman"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbLogistik"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/_8ssp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreyDark"
+                android:text="Logistik"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cbBpjs"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+            <TextView
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/_8ssp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreyDark"
+                android:text="BPJS"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/layoutShowOptions"

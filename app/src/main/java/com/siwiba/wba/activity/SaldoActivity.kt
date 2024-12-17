@@ -73,7 +73,7 @@ class SaldoActivity : AppCompatActivity() {
 
         // Set up Spinner
         val periods = arrayOf("Total", "Seminggu", "Sebulan", "Setahun")
-        val adapter = ArrayAdapter(this, R.layout.item_spinner_periode, periods)
+        val adapter = ArrayAdapter(this, R.layout.item_spinner_white, periods)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = adapter
         binding.txtPeriode.text = "Untuk $selectedPeriod Terakhir"
@@ -178,10 +178,10 @@ class SaldoActivity : AppCompatActivity() {
             var nextLine: Array<String>?
             while (reader.readNext().also { nextLine = it } != null) {
                 val saldo = Saldo(
-                    no = nextLine!![0].toInt(),
+                    no = nextLine!![0].toLong(),
                     keterangan = nextLine!![1],
-                    debit = nextLine!![2].toInt(),
-                    kredit = nextLine!![3].toInt(),
+                    debit = nextLine!![2].toLong(),
+                    kredit = nextLine!![3].toLong(),
                     saldo = 0,
                     editor = nextLine!![5],
                     tanggal = nextLine!![6]
@@ -198,11 +198,11 @@ class SaldoActivity : AppCompatActivity() {
             .limit(1)
             .get()
             .addOnSuccessListener { document ->
-                var lastSaldoUtama = 0
-                var newNoUtama = 1
+                var lastSaldoUtama = 0L
+                var newNoUtama = 1L
                 if (!document.isEmpty) {
-                    lastSaldoUtama = document.documents[0].getLong("saldo")?.toInt() ?: 0
-                    newNoUtama = document.documents[0].getLong("no")?.toInt() ?: 1
+                    lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
+                    newNoUtama = document.documents[0].getLong("no") ?: 0
                     newNoUtama++
                 }
 
@@ -213,11 +213,11 @@ class SaldoActivity : AppCompatActivity() {
                     .limit(1)
                     .get()
                     .addOnSuccessListener { documents ->
-                        var lastSaldo = 0
-                        var newNo = 1
+                        var lastSaldo = 0L
+                        var newNo = 1L
                         if (!documents.isEmpty) {
-                            lastSaldo = documents.documents[0].getLong("saldo")?.toInt() ?: 0
-                            newNo = documents.documents[0].getLong("no")?.toInt() ?: 1
+                            lastSaldo = documents.documents[0].getLong("saldo") ?: 0
+                            newNo = documents.documents[0].getLong("no") ?: 0
                             newNo++
                         }
 
@@ -348,9 +348,9 @@ class SaldoActivity : AppCompatActivity() {
     }
 
     private fun calculateTotalSaldo() {
-        var totalSaldo = 0
-        var totalSaldoDebit = 0
-        var totalSaldoKredit = 0
+        var totalSaldo = 0L
+        var totalSaldoDebit = 0L
+        var totalSaldoKredit = 0L
 
         val tasks =  firestore.collection(firestoreSaldo)
             .document(whichSaldo)
@@ -364,8 +364,8 @@ class SaldoActivity : AppCompatActivity() {
                 val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
                 totalSaldo += saldo
                 documents.forEach { document ->
-                    val debit = document.getLong("debit")?.toInt() ?: 0
-                    val kredit = document.getLong("kredit")?.toInt() ?: 0
+                    val debit = document.getLong("debit") ?: 0
+                    val kredit = document.getLong("kredit") ?: 0
 
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit

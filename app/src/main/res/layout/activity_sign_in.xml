@@ -1,120 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:padding="@dimen/_12sdp"
-    android:scrollbars="none"
     android:background="@color/siwiba_light"
-    tools:context=".wba.SignInActivity">
-
-    <LinearLayout
+    android:gravity="center"
+    android:orientation="vertical" >
+    <ScrollView
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_150sdp"
-            android:orientation="horizontal">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgWBA"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="@dimen/_24sdp"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:src="@drawable/logowba" />
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgKWI"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="@dimen/_24sdp"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:src="@drawable/logo_kwi" />
-        </LinearLayout>
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:padding="@dimen/_12sdp"
+        android:scrollbars="none"
+        tools:context=".wba.SignInActivity">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_36sdp"
-            android:hint="Email"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:id="@+id/inputEmailSignIn"
-                android:layout_height="@dimen/_36sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/colorGreyLighter"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress"
-                android:paddingStart="@dimen/_18sdp"
-                android:paddingEnd="@dimen/_18sdp"
-                android:textSize="@dimen/_12ssp"
-                android:focusable="true"
-                android:background="@drawable/outline" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:hint="Password"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:endIconMode="password_toggle">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:id="@+id/inputPasswordSignIn"
-                android:layout_height="@dimen/_36sdp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/colorGreyLighter"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:paddingStart="@dimen/_18sdp"
-                android:paddingEnd="@dimen/_18sdp"
-                android:textSize="@dimen/_12ssp"
-                android:fontFamily="monospace"
-                android:focusable="true"
-                android:background="@drawable/outline" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:layout_marginTop="@dimen/_36sdp"
-            android:text="Sign In"
-            android:textSize="@dimen/_12ssp"
-            app:cornerRadius="@dimen/_12ssp"/>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_36sdp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <TextView
+            android:orientation="vertical"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgWBA"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/_24sdp"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:src="@drawable/logowba" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgKWI"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/_24sdp"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:src="@drawable/logo_kwi" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_marginTop="@dimen/_36sdp"
+                android:hint="Email"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/inputEmailSignIn"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/colorGreyLighter"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/_18sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:focusable="true"
+                    android:background="@drawable/outline" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:hint="Password"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:endIconMode="password_toggle">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/inputPasswordSignIn"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/colorGreyLighter"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/_18sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="monospace"
+                    android:focusable="true"
+                    android:background="@drawable/outline" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lupa kata sandi?"
-                android:textColor="@color/colorGreyLighter"
-                android:textSize="@dimen/_10ssp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Hubungi admin PT Wira Buana Arum"
-                android:textStyle="bold"
-                android:textColor="@color/wba"
-                android:clickable="true"
-                android:focusable="true"
-                android:textSize="@dimen/_10ssp"/>
+                android:layout_marginTop="@dimen/_36sdp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lupa kata sandi?"
+                    android:textColor="@color/colorGreyLighter"
+                    android:textSize="@dimen/_10ssp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Hubungi admin PT Wira Buana Arum"
+                    android:textStyle="bold"
+                    android:textColor="@color/wba"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textSize="@dimen/_10ssp"/>
+            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_marginTop="@dimen/_36sdp"
+                android:text="Sign In"
+                android:textSize="@dimen/_12ssp"
+                app:cornerRadius="@dimen/_12ssp"/>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+</LinearLayout>

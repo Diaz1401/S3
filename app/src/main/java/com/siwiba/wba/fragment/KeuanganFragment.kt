@@ -35,8 +35,6 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
 
     private var _binding: FragmentKeuanganBinding? = null
     private val binding get() = _binding!!
-    private var _binding_main: ActivityMainBinding? = null
-    private val binding_main get() = _binding_main!!
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
     private val whichSaldo = "utama"
@@ -47,7 +45,6 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
-        _binding_main = ActivityMainBinding.inflate(inflater, container, false)
         firestore = FirebaseFirestore.getInstance()
         return binding.root
     }
@@ -65,50 +62,80 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "gaji")
-                startActivity(intent)
+            val saldoGaji = sharedPreferences.getBoolean("saldoGaji", false)
+            if (saldoGaji) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "gaji")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.framePajak.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "pajak")
-                startActivity(intent)
+            val saldoPajak = sharedPreferences.getBoolean("saldoPajak", false)
+            if (saldoPajak) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "pajak")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.framePinjaman.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "pinjaman")
-                startActivity(intent)
+            val saldoPinjaman = sharedPreferences.getBoolean("saldoPinjaman", false)
+            if (saldoPinjaman) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "pinjaman")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.frameKas.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "kas")
-                startActivity(intent)
+            val saldoKas = sharedPreferences.getBoolean("saldoKas", false)
+            if (saldoKas) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "kas")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.frameBpjs.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "bpjs")
-                startActivity(intent)
+            val saldoBpjs = sharedPreferences.getBoolean("saldoBpjs", false)
+            if (saldoBpjs) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "bpjs")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.frameLogistik.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, SaldoActivity::class.java)
-                intent.putExtra("whichSaldo", "logistik")
-                startActivity(intent)
+            val saldoLogistik = sharedPreferences.getBoolean("saldoLogistik", false)
+            if (saldoLogistik) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "logistik")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -125,7 +152,6 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
                 }
             } else {
                 Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk menambah data", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
             }
         }
 
@@ -200,12 +226,12 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
                             .limit(1)
                             .get()
                             .addOnSuccessListener { document ->
-                                var newNo = 1
-                                var lastSaldo = 0
+                                var newNo = 1L
+                                var lastSaldo = 0L
                                 if (!document.isEmpty) {
                                     val highestNo = document.documents[0].getLong("no") ?: 1
-                                    newNo = highestNo.toInt() + 1
-                                    lastSaldo = document.documents[0].getLong("saldo")?.toInt() ?: 0
+                                    newNo = highestNo + 1
+                                    lastSaldo = document.documents[0].getLong("saldo") ?: 0
                                 }
 
                                 val batch = firestore.batch()
@@ -272,10 +298,10 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
             var nextLine: Array<String>?
             while (reader.readNext().also { nextLine = it } != null) {
                 val saldo = Saldo(
-                    no = nextLine!![0].toInt(),
+                    no = nextLine!![0].toLong(),
                     keterangan = nextLine!![1],
-                    debit = nextLine!![2].toInt(),
-                    kredit = nextLine!![3].toInt(),
+                    debit = nextLine!![2].toLong(),
+                    kredit = nextLine!![3].toLong(),
                     saldo = 0,
                     editor = nextLine!![5],
                     tanggal = nextLine!![6]
@@ -358,9 +384,9 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
     private fun calculateTotalSaldo() {
         val binding = _binding ?: return // Ensure binding is not null
 
-        var totalSaldo = 0
-        var totalSaldoDebit = 0
-        var totalSaldoKredit = 0
+        var totalSaldo = 0L
+        var totalSaldoDebit = 0L
+        var totalSaldoKredit = 0L
 
         firestore.collection(firestoreSaldo)
             .document(whichSaldo)
@@ -368,11 +394,11 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
             .orderBy("no", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                val saldo = documents.firstOrNull()?.getLong("saldo")?.toInt() ?: 0
+                val saldo = documents.firstOrNull()?.getLong("saldo") ?: 0
                 totalSaldo += saldo
                 documents.forEach { document ->
-                    val debit = document.getLong("debit")?.toInt() ?: 0
-                    val kredit = document.getLong("kredit")?.toInt() ?: 0
+                    val debit = document.getLong("debit") ?: 0
+                    val kredit = document.getLong("kredit") ?: 0
 
                     totalSaldoDebit += debit
                     totalSaldoKredit += kredit

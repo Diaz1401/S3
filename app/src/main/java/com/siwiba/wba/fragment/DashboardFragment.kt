@@ -1,8 +1,6 @@
 package com.siwiba.wba.fragment
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
@@ -24,12 +22,10 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.firestore.FirebaseFirestore
 import com.siwiba.R
 import com.siwiba.databinding.FragmentDashboardBinding
-import com.siwiba.wba.SignInActivity
 import com.siwiba.wba.model.Saldo
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import android.util.Log
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
 import com.siwiba.util.NumberFormat
@@ -78,7 +74,7 @@ class DashboardFragment(private val firestoreSaldo: String) : Fragment() {
 
     private fun setupSpinners() {
         val periods = arrayOf("Perminggu", "Perbulan", "Pertahun")
-        val periodAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner_periode, periods)
+        val periodAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner_white, periods)
         periodAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerPeriode.adapter = periodAdapter
 

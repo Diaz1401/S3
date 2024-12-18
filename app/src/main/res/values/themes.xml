@@ -1,21 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Base.Theme.WBA" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/wba</item>
-        <item name="colorPrimaryVariant">@color/wba</item>
+        <item name="colorPrimary">@color/wba_primary</item>
+        <item name="colorPrimaryVariant">@color/wba_primary</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/kwi</item>
-        <item name="colorSecondaryVariant">@color/kwi</item>
+        <item name="colorSecondary">@color/wba_secondary</item>
+        <item name="colorSecondaryVariant">@color/wba_secondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/wba</item>
+        <item name="android:statusBarColor">@color/wba_primary</item>
     </style>
     <style name="Base.Theme.KWI" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/kwi</item>
-        <item name="colorPrimaryVariant">@color/kwi</item>
+        <item name="colorPrimary">@color/kwi_primary</item>
+        <item name="colorPrimaryVariant">@color/kwi_primary</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/wba</item>
-        <item name="colorSecondaryVariant">@color/wba</item>
+        <item name="colorSecondary">@color/kwi_secondary</item>
+        <item name="colorSecondaryVariant">@color/kwi_secondary</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/kwi</item>
+        <item name="android:statusBarColor">@color/kwi_primary</item>
     </style>
     <style name="Theme.SIWIBA" parent="Base.Theme.WBA" />
 </resources>

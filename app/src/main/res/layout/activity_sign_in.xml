@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text=" Hubungi admin PT Wira Buana Arum"
                     android:textStyle="bold"
-                    android:textColor="@color/wba"
+                    android:textColor="?attr/colorPrimary"
                     android:clickable="true"
                     android:focusable="true"
                     android:textSize="@dimen/_10ssp"/>

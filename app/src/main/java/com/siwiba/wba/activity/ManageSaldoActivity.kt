@@ -64,7 +64,7 @@ class ManageSaldoActivity : AppCompatActivity() {
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             binding.etTanggal.setText(dateFormat.format(calendar.time))
         }
 
@@ -94,165 +94,167 @@ class ManageSaldoActivity : AppCompatActivity() {
 
     private fun setupAddMode(whichSaldo: String, utama: Boolean) {
         binding.btnSave.setOnClickListener {
-            if (checkInput()) {
-                var debit = 0L
-                if (isAdmin) {
-                    val parsedDebit = NumberFormat().parseNumber(binding.etDebit.text.toString())
-                    debit = parsedDebit?.toLong() ?: 0
-                }
-                val parsedKredit = NumberFormat().parseNumber(binding.etKredit.text.toString())
-                val kredit = parsedKredit?.toLong() ?: 0
-                /*
-                 * Fetch the latest saldo utama
-                 */
-                firestore.collection(firestoreSaldo)
-                    .document("utama")
-                    .collection("data")
-                    .orderBy("no", Query.Direction.DESCENDING)
-                    .limit(1)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        var lastSaldoUtama = 0L
-                        if (!document.isEmpty) {
-                            lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
-                        }
-                        if ((debit > lastSaldoUtama) && !utama) {
-                            Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
-                        } else {
+            if (!checkInput()) return@setOnClickListener
+            var debit = 0L
+            if (isAdmin) {
+                val parsedDebit = NumberFormat().parseNumber(binding.etDebit.text.toString())
+                debit = parsedDebit?.toLong() ?: 0
+            }
+            val parsedKredit = NumberFormat().parseNumber(binding.etKredit.text.toString())
+            val kredit = parsedKredit?.toLong() ?: 0
+            /*
+             * Fetch the latest saldo utama
+             */
+            firestore.collection(firestoreSaldo)
+                .document("utama")
+                .collection("data")
+                .orderBy("no", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { document ->
+                    var lastSaldoUtama = 0L
+                    if (!document.isEmpty) {
+                        lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
+                    }
+                    if ((debit > lastSaldoUtama) && !utama) {
+                        Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+                    // check prevent older data to be added
+                    val lastDate = document.documents[0].getString("tanggal") ?: ""
+                    val currentDate = binding.etTanggal.text.toString()
+                    if (currentDate < lastDate) {
+                        Toast.makeText(this, "Tanggal tidak boleh lebih kecil dari tanggal terakhir", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+                    /*
+                     * Fetch the latest selected saldo
+                     */
+                    firestore.collection(firestoreSaldo)
+                        .document(whichSaldo)
+                        .collection("data")
+                        .orderBy("no", Query.Direction.DESCENDING)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            var lastSaldo = 0L
+                            var newNo = 1L
+                            if (!documents.isEmpty) {
+                                lastSaldo = documents.documents[0].getLong("saldo") ?: 0
+                                newNo = documents.documents[0].getLong("no") ?: 1
+                                newNo++
+                            }
+                            if (kredit > lastSaldo) {
+                                Toast.makeText(this, "Kredit tidak boleh lebih besar dari saldo $whichSaldo", Toast.LENGTH_SHORT).show()
+                                return@addOnSuccessListener
+                            }
+                            val keterangan = binding.etKeterangan.text.toString()
+                            val tanggal = binding.etTanggal.text.toString()
+                            val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
+                            lastSaldo += debit - kredit
+
+                            val data = mapOf(
+                                "no" to newNo,
+                                "keterangan" to keterangan,
+                                "debit" to debit,
+                                "kredit" to kredit,
+                                "saldo" to lastSaldo,
+                                "editor" to editor,
+                                "tanggal" to tanggal
+                            )
                             /*
-                             * Fetch the latest selected saldo
+                             * Save the data to the selected saldo
                              */
                             firestore.collection(firestoreSaldo)
                                 .document(whichSaldo)
                                 .collection("data")
-                                .orderBy("no", Query.Direction.DESCENDING)
-                                .limit(1)
-                                .get()
-                                .addOnSuccessListener { documents ->
-                                    var lastSaldo = 0L
-                                    var newNo = 1L
-                                    if (!documents.isEmpty) {
-                                        lastSaldo = documents.documents[0].getLong("saldo") ?: 0
-                                        newNo = documents.documents[0].getLong("no") ?: 1
-                                        newNo++
-                                    }
-                                    if (kredit > lastSaldo) {
-                                        Toast.makeText(this, "Kredit tidak boleh lebih besar dari saldo $whichSaldo", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        val keterangan = binding.etKeterangan.text.toString()
-                                        val tanggal = binding.etTanggal.text.toString()
-                                        val editor = intent.getStringExtra("editor") ?: "Editor tidak diketahui"
-                                        lastSaldo += debit - kredit
-
-                                        val data = mapOf(
-                                            "no" to newNo,
-                                            "keterangan" to keterangan,
-                                            "debit" to debit,
-                                            "kredit" to kredit,
-                                            "saldo" to lastSaldo,
-                                            "editor" to editor,
-                                            "tanggal" to tanggal
-                                        )
+                                .document(newNo.toString())
+                                .set(data)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Sukses menambahkan data pada saldo $whichSaldo", Toast.LENGTH_SHORT).show()
+                                    if ((debit > 0) && !utama) {
                                         /*
-                                         * Save the data to the selected saldo
+                                         * Reduce latest saldo utama based on debit addition
                                          */
                                         firestore.collection(firestoreSaldo)
-                                            .document(whichSaldo)
+                                            .document("utama")
                                             .collection("data")
-                                            .document(newNo.toString())
-                                            .set(data)
-                                            .addOnSuccessListener {
-                                                Toast.makeText(
-                                                    this,
-                                                    "Sukses menambahkan data pada saldo $whichSaldo",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                if ((debit > 0) && !utama) {
-                                                    /*
-                                                     * Reduce latest saldo utama based on debit addition
-                                                     */
-                                                    firestore.collection(firestoreSaldo)
-                                                        .document("utama")
-                                                        .collection("data")
-                                                        .orderBy("no", Query.Direction.DESCENDING)
-                                                        .limit(1)
-                                                        .get()
-                                                        .addOnSuccessListener { document ->
-                                                            lastSaldoUtama = 0
-                                                            newNo = 1
-                                                            val kreditSaldoUtama = debit
-                                                            if (!document.isEmpty) {
-                                                                lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
-                                                                newNo = document.documents[0].getLong("no") ?: 1
-                                                                newNo++
-                                                            }
-                                                            lastSaldoUtama -= kreditSaldoUtama
-                                                            val dataUtama = mapOf(
-                                                                "no" to newNo,
-                                                                "keterangan" to "Kredit saldo utama ke saldo $whichSaldo",
-                                                                "debit" to 0,
-                                                                "kredit" to kreditSaldoUtama,
-                                                                "saldo" to lastSaldoUtama,
-                                                                "editor" to editor,
-                                                                "tanggal" to tanggal
-                                                            )
-                                                            /*
-                                                             * Save the data to saldo utama
-                                                             */
-                                                            firestore.collection(firestoreSaldo)
-                                                                .document("utama")
-                                                                .collection("data")
-                                                                .document(newNo.toString())
-                                                                .set(dataUtama)
-                                                                .addOnSuccessListener {
-                                                                    Toast.makeText(
-                                                                        this,
-                                                                        "Sukses mengurangi saldo utama",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
-                                                                    finish()
-                                                                }
-                                                                .addOnFailureListener {
-                                                                    Toast.makeText(
-                                                                        this,
-                                                                        "Gagal mengurangi saldo utama",
-                                                                        Toast.LENGTH_SHORT
-                                                                    ).show()
-                                                                }
-                                                        }
-                                                        .addOnFailureListener {
-                                                            Toast.makeText(
-                                                                this,
-                                                                "Gagal mengambil saldo utama terakhir",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
-                                                        }
-                                                } else {
-                                                    finish()
+                                            .orderBy("no", Query.Direction.DESCENDING)
+                                            .limit(1)
+                                            .get()
+                                            .addOnSuccessListener { document ->
+                                                lastSaldoUtama = 0
+                                                newNo = 1
+                                                val kreditSaldoUtama = debit
+                                                if (!document.isEmpty) {
+                                                    lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
+                                                    newNo = document.documents[0].getLong("no") ?: 1
+                                                    newNo++
                                                 }
+                                                lastSaldoUtama -= kreditSaldoUtama
+                                                val dataUtama = mapOf(
+                                                    "no" to newNo,
+                                                    "keterangan" to "Kredit saldo utama ke saldo $whichSaldo",
+                                                    "debit" to 0,
+                                                    "kredit" to kreditSaldoUtama,
+                                                    "saldo" to lastSaldoUtama,
+                                                    "editor" to editor,
+                                                    "tanggal" to tanggal
+                                                )
+                                                /*
+                                                 * Save the data to saldo utama
+                                                 */
+                                                firestore.collection(firestoreSaldo)
+                                                    .document("utama")
+                                                    .collection("data")
+                                                    .document(newNo.toString())
+                                                    .set(dataUtama)
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(
+                                                            this,
+                                                            "Sukses mengurangi saldo utama",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                        finish()
+                                                    }
+                                                    .addOnFailureListener {
+                                                        Toast.makeText(
+                                                            this,
+                                                            "Gagal mengurangi saldo utama",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
                                             }
                                             .addOnFailureListener {
                                                 Toast.makeText(
                                                     this,
-                                                    "Gagal menambahkan data pada saldo $whichSaldo",
+                                                    "Gagal mengambil saldo utama terakhir",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             }
+                                    } else {
+                                        finish()
                                     }
                                 }
                                 .addOnFailureListener {
                                     Toast.makeText(
                                         this,
-                                        "Gagal mengambil saldo $whichSaldo terakhir",
+                                        "Gagal menambahkan data pada saldo $whichSaldo",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
                         }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Gagal mengambil saldo utama terakhir", Toast.LENGTH_SHORT).show()
-                    }
-            }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this,
+                                "Gagal mengambil saldo $whichSaldo terakhir",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Gagal mengambil saldo utama terakhir", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

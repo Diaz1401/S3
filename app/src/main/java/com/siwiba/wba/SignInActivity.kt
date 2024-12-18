@@ -38,7 +38,7 @@ class SignInActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-        refreshData = RefreshData(this, firestore)
+        refreshData = RefreshData(this)
         scopeMode = appMode.getScopeMode()
         val user = auth.currentUser
 

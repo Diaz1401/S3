@@ -29,14 +29,17 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import com.siwiba.R
 import com.siwiba.databinding.ActivityMainBinding
+import com.siwiba.util.CsvExportImport
 import com.siwiba.util.NumberFormat
+import com.siwiba.util.RefreshData
 
 class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
 
-    private var _binding: FragmentKeuanganBinding? = null
-    private val binding get() = _binding!!
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var csvManager: CsvExportImport
+    private var _binding: FragmentKeuanganBinding? = null
+    private val binding get() = _binding!!
     private val whichSaldo = "utama"
     private var editor: String = ""
 
@@ -60,10 +63,11 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext())
 
         binding.frameGaji.setOnClickListener {
-            val saldoGaji = sharedPreferences.getBoolean("saldoGaji", false)
-            if (saldoGaji) {
+            val scopeGaji = sharedPreferences.getBoolean("scopeGaji", false)
+            if (scopeGaji) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "gaji")
@@ -75,8 +79,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.framePajak.setOnClickListener {
-            val saldoPajak = sharedPreferences.getBoolean("saldoPajak", false)
-            if (saldoPajak) {
+            val scopePajak = sharedPreferences.getBoolean("scopePajak", false)
+            if (scopePajak) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "pajak")
@@ -88,8 +92,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.framePinjaman.setOnClickListener {
-            val saldoPinjaman = sharedPreferences.getBoolean("saldoPinjaman", false)
-            if (saldoPinjaman) {
+            val scopePinjaman = sharedPreferences.getBoolean("scopePinjaman", false)
+            if (scopePinjaman) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "pinjaman")
@@ -101,8 +105,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.frameKas.setOnClickListener {
-            val saldoKas = sharedPreferences.getBoolean("saldoKas", false)
-            if (saldoKas) {
+            val scopeKas = sharedPreferences.getBoolean("scopeKas", false)
+            if (scopeKas) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "kas")
@@ -114,8 +118,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.frameBpjs.setOnClickListener {
-            val saldoBpjs = sharedPreferences.getBoolean("saldoBpjs", false)
-            if (saldoBpjs) {
+            val scopeBpjs = sharedPreferences.getBoolean("scopeBpjs", false)
+            if (scopeBpjs) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "bpjs")
@@ -127,8 +131,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.frameLogistik.setOnClickListener {
-            val saldoLogistik = sharedPreferences.getBoolean("saldoLogistik", false)
-            if (saldoLogistik) {
+            val scopeLogistik = sharedPreferences.getBoolean("scopeLogistik", false)
+            if (scopeLogistik) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "logistik")
@@ -140,8 +144,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
         }
 
         binding.frameTagihan.setOnClickListener {
-            val saldoTagihan = sharedPreferences.getBoolean("saldoTagihan", false)
-            if (saldoTagihan) {
+            val scopeTagihan = sharedPreferences.getBoolean("scopeTagihan", false)
+            if (scopeTagihan) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
                     intent.putExtra("whichSaldo", "tagihan")
@@ -224,120 +228,18 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
             when (requestCode) {
                 REQUEST_CODE_EXPORT -> {
                     data.data?.let { uri ->
-                        fetchCsvSaldoData().addOnSuccessListener { saldoList ->
-                            exportDataToCSV(saldoList, uri)
+                        csvManager.fetchCsvSaldoData().addOnSuccessListener { saldoList ->
+                            csvManager.exportDataToCSV(saldoList, uri)
                         }
                     }
                 }
                 REQUEST_CODE_IMPORT -> {
                     data.data?.let { uri ->
-                        val importedData = importDataFromCSV(uri)
-                        firestore.collection(firestoreSaldo)
-                            .document(whichSaldo)
-                            .collection("data")
-                            .orderBy("no", Query.Direction.DESCENDING)
-                            .limit(1)
-                            .get()
-                            .addOnSuccessListener { document ->
-                                var newNo = 1L
-                                var lastSaldo = 0L
-                                if (!document.isEmpty) {
-                                    val highestNo = document.documents[0].getLong("no") ?: 1
-                                    newNo = highestNo + 1
-                                    lastSaldo = document.documents[0].getLong("saldo") ?: 0
-                                }
-
-                                val batch = firestore.batch()
-                                val collectionRef = firestore.collection(firestoreSaldo)
-                                    .document(whichSaldo)
-                                    .collection("data")
-
-                                importedData.forEach { saldoItem ->
-                                    lastSaldo += saldoItem.debit - saldoItem.kredit
-                                    val datas = mapOf(
-                                        "no" to newNo,
-                                        "keterangan" to saldoItem.keterangan,
-                                        "debit" to saldoItem.debit,
-                                        "kredit" to saldoItem.kredit,
-                                        "saldo" to lastSaldo,
-                                        "editor" to saldoItem.editor,
-                                        "tanggal" to saldoItem.tanggal
-                                    )
-                                    val docRef = collectionRef.document(newNo.toString())
-                                    batch.set(docRef, datas)
-                                    newNo++
-                                }
-
-                                batch.commit().addOnSuccessListener {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Berhasil menyimpan data",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }.addOnFailureListener {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Gagal menyimpan data",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(requireContext(), "Gagal mengambil data", Toast.LENGTH_SHORT).show()
-                            }
+                        csvManager.importDataFromCSV(uri)
                     }
                 }
             }
         }
-    }
-
-    private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
-        requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-            val writer = CSVWriter(OutputStreamWriter(outputStream))
-            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Saldo", "Editor", "Tanggal"))
-            for (saldo in data) {
-                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.saldo.toString(), saldo.editor, saldo.tanggal))
-            }
-            writer.close()
-        }
-    }
-
-    private fun importDataFromCSV(uri: Uri): List<Saldo> {
-        val data = mutableListOf<Saldo>()
-
-        requireContext().contentResolver.openInputStream(uri)?.use { inputStream ->
-            val reader = CSVReader(InputStreamReader(inputStream))
-            reader.readNext() // Skip header
-            var nextLine: Array<String>?
-            while (reader.readNext().also { nextLine = it } != null) {
-                val saldo = Saldo(
-                    no = nextLine!![0].toLong(),
-                    keterangan = nextLine!![1],
-                    debit = nextLine!![2].toLong(),
-                    kredit = nextLine!![3].toLong(),
-                    saldo = 0,
-                    editor = nextLine!![5],
-                    tanggal = nextLine!![6]
-                )
-                data.add(saldo)
-            }
-            reader.close()
-        }
-        return data
-    }
-
-    private fun fetchCsvSaldoData(): Task<List<Saldo>> {
-        return firestore.collection(firestoreSaldo)
-            .document(whichSaldo)
-            .collection("data")
-            .get()
-            .continueWith { task ->
-                if (task.isSuccessful) {
-                    task.result?.toObjects(Saldo::class.java) ?: emptyList()
-                } else {
-                    emptyList()
-                }
-            }
     }
 
     private fun fetchSaldoData() {
@@ -433,6 +335,8 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val uid = sharedPreferences.getString("uid", "") ?: ""
+        RefreshData(requireContext()).getUserData(uid)
         fetchSaldoData()
     }
 }

@@ -115,7 +115,7 @@ class DashboardFragment(private val firestoreSaldo: String) : Fragment() {
     }
 
     private fun filterDataByPeriod(dataList: List<Saldo>, period: String): List<Saldo> {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
         val groupedData = dataList.groupBy { data ->
             val dataDate = dateFormat.parse(data.tanggal)

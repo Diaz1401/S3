@@ -1,20 +1,17 @@
 package com.siwiba.util
 
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
-import com.siwiba.MainActivity
-import com.siwiba.wba.activity.ManageAccountActivity
 
 /**
  * A utility class for refreshing user data from Firestore and storing it in shared preferences.
  *
  * @property context The context of the calling component.
- * @property firestore The Firestore instance used to fetch user data.
  */
-class RefreshData(private val context: Context, private val firestore: FirebaseFirestore) {
+class RefreshData(private val context: Context) {
+    private val firestore = FirebaseFirestore.getInstance()
     /**
      * Fetches user data from Firestore and stores it in shared preferences.
      *
@@ -42,13 +39,13 @@ class RefreshData(private val context: Context, private val firestore: FirebaseF
                     val isAdmin = document.getBoolean("isAdmin") ?: false
                     val jabatan = document.getLong("jabatan")?.toInt() ?: 0
                     val password = document.getString("password") ?: ""
-                    val saldoGaji = document.getBoolean("saldoGaji") ?: false
-                    val saldoPajak = document.getBoolean("saldoPajak") ?: false
-                    val saldoPinjaman = document.getBoolean("saldoPinjaman") ?: false
-                    val saldoKas = document.getBoolean("saldoKas") ?: false
-                    val saldoLogistik = document.getBoolean("saldoLogistik") ?: false
-                    val saldoBpjs = document.getBoolean("saldoBpjs") ?: false
-                    val saldoTagihan = document.getBoolean("saldoTagihan") ?: false
+                    val scopeGaji = document.getBoolean("scopeGaji") ?: false
+                    val scopePajak = document.getBoolean("scopePajak") ?: false
+                    val scopePinjaman = document.getBoolean("scopePinjaman") ?: false
+                    val scopeKas = document.getBoolean("scopeKas") ?: false
+                    val scopeLogistik = document.getBoolean("scopeLogistik") ?: false
+                    val scopeBpjs = document.getBoolean("scopeBpjs") ?: false
+                    val scopeTagihan = document.getBoolean("scopeTagihan") ?: false
                     val scopeMode = document.getLong("scopeMode")?.toInt() ?: 0
 
                     // Store the retrieved user data in shared preferences
@@ -60,13 +57,13 @@ class RefreshData(private val context: Context, private val firestore: FirebaseF
                         putString("password", password)
                         putInt("jabatan", jabatan)
                         putBoolean("isAdmin", isAdmin)
-                        putBoolean("saldoGaji", saldoGaji)
-                        putBoolean("saldoPajak", saldoPajak)
-                        putBoolean("saldoPinjaman", saldoPinjaman)
-                        putBoolean("saldoKas", saldoKas)
-                        putBoolean("saldoLogistik", saldoLogistik)
-                        putBoolean("saldoBpjs", saldoBpjs)
-                        putBoolean("saldoTagihan", saldoTagihan)
+                        putBoolean("scopeGaji", scopeGaji)
+                        putBoolean("scopePajak", scopePajak)
+                        putBoolean("scopePinjaman", scopePinjaman)
+                        putBoolean("scopeKas", scopeKas)
+                        putBoolean("scopeLogistik", scopeLogistik)
+                        putBoolean("scopeBpjs", scopeBpjs)
+                        putBoolean("scopeTagihan", scopeTagihan)
                         putInt("scopeMode", scopeMode)
                         apply()
                     }

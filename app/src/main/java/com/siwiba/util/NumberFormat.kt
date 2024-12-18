@@ -9,7 +9,16 @@ import java.text.NumberFormat
 import java.text.ParseException
 import java.util.Locale
 
+/**
+ * Utility class for formatting and parsing numbers.
+ */
 class NumberFormat {
+    /**
+     * Creates a TextWatcher for formatting currency input in an EditText.
+     *
+     * @param editText The EditText to attach the TextWatcher to.
+     * @return A TextWatcher that formats the input as currency.
+     */
     fun createTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -31,6 +40,13 @@ class NumberFormat {
         }
     }
 
+    /**
+     * Formats a string value as currency.
+     *
+     * @param value The string value to format.
+     * @param useAbbreviation Whether to use abbreviations for large numbers (e.g., K, M, B).
+     * @return The formatted currency string.
+     */
     fun formatCurrency(value: String, useAbbreviation: Boolean = false): String {
         val cleanString = value.replace(".", "")
         if (cleanString.isEmpty()) return ""
@@ -52,6 +68,12 @@ class NumberFormat {
         }
     }
 
+    /**
+     * Parses a string input as a number.
+     *
+     * @param input The string input to parse.
+     * @return The parsed number, or null if parsing fails.
+     */
     fun parseNumber(input: String): Number? {
         val format = NumberFormat.getInstance(Locale.GERMANY)
         return try {

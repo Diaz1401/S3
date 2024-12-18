@@ -25,6 +25,7 @@ import com.siwiba.R
 import com.siwiba.databinding.ActivitySaldoBinding
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.AppMode
+import com.siwiba.util.CsvExportImport
 import com.siwiba.wba.model.Saldo
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -35,8 +36,9 @@ class SaldoActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySaldoBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var whichSaldo: String
-    private var selectedPeriod: String = "Total"
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var csvManager: CsvExportImport
+    private var selectedPeriod: String = "Total"
     private var editor: String = ""
     private var firestoreSaldo: String = ""
 
@@ -62,6 +64,9 @@ class SaldoActivity : AppCompatActivity() {
 
         // Set editor
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+
+        // Initialize CSV manager
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, this)
 
         binding.tambah.setOnClickListener {
             val intent = Intent(this, ManageSaldoActivity::class.java)
@@ -135,14 +140,14 @@ class SaldoActivity : AppCompatActivity() {
             when (requestCode) {
                 REQUEST_CODE_EXPORT -> {
                     data.data?.let { uri ->
-                        fetchCsvSaldoData().addOnSuccessListener { saldoList ->
-                            exportDataToCSV(saldoList, uri)
+                        csvManager.fetchCsvSaldoData().addOnSuccessListener { saldoList ->
+                            csvManager.exportDataToCSV(saldoList, uri)
                         }
                     }
                 }
                 REQUEST_CODE_IMPORT -> {
                     data.data?.let { uri ->
-                        importDataFromCSV(uri)
+                        csvManager.importDataFromCSV(uri)
                     }
                 }
             }
@@ -156,147 +161,6 @@ class SaldoActivity : AppCompatActivity() {
             "Saldo ${whichSaldo.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}"
         }
         binding.txtTitle.text = title
-    }
-
-    private fun exportDataToCSV(data: List<Saldo>, uri: Uri) {
-        contentResolver.openOutputStream(uri)?.use { outputStream ->
-            val writer = CSVWriter(OutputStreamWriter(outputStream))
-            writer.writeNext(arrayOf("No", "Keterangan", "Debit", "Kredit", "Saldo", "Editor", "Tanggal"))
-            for (saldo in data) {
-                writer.writeNext(arrayOf(saldo.no.toString(), saldo.keterangan, saldo.debit.toString(), saldo.kredit.toString(), saldo.saldo.toString(), saldo.editor, saldo.tanggal))
-            }
-            writer.close()
-        }
-    }
-
-    private fun importDataFromCSV(uri: Uri) {
-        val importedData = mutableListOf<Saldo>()
-
-        contentResolver.openInputStream(uri)?.use { inputStream ->
-            val reader = CSVReader(InputStreamReader(inputStream))
-            reader.readNext() // Skip header
-            var nextLine: Array<String>?
-            while (reader.readNext().also { nextLine = it } != null) {
-                val saldo = Saldo(
-                    no = nextLine!![0].toLong(),
-                    keterangan = nextLine!![1],
-                    debit = nextLine!![2].toLong(),
-                    kredit = nextLine!![3].toLong(),
-                    saldo = 0,
-                    editor = nextLine!![5],
-                    tanggal = nextLine!![6]
-                )
-                importedData.add(saldo)
-            }
-            reader.close()
-        }
-
-        firestore.collection(firestoreSaldo)
-            .document("utama")
-            .collection("data")
-            .orderBy("no", Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { document ->
-                var lastSaldoUtama = 0L
-                var newNoUtama = 1L
-                if (!document.isEmpty) {
-                    lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
-                    newNoUtama = document.documents[0].getLong("no") ?: 0
-                    newNoUtama++
-                }
-
-                firestore.collection(firestoreSaldo)
-                    .document(whichSaldo)
-                    .collection("data")
-                    .orderBy("no", Query.Direction.DESCENDING)
-                    .limit(1)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        var lastSaldo = 0L
-                        var newNo = 1L
-                        if (!documents.isEmpty) {
-                            lastSaldo = documents.documents[0].getLong("saldo") ?: 0
-                            newNo = documents.documents[0].getLong("no") ?: 0
-                            newNo++
-                        }
-
-                        val batch = firestore.batch()
-                        val collectionRef = firestore.collection(firestoreSaldo)
-                            .document(whichSaldo)
-                            .collection("data")
-
-                        for (saldoItem in importedData) {
-                            if (saldoItem.debit > lastSaldoUtama) {
-                                Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
-                                return@addOnSuccessListener
-                            }
-                            if (saldoItem.kredit > lastSaldo) {
-                                Toast.makeText(this, "Kredit tidak boleh lebih besar dari saldo $whichSaldo", Toast.LENGTH_SHORT).show()
-                                return@addOnSuccessListener
-                            }
-
-                            lastSaldo += saldoItem.debit - saldoItem.kredit
-                            val datas = mapOf(
-                                "no" to newNo,
-                                "keterangan" to saldoItem.keterangan,
-                                "debit" to saldoItem.debit,
-                                "kredit" to saldoItem.kredit,
-                                "saldo" to lastSaldo,
-                                "editor" to saldoItem.editor,
-                                "tanggal" to saldoItem.tanggal
-                            )
-                            val docRef = collectionRef.document(newNo.toString())
-                            batch.set(docRef, datas)
-                            newNo++
-
-                            if (saldoItem.debit > 0) {
-                                lastSaldoUtama -= saldoItem.debit
-                                val dataUtama = mapOf(
-                                    "no" to newNoUtama,
-                                    "keterangan" to "Kredit saldo utama ke saldo $whichSaldo",
-                                    "debit" to 0,
-                                    "kredit" to saldoItem.debit,
-                                    "saldo" to lastSaldoUtama,
-                                    "editor" to saldoItem.editor,
-                                    "tanggal" to saldoItem.tanggal
-                                )
-                                val docRefUtama = firestore.collection(firestoreSaldo)
-                                    .document("utama")
-                                    .collection("data")
-                                    .document(newNoUtama.toString())
-                                batch.set(docRefUtama, dataUtama)
-                                newNoUtama++
-                            }
-                        }
-
-                        batch.commit().addOnSuccessListener {
-                            Toast.makeText(this, "Berhasil menyimpan data", Toast.LENGTH_SHORT).show()
-                        }.addOnFailureListener {
-                            Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Gagal mengambil saldo $whichSaldo terakhir", Toast.LENGTH_SHORT).show()
-                    }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Gagal mengambil saldo utama terakhir", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun fetchCsvSaldoData(): Task<List<Saldo>> {
-        return firestore.collection(firestoreSaldo)
-            .document(whichSaldo)
-            .collection("data")
-            .get()
-            .continueWith { task ->
-                if (task.isSuccessful) {
-                    task.result?.toObjects(Saldo::class.java) ?: emptyList()
-                } else {
-                    emptyList()
-                }
-            }
     }
 
     private fun fetchSaldoData() {

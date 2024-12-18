@@ -96,6 +96,7 @@ class DashboardFragment(private val firestoreSaldo: String) : Fragment() {
         fetchSaldoData("logistik", binding.lineChartLogistik)
         fetchSaldoData("pajak", binding.lineChartPajak)
         fetchSaldoData("pinjaman", binding.lineChartPinjaman)
+        fetchSaldoData("tagihan", binding.lineChartTagihan)
     }
 
     private fun fetchSaldoData(which: String, chart: LineChart) {

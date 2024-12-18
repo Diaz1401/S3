@@ -1,5 +1,6 @@
 package com.siwiba.wba
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -141,6 +142,18 @@ class SignUpActivity : AppCompatActivity() {
                                 }
                             }
                     }
+                    auth.signOut()
+                    val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    val myEmail = sharedPref.getString("email", "") ?: ""
+                    val myPassword = sharedPref.getString("password", "") ?: ""
+                    auth.signInWithEmailAndPassword(myEmail, myPassword)
+                        .addOnCompleteListener { reauthTask ->
+                            if (reauthTask.isSuccessful) {
+                                Toast.makeText(this, "Berhasil masuk kembali", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "Gagal masuk ke akun ${myEmail}: ${reauthTask.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                 } else {
                     Toast.makeText(this, "Sign Up failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }

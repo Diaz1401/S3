@@ -139,6 +139,19 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
             }
         }
 
+        binding.frameTagihan.setOnClickListener {
+            val saldoTagihan = sharedPreferences.getBoolean("saldoTagihan", false)
+            if (saldoTagihan) {
+                activity?.let {
+                    val intent = Intent(it, SaldoActivity::class.java)
+                    intent.putExtra("whichSaldo", "tagihan")
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(requireContext(), "Anda tidak memiliki akses untuk melihat data", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.btnTambah.setOnClickListener {
             // if user if admin allow click else show toast not allowed
             val isAdmin = sharedPreferences.getBoolean("isAdmin", false)

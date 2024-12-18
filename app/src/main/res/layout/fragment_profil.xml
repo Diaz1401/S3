@@ -63,7 +63,7 @@
                 android:id="@+id/layoutProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toTopOf="parent"
@@ -200,7 +200,7 @@
                 app:layout_constraintTop_toBottomOf="@id/layoutEmail"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_18sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_18sdp">
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -236,170 +236,177 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_24sdp"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/_6sdp"
+        android:layout_marginHorizontal="@dimen/_18sdp"
         app:layout_constraintTop_toBottomOf="@id/profilCard"
-        android:layout_marginHorizontal="@dimen/_18sdp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
         <LinearLayout
-            android:id="@+id/layoutManageAkun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:clickable="false"
-                android:focusable="false"
-                android:background="@drawable/baseline_manage_accounts_24"/>
-            <TextView
-                android:id="@+id/txtManageAkun"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Manajemen Akun"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:textColor="@color/colorGreyDark"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutResetPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:clickable="false"
-                android:focusable="false"
-                android:background="@drawable/baseline_password_24"/>
-            <TextView
-                android:id="@+id/txtResetPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Atur Ulang Kata Sandi"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:textColor="@color/colorGreyDark"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="vertical">
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
+                android:id="@+id/layoutManageAkun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:hint="Password"
-                app:endIconMode="password_toggle"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
-                <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:background="@drawable/baseline_manage_accounts_24"/>
+                <TextView
+                    android:id="@+id/txtManageAkun"
                     android:layout_width="match_parent"
-                    android:id="@+id/inputPassword"
-                    android:layout_height="@dimen/_36sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/colorGreyLighter"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_18sdp"
-                    android:paddingEnd="@dimen/_18sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Manajemen Akun"
                     android:textSize="@dimen/_12ssp"
-                    android:fontFamily="monospace"
-                    android:background="@drawable/outline" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:textColor="@color/colorGreyDark"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutResetPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginStart="@dimen/_36sdp"
-                android:hint="Confirm Password"
-                app:endIconMode="password_toggle"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputConfirmPassword"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:background="@drawable/baseline_password_24"/>
+                <TextView
+                    android:id="@+id/txtResetPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_36sdp"
-                    android:background="@drawable/outline"
-                    android:fontFamily="monospace"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:paddingStart="@dimen/_18sdp"
-                    android:paddingEnd="@dimen/_18sdp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/colorGreyLighter"
-                    android:textSize="@dimen/_12ssp" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSimpanPassword"
-                android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Atur Ulang Kata Sandi"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:textColor="@color/colorGreyDark"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:hint="Password"
+                    app:endIconMode="password_toggle"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:id="@+id/inputPassword"
+                        android:layout_height="@dimen/_36sdp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/colorGreyLighter"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:paddingStart="@dimen/_18sdp"
+                        android:paddingEnd="@dimen/_18sdp"
+                        android:textSize="@dimen/_12ssp"
+                        android:fontFamily="monospace"
+                        android:background="@drawable/outline" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    android:hint="Confirm Password"
+                    app:endIconMode="password_toggle"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_36sdp"
+                        android:background="@drawable/outline"
+                        android:fontFamily="monospace"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:paddingStart="@dimen/_18sdp"
+                        android:paddingEnd="@dimen/_18sdp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/colorGreyLighter"
+                        android:textSize="@dimen/_12ssp" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSimpanPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_36sdp"
+                    app:cornerRadius="@dimen/_6sdp"
+                    android:text="Simpan Password"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutTentangAplikasi"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginStart="@dimen/_36sdp"
-                app:cornerRadius="@dimen/_6sdp"
-                android:text="Simpan Password"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutTentangAplikasi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:clickable="false"
-                android:focusable="false"
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:background="@drawable/baseline_info_outline_24"/>
-            <TextView
-                android:id="@+id/txtTentangAplikasi"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:background="@drawable/baseline_info_outline_24"/>
+                <TextView
+                    android:id="@+id/txtTentangAplikasi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tentang Aplikasi"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:textColor="@color/colorGreyDark"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tentang Aplikasi"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:textColor="@color/colorGreyDark"/>
+                android:layout_marginTop="@dimen/_12sdp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_24sdp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:background="@drawable/ic_logout"/>
+                <TextView
+                    android:id="@+id/txtLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Keluar"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:textColor="@color/colorGreyDark"/>
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutLogOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="@dimen/_24sdp"
-                android:layout_height="@dimen/_24sdp"
-                android:clickable="false"
-                android:focusable="false"
-                android:background="@drawable/ic_logout"/>
-            <TextView
-                android:id="@+id/txtLogOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Keluar"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:textColor="@color/colorGreyDark"/>
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

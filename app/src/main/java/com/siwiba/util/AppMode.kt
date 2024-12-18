@@ -34,4 +34,14 @@ class AppMode(private val context: AppCompatActivity) {
         }
         context.recreate()
     }
+
+    /**
+     * Retrieves the current scope mode from shared preferences.
+     *
+     * @return The current scope mode as an integer.
+     */
+    fun getScopeMode(): Int {
+        val sharedPref: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        return sharedPref.getInt("scopeMode", 0)
+    }
 }

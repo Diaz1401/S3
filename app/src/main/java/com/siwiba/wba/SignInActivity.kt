@@ -39,6 +39,7 @@ class SignInActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         refreshData = RefreshData(this, firestore)
+        scopeMode = appMode.getScopeMode()
         val user = auth.currentUser
 
         // Reauthenticate user if already signed in
@@ -51,16 +52,42 @@ class SignInActivity : AppCompatActivity() {
                 user.reauthenticate(credential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            refreshData.getUserData(user.uid)
-                            if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                when (scopeMode) {
-                                    1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
-                                    2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                            firestore.collection("users").document(user.uid).get().continueWithTask { taskk ->
+                                if (taskk.isSuccessful) {
+                                    val document = taskk.result
+                                    if (document != null) {
+                                        val scopeMode = document.getLong("scopeMode")?.toInt() ?: 0
+                                        when (scopeMode) {
+                                            0 -> {
+                                                refreshData.getUserData(user.uid)
+                                                openDashboard()
+                                            }
+                                            1 -> {
+                                                if (AppMode(this).getAppMode()) {
+                                                    refreshData.getUserData(user.uid)
+                                                    openDashboard()
+                                                } else {
+                                                    auth.signOut()
+                                                    Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                            2 -> {
+                                                if (!AppMode(this).getAppMode()) {
+                                                    refreshData.getUserData(user.uid)
+                                                    openDashboard()
+                                                } else {
+                                                    auth.signOut()
+                                                    Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(this, "Gagal mengambil data pengguna: ${taskk.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Gagal mengambil data pengguna: ${taskk.exception?.message}", Toast.LENGTH_SHORT).show()
                                 }
+                                return@continueWithTask taskk
                             }
                         } else {
                             Toast.makeText(this, "Reautentikasi gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -96,6 +123,11 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    private fun openDashboard() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     private fun zoomImage(zoomIn: AppCompatImageView, zoomOut: AppCompatImageView) {
         val scaleXsmall = ObjectAnimator.ofFloat(zoomIn, "scaleX", 0.8f)
@@ -141,17 +173,42 @@ class SignInActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     user?.let {
                         if (it.isEmailVerified) {
-                            Toast.makeText(this, "Sign In sukses", Toast.LENGTH_SHORT).show()
-                            refreshData.getUserData(it.uid)
-                            if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                when (scopeMode) {
-                                    1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
-                                    2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                            firestore.collection("users").document(it.uid).get().continueWithTask { taskkk ->
+                                if (taskkk.isSuccessful) {
+                                    val document = taskkk.result
+                                    if (document != null) {
+                                        val scopeMode = document.getLong("scopeMode")?.toInt() ?: 0
+                                        when (scopeMode) {
+                                            0 -> {
+                                                refreshData.getUserData(it.uid)
+                                                openDashboard()
+                                            }
+                                            1 -> {
+                                                if (AppMode(this).getAppMode()) {
+                                                    refreshData.getUserData(it.uid)
+                                                    openDashboard()
+                                                } else {
+                                                    auth.signOut()
+                                                    Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                            2 -> {
+                                                if (!AppMode(this).getAppMode()) {
+                                                    refreshData.getUserData(it.uid)
+                                                    openDashboard()
+                                                } else {
+                                                    auth.signOut()
+                                                    Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(this, "Gagal mengambil data pengguna: ${taskkk.exception?.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Gagal mengambil data pengguna: ${taskkk.exception?.message}", Toast.LENGTH_SHORT).show()
                                 }
+                                return@continueWithTask taskkk
                             }
                         } else {
                             Toast.makeText(this, "Email belum diverifikasi", Toast.LENGTH_SHORT).show()
@@ -167,16 +224,42 @@ class SignInActivity : AppCompatActivity() {
         if (task.isSuccessful) {
             val user = auth.currentUser
             user?.let {
-                refreshData.getUserData(it.uid)
-                if (refreshData.isAllowedToAccess(AppMode(this).getAppMode())) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    when (scopeMode) {
-                        1 -> Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
-                        2 -> Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                firestore.collection("users").document(it.uid).get().continueWithTask { taskk ->
+                    if (taskk.isSuccessful) {
+                        val document = taskk.result
+                        if (document != null) {
+                            val scopeMode = document.getLong("scopeMode")?.toInt() ?: 0
+                            when (scopeMode) {
+                                0 -> {
+                                    refreshData.getUserData(it.uid)
+                                    openDashboard()
+                                }
+                                1 -> {
+                                    if (AppMode(this).getAppMode()) {
+                                        refreshData.getUserData(it.uid)
+                                        openDashboard()
+                                    } else {
+                                        auth.signOut()
+                                        Toast.makeText(this, "Anda hanya bisa mengakses WBA", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                                2 -> {
+                                    if (!AppMode(this).getAppMode()) {
+                                        refreshData.getUserData(it.uid)
+                                        openDashboard()
+                                    } else {
+                                        auth.signOut()
+                                        Toast.makeText(this, "Anda hanya bisa mengakses KWI", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        } else {
+                            Toast.makeText(this, "Gagal mengambil data pengguna: ${taskk.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this, "Gagal mengambil data pengguna: ${taskk.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
+                    return@continueWithTask taskk
                 }
             }
         } else {

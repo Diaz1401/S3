@@ -11,6 +11,7 @@ data class Account(
     var scopeKas: Boolean,
     var scopeLogistik: Boolean,
     var scopeBpjs: Boolean,
+    var scopeTagihan: Boolean,
     var isAdmin: Boolean,
     val email: String,
     val password: String

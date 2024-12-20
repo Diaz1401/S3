@@ -33,7 +33,7 @@ import com.siwiba.util.CsvExportImport
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.RefreshData
 
-class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
+class KeuanganFragment() : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPreferences: SharedPreferences
@@ -42,6 +42,11 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
     private val binding get() = _binding!!
     private val whichSaldo = "utama"
     private var editor: String = ""
+    private var firestoreSaldo: String = ""
+
+    constructor(firestoreSaldo: String) : this() {
+        this.firestoreSaldo = firestoreSaldo
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,16 +59,14 @@ class KeuanganFragment(private val firestoreSaldo: String) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize SharedPreferences
         sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
-        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext())
 
         binding.frameGaji.setOnClickListener {
             val scopeGaji = sharedPreferences.getBoolean("scopeGaji", false)

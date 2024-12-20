@@ -240,9 +240,4 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
             }
         loadAccounts(true)
     }
-
-    override fun onResume() {
-        super.onResume()
-        loadAccounts(true)
-    }
 }

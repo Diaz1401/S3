@@ -30,13 +30,18 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
 import com.siwiba.util.NumberFormat
 
-class DashboardFragment(private val firestoreSaldo: String) : Fragment() {
+class DashboardFragment() : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private var selectedPeriod: String = "Seminggu"
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private var firestoreSaldo: String = ""
+
+    constructor(firestoreSaldo: String) : this() {
+        this.firestoreSaldo = firestoreSaldo
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

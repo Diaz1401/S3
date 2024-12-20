@@ -113,17 +113,18 @@ class ManageSaldoActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { document ->
                     var lastSaldoUtama = 0L
+                    var lastDate = ""
                     if (!document.isEmpty) {
                         lastSaldoUtama = document.documents[0].getLong("saldo") ?: 0
+                        lastDate = document.documents[0].getString("tanggal") ?: ""
                     }
                     if ((debit > lastSaldoUtama) && !utama) {
                         Toast.makeText(this, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
                         return@addOnSuccessListener
                     }
                     // check prevent older data to be added
-                    val lastDate = document.documents[0].getString("tanggal") ?: ""
                     val currentDate = binding.etTanggal.text.toString()
-                    if (currentDate < lastDate) {
+                    if (currentDate < lastDate && lastDate.isNotEmpty()) {
                         Toast.makeText(this, "Tanggal tidak boleh lebih kecil dari tanggal terakhir", Toast.LENGTH_SHORT).show()
                         return@addOnSuccessListener
                     }

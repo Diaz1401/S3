@@ -76,7 +76,7 @@ class AccountAdapter(
         val context = holder.itemView.context
 
         // Setup the spinner jabatan
-        val jabatanArray = arrayOf("Direktur", "Direktur Operasional", "General Manager", "Karyawan")
+        val jabatanArray = arrayOf("Direktur", "Direktur Operasional", "General Manager", "Manager Keuangan", "Karyawan")
         val adapterJabatan = ArrayAdapter(context, R.layout.item_spinner_black, jabatanArray)
         adapterJabatan.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         holder.spinnerJabatan.adapter = adapterJabatan

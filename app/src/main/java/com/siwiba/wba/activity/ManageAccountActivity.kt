@@ -143,7 +143,7 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
         firestore.collection("users").document(account.id).update(
             mapOf(
                 "jabatan" to correctedPosition,
-                "isAdmin" to (correctedPosition < 4)
+                "isAdmin" to (correctedPosition < 5)
             )
         ).addOnSuccessListener {
             Toast.makeText(this, "Berhasil mengubah jabatan", Toast.LENGTH_SHORT).show()

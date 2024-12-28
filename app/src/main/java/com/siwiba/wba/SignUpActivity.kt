@@ -105,7 +105,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.spinnerScope.adapter = adapterScope
 
         // Set up the Spinner with the options
-        val jabatanArray = arrayOf("Jabatan", "Direktur", "Direktur Operasional", "General Manager", "Karyawan")
+        val jabatanArray = arrayOf("Jabatan", "Direktur", "Direktur Operasional", "General Manager", "Manager Keuangan", "Karyawan")
         val adapter = ArrayAdapter(this, R.layout.item_spinner_black, jabatanArray)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerJabatan.adapter = adapter
@@ -208,7 +208,7 @@ class SignUpActivity : AppCompatActivity() {
         val userData = hashMapOf(
             "name" to binding.inputNameSignUp.text.toString(),
             "jabatan" to binding.spinnerJabatan.selectedItemPosition,
-            "isAdmin" to (binding.spinnerJabatan.selectedItemPosition < 4),
+            "isAdmin" to (binding.spinnerJabatan.selectedItemPosition < 5),
             "scopeMode" to binding.spinnerScope.selectedItemPosition,
             "email" to user.email,
             "address" to binding.inputAlamat.text.toString(),

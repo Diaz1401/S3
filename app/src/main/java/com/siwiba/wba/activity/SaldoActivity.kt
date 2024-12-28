@@ -66,7 +66,7 @@ class SaldoActivity : AppCompatActivity() {
         editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         // Initialize CSV manager
-        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, this)
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, this, false)
 
         binding.tambah.setOnClickListener {
             val intent = Intent(this, ManageSaldoActivity::class.java)

@@ -20,8 +20,9 @@ import java.io.OutputStreamWriter
  * @param whichSaldo The specific saldo to be used.
  * @param firestoreSaldo The Firestore collection name for saldo.
  * @param context The context of the application.
+ * @param isUtama, whether the saldo is utama or not.
  */
-class CsvExportImport(private val whichSaldo: String, private val firestoreSaldo: String, private val context: Context) {
+class CsvExportImport(private val whichSaldo: String, private val firestoreSaldo: String, private val context: Context, private val isUtama: Boolean) {
     private val firestore = FirebaseFirestore.getInstance()
     private val contentResolver: ContentResolver = context.contentResolver
 
@@ -147,7 +148,7 @@ class CsvExportImport(private val whichSaldo: String, private val firestoreSaldo
                     .collection("data")
 
                 for (saldoItem in importedData) {
-                    if (saldoItem.debit > lastSaldoUtama) {
+                    if (saldoItem.debit > lastSaldoUtama && !isUtama) {
                         Toast.makeText(context, "Penambahan debit tidak boleh lebih besar dari saldo utama", Toast.LENGTH_SHORT).show()
                         return@addOnSuccessListener
                     }

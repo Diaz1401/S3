@@ -60,7 +60,7 @@ class KeuanganFragment() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext())
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext(), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

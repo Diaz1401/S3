@@ -239,7 +239,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/_6sdp"
+        android:layout_marginVertical="@dimen/_12sdp"
         android:layout_marginHorizontal="@dimen/_18sdp"
         app:layout_constraintTop_toBottomOf="@id/profilCard"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -299,13 +299,13 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/layoutPassword"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:orientation="vertical">
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_48sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginStart="@dimen/_36sdp"
                     android:hint="Password"
@@ -315,7 +315,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:id="@+id/inputPassword"
-                        android:layout_height="@dimen/_36sdp"
+                        android:layout_height="match_parent"
                         android:textColor="@color/black"
                         android:textColorHint="@color/colorGreyLighter"
                         android:imeOptions="actionDone"
@@ -328,7 +328,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_48sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginStart="@dimen/_36sdp"
                     android:hint="Confirm Password"
@@ -339,7 +339,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputConfirmPassword"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_36sdp"
+                        android:layout_height="match_parent"
                         android:background="@drawable/outline"
                         android:fontFamily="monospace"
                         android:imeOptions="actionDone"

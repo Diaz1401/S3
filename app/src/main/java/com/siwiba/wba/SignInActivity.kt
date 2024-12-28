@@ -23,8 +23,8 @@ import com.siwiba.util.RefreshData
 import com.siwiba.wba.activity.ManageAccountActivity
 
 class SignInActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivitySignInBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var refreshData: RefreshData
     private lateinit var sharedPref: SharedPreferences
@@ -42,11 +42,10 @@ class SignInActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         refreshData = RefreshData(this)
-        scopeMode = appMode.getScopeMode()
         sharedPref = EncSharedPref(this).getEncSharedPref()
-        val user = auth.currentUser
 
         // Reauthenticate user if already signed in
+        val user = auth.currentUser
         if (user != null) {
             val email = sharedPref.getString("email", "") ?: ""
             val password = sharedPref.getString("password", "") ?: ""
@@ -101,6 +100,8 @@ class SignInActivity : AppCompatActivity() {
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        scopeMode = appMode.getScopeMode()
 
         binding.btnSignIn.setOnClickListener {
             val email = binding.inputEmailSignIn.text.toString()

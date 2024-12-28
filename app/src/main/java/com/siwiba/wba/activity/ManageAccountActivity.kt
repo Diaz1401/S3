@@ -1,7 +1,5 @@
 package com.siwiba.wba.activity
 
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -19,12 +17,12 @@ import com.siwiba.wba.adapter.AccountAdapter
 import com.siwiba.wba.model.Account
 
 class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClickListener {
-    private lateinit var binding: ActivityManageAccountBinding
     private lateinit var accountAdapter: AccountAdapter
-    private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private val accounts = mutableListOf<Account>()
+    private lateinit var binding: ActivityManageAccountBinding
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var sharedPref: SharedPreferences
+    private val accounts = mutableListOf<Account>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
@@ -34,12 +32,12 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
             setTheme(R.style.Base_Theme_KWI)
         }
         super.onCreate(savedInstanceState)
-
         binding = ActivityManageAccountBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         sharedPref = EncSharedPref(this).getEncSharedPref()
-        setContentView(binding.root)
 
         loadAccounts(false)
 
@@ -64,7 +62,7 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
     }
 
     private fun loadAccounts(isOnResume: Boolean) {
-        accountAdapter = AccountAdapter(accounts, this, this, isOnResume)
+        accountAdapter = AccountAdapter(accounts, this, isOnResume)
         binding.recyclerViewAccounts.adapter = accountAdapter
         binding.recyclerViewAccounts.layoutManager = LinearLayoutManager(this)
 

@@ -24,13 +24,12 @@ import com.siwiba.wba.SignInActivity
 class AccountAdapter(
     private var accounts: List<Account>,
     private val listener: OnAccountClickListener,
-    private val context: Context,
     private val isOnResume: Boolean
 ) : RecyclerView.Adapter<AccountAdapter.AccountViewHolder>() {
 
-    private var filteredAccounts: List<Account> = accounts
-    private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private var filteredAccounts: List<Account> = accounts
     var isCancel1 = false
     var isCancel2 = false
 

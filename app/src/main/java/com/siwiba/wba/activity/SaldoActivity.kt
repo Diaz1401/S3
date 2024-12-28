@@ -55,17 +55,11 @@ class SaldoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySaldoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         whichSaldo = intent.getStringExtra("whichSaldo") ?: "utama"
-
-        // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
-
-        // Set editor
-        editor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
-
         sharedPref =  EncSharedPref(this).getEncSharedPref()
-
-        // Initialize CSV manager
+        editor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
         csvManager = CsvExportImport(whichSaldo, firestoreSaldo, this, false)
 
         binding.tambah.setOnClickListener {

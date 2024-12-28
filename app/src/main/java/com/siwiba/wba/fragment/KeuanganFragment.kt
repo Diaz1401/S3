@@ -46,19 +46,15 @@ class KeuanganFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
-        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         firestore = FirebaseFirestore.getInstance()
+        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext(), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext(), true)
         editor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {

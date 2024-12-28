@@ -46,6 +46,13 @@
             app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/topInfo"
+        android:layout_marginHorizontal="@dimen/_18sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/_16ssp"
+        android:text="SIWIBA adalah aplikasi pencatatan keuangan yang dirancang untuk membantu mengelola keuangan secara real-time dengan mudah dan efisien. Kami memahami bahwa mengelola keuangan dapat menjadi tantangan, terutama dengan berbagai pengeluaran yang perlu dicatat dan dilacak setiap hari. Oleh karena itu, SIWIBA hadir sebagai solusi andal untuk mencatat dan memantau keuangan dengan lebih baik. Dengan SIWIBA, Anda dapat mencatat pemasukan dan pengeluaran harian, serta mengategorikan setiap transaksi sesuai kebutuhan. Aplikasi ini juga dilengkapi dengan fitur laporan keuangan yang memberikan gambaran komprehensif mengenai kondisi keuangan Anda, memungkinkan Anda untuk memantau aliran dana secara lebih terperinci."/>
 </androidx.constraintlayout.widget.ConstraintLayout>

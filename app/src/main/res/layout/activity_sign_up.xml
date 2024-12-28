@@ -50,7 +50,7 @@
         </FrameLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Nama"
             app:boxStrokeWidth="0dp"
@@ -58,7 +58,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/inputNameSignUp"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textColorHint="@color/colorGreyLighter"
                 android:imeOptions="actionNext"
@@ -72,18 +72,18 @@
         <Spinner
             android:id="@+id/spinnerJabatan"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:background="@drawable/outline" />
         <Spinner
             android:id="@+id/spinnerScope"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:background="@drawable/outline" />
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Email"
             app:boxStrokeWidth="0dp"
@@ -91,7 +91,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/inputEmailSignUp"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textColorHint="@color/colorGreyLighter"
                 android:imeOptions="actionNext"
@@ -104,7 +104,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Alamat"
             app:boxStrokeWidth="0dp"
@@ -112,7 +112,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/inputAlamat"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textColorHint="@color/colorGreyLighter"
                 android:imeOptions="actionNext"
@@ -125,7 +125,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Password"
             app:endIconMode="password_toggle"
@@ -134,7 +134,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/inputPasswordSignUp"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textColorHint="@color/colorGreyLighter"
                 android:imeOptions="actionNext"
@@ -148,7 +148,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            android:layout_height="@dimen/_48sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:hint="Password"
             app:endIconMode="password_toggle"
@@ -157,7 +157,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/inputConfirmPasswordSignUp"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:textColorHint="@color/colorGreyLighter"
                 android:imeOptions="actionDone"

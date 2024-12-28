@@ -1,6 +1,5 @@
 package com.siwiba.wba.fragment
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -51,8 +50,8 @@ class DashboardFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         return binding.root
     }
@@ -67,11 +66,21 @@ class DashboardFragment() : Fragment() {
         val name = sharedPref.getString("name", "Name not found")
         val email = sharedPref.getString("email", "Email not found")
         val address = sharedPref.getString("address", "Address not found")
+        val jabatan = sharedPref.getInt("jabatan", 0)
         val profileImage = sharedPref.getString("profileImage", null)
 
         binding.txtName.text = name
         binding.txtEmail.text = email
         binding.txtAddress.text = address
+
+        when (jabatan) {
+            1 -> binding.txtJabatan.text = "Direktur"
+            2 -> binding.txtJabatan.text = "Direktur Operasional"
+            3 -> binding.txtJabatan.text = "General Manager"
+            4 -> binding.txtJabatan.text = "Manager Keuangan"
+            5 -> binding.txtJabatan.text = "Karyawan"
+            else -> binding.txtJabatan.text = "N/A"
+        }
 
         if (profileImage != null) {
             val imageBytes = Base64.decode(profileImage, Base64.DEFAULT)

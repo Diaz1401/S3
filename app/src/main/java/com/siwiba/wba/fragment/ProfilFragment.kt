@@ -43,20 +43,28 @@ class ProfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         _binding = FragmentProfilBinding.inflate(inflater, container, false)
+        firestore = FirebaseFirestore.getInstance()
+        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val isAdmin = sharedPref.getBoolean("isAdmin", false)
+
         if (isAdmin) {
             binding.layoutManageAkun.visibility = View.VISIBLE
         }
+
         binding.layoutProfile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             setProfileImage.launch(intent)
             binding.btnSaveImg.visibility = View.VISIBLE
         }
+
         binding.btnSaveImg.setOnClickListener {
             // Save image to firestore and shared prefs
             val editor = sharedPref.edit()
@@ -73,10 +81,12 @@ class ProfilFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to update profile image", Toast.LENGTH_SHORT).show()
                 }
         }
+
         binding.btnEditName.setOnClickListener {
             binding.txtName.isEnabled = true
             binding.btnSaveName.visibility = View.VISIBLE
         }
+
         binding.btnSaveName.setOnClickListener {
             val name = binding.txtName.text.toString()
             val editor = sharedPref.edit()
@@ -94,10 +104,12 @@ class ProfilFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to update name", Toast.LENGTH_SHORT).show()
                 }
         }
+
         binding.btnEditAlamat.setOnClickListener {
             binding.txtAlamat.isEnabled = true
             binding.btnSaveAlamat.visibility = View.VISIBLE
         }
+
         binding.btnSaveAlamat.setOnClickListener {
             val address = binding.txtAlamat.text.toString()
             val editor = sharedPref.edit()
@@ -115,6 +127,7 @@ class ProfilFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to update address", Toast.LENGTH_SHORT).show()
                 }
         }
+
         binding.layoutUID.setOnClickListener {
             val uid = binding.txtId.text.toString()
             val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
@@ -122,9 +135,11 @@ class ProfilFragment : Fragment() {
             clipboard.setPrimaryClip(clip)
             Toast.makeText(requireContext(), "UID copied to clipboard", Toast.LENGTH_SHORT).show()
         }
+
         binding.layoutResetPassword.setOnClickListener {
             binding.layoutPassword.visibility = if (binding.layoutPassword.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
+
         binding.layoutLogOut.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Keluar")
@@ -145,6 +160,7 @@ class ProfilFragment : Fragment() {
                 .create()
                 .show()
         }
+
         binding.layoutTentangAplikasi.setOnClickListener {
             // Intent to AboutActivity
             activity?.let {
@@ -152,6 +168,7 @@ class ProfilFragment : Fragment() {
                 startActivity(intent)
             }
         }
+
         binding.btnBackToHome.setOnClickListener {
             // Navigate back to the dashboard fragment
             activity?.let {
@@ -160,6 +177,7 @@ class ProfilFragment : Fragment() {
                 it.finish()
             }
         }
+
         binding.layoutManageAkun.setOnClickListener {
             // Navigate to ManageAccountActivity
             activity?.let {
@@ -167,6 +185,7 @@ class ProfilFragment : Fragment() {
                 startActivity(intent)
             }
         }
+
         binding.btnSimpanPassword.setOnClickListener {
             val password = binding.inputPassword.text.toString()
             val confirmPassword = binding.inputConfirmPassword.text.toString()
@@ -199,11 +218,7 @@ class ProfilFragment : Fragment() {
                     }
             }
         }
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         loadData()
     }
 

@@ -21,9 +21,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.OAuthProvider
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.siwiba.databinding.ActivitySignUpBinding
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
@@ -51,7 +49,7 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         sharedPref = EncSharedPref(this).getEncSharedPref()
 

@@ -3,6 +3,7 @@ package com.siwiba.wba.activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.siwiba.R
 import com.siwiba.databinding.ActivityManageAccountBinding
 import com.siwiba.util.AppMode
+import com.siwiba.util.EncSharedPref
 import com.siwiba.wba.SignUpActivity
 import com.siwiba.wba.adapter.AccountAdapter
 import com.siwiba.wba.model.Account
@@ -22,6 +24,7 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private val accounts = mutableListOf<Account>()
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
@@ -35,6 +38,7 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
         binding = ActivityManageAccountBinding.inflate(layoutInflater)
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        sharedPref = EncSharedPref(this).getEncSharedPref()
         setContentView(binding.root)
 
         loadAccounts(false)
@@ -117,7 +121,6 @@ class ManageAccountActivity : AppCompatActivity(), AccountAdapter.OnAccountClick
                                 Toast.makeText(this, "Gagal menghapus akun ${account.name}: ${deleteUserTask.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
                             auth.signOut()
-                            val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                             email = sharedPref.getString("email", "") ?: ""
                             password = sharedPref.getString("password", "") ?: ""
                             auth.signInWithEmailAndPassword(email, password)

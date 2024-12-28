@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.siwiba.MainActivity
 import com.siwiba.R
 import com.siwiba.databinding.ActivitySignInBinding
 import com.siwiba.util.AppMode
+import com.siwiba.util.EncSharedPref
 import com.siwiba.util.RefreshData
 import com.siwiba.wba.activity.ManageAccountActivity
 
@@ -25,6 +27,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var refreshData: RefreshData
+    private lateinit var sharedPref: SharedPreferences
     private var scopeMode = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +43,13 @@ class SignInActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         refreshData = RefreshData(this)
         scopeMode = appMode.getScopeMode()
+        sharedPref = EncSharedPref(this).getEncSharedPref()
         val user = auth.currentUser
 
         // Reauthenticate user if already signed in
         if (user != null) {
-            val sharedPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val email = sharedPrefs.getString("email", "") ?: ""
-            val password = sharedPrefs.getString("password", "") ?: ""
+            val email = sharedPref.getString("email", "") ?: ""
+            val password = sharedPref.getString("password", "") ?: ""
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 val credential = EmailAuthProvider.getCredential(email, password)
                 user.reauthenticate(credential)

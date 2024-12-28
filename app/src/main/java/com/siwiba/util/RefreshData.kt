@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class RefreshData(private val context: Context) {
     private val firestore = FirebaseFirestore.getInstance()
+    private val sharedPref = EncSharedPref(context).getEncSharedPref()
     /**
      * Fetches user data from Firestore and stores it in shared preferences.
      *
@@ -20,7 +21,6 @@ class RefreshData(private val context: Context) {
      */
     fun getUserData(uid: String): Task<*> {
         // Store the user ID in shared preferences
-        val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("uid", uid)
             apply()

@@ -26,6 +26,7 @@ import com.siwiba.databinding.ActivitySaldoBinding
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.AppMode
 import com.siwiba.util.CsvExportImport
+import com.siwiba.util.EncSharedPref
 import com.siwiba.wba.model.Saldo
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -36,8 +37,8 @@ class SaldoActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySaldoBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var whichSaldo: String
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var csvManager: CsvExportImport
+    private lateinit var sharedPref: SharedPreferences
     private var selectedPeriod: String = "Total"
     private var editor: String = ""
     private var firestoreSaldo: String = ""
@@ -59,11 +60,10 @@ class SaldoActivity : AppCompatActivity() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-
         // Set editor
-        editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+        editor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+
+        sharedPref =  EncSharedPref(this).getEncSharedPref()
 
         // Initialize CSV manager
         csvManager = CsvExportImport(whichSaldo, firestoreSaldo, this, false)
@@ -94,7 +94,7 @@ class SaldoActivity : AppCompatActivity() {
         }
 
         binding.dokumen.setOnClickListener {
-            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+            val isAdmin = sharedPref.getBoolean("isAdmin", false)
             AlertDialog.Builder(this)
                 .setTitle("Pilih Aksi")
                 .setItems(arrayOf("Export Data", "Import Data")) { _, which ->

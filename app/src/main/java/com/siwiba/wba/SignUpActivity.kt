@@ -2,6 +2,7 @@ package com.siwiba.wba
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -29,6 +30,7 @@ import java.io.FileNotFoundException
 import android.widget.AdapterView
 import com.siwiba.R
 import com.siwiba.util.AppMode
+import com.siwiba.util.EncSharedPref
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -36,6 +38,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private var encodedImage: String? = null
     private var completeSignUp: Boolean = false
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
@@ -50,6 +53,7 @@ class SignUpActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         firestore = FirebaseFirestore.getInstance()
+        sharedPref = EncSharedPref(this).getEncSharedPref()
 
         completeSignUp = intent.getBooleanExtra("completeSignUp", false)
 
@@ -143,7 +147,6 @@ class SignUpActivity : AppCompatActivity() {
                             }
                     }
                     auth.signOut()
-                    val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val myEmail = sharedPref.getString("email", "") ?: ""
                     val myPassword = sharedPref.getString("password", "") ?: ""
                     auth.signInWithEmailAndPassword(myEmail, myPassword)

@@ -75,6 +75,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     implementation ("com.opencsv:opencsv:5.5.2")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     implementation(libs.androidx.material3.android)
     implementation(libs.firebase.database.ktx)

@@ -11,13 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
  */
 class AppMode(private val context: AppCompatActivity) {
 
+    private val sharedPref = EncSharedPref(context).getEncSharedPref()
+
     /**
      * Retrieves the current application mode from shared preferences.
      *
      * @return `true` if the app mode is WBA, `false` if the app mode is KWI.
      */
     fun getAppMode(): Boolean {
-        val sharedPref: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         return sharedPref.getBoolean("appMode", true)
     }
 
@@ -27,7 +28,6 @@ class AppMode(private val context: AppCompatActivity) {
      * @param appMode The new application mode to set. `true` for WBA, `false` for KWI.
      */
     fun setAppMode(appMode: Boolean) {
-        val sharedPref: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putBoolean("appMode", appMode)
             apply()
@@ -41,7 +41,6 @@ class AppMode(private val context: AppCompatActivity) {
      * @return The current scope mode as an integer.
      */
     fun getScopeMode(): Int {
-        val sharedPref: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         return sharedPref.getInt("scopeMode", 0)
     }
 }

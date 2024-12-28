@@ -1,6 +1,7 @@
 package com.siwiba.wba.fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
@@ -28,6 +29,7 @@ import java.util.Calendar
 import java.util.Locale
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
+import com.siwiba.util.EncSharedPref
 import com.siwiba.util.NumberFormat
 
 class DashboardFragment() : Fragment() {
@@ -37,6 +39,7 @@ class DashboardFragment() : Fragment() {
     private var selectedPeriod: String = "Seminggu"
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPref: SharedPreferences
     private var firestoreSaldo: String = ""
 
     constructor(firestoreSaldo: String) : this() {
@@ -50,6 +53,7 @@ class DashboardFragment() : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         return binding.root
     }
 
@@ -60,7 +64,6 @@ class DashboardFragment() : Fragment() {
     }
 
     private fun displayUserData() {
-        val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val name = sharedPref.getString("name", "Name not found")
         val email = sharedPref.getString("email", "Email not found")
         val address = sharedPref.getString("address", "Address not found")

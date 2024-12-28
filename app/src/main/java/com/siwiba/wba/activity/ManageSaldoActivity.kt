@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.AppMode
+import com.siwiba.util.EncSharedPref
 
 class ManageSaldoActivity : AppCompatActivity() {
 
@@ -24,6 +25,7 @@ class ManageSaldoActivity : AppCompatActivity() {
     private var debit: Int = 0
     private var isAdmin: Boolean = false
     private var firestoreSaldo: String = ""
+    private val sharedPref = EncSharedPref(this).getEncSharedPref()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val appMode = AppMode(this)
@@ -39,8 +41,7 @@ class ManageSaldoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firestore = FirebaseFirestore.getInstance()
-        isAdmin = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            .getBoolean("isAdmin", false)
+        isAdmin = sharedPref.getBoolean("isAdmin", false)
 
         mode = intent.getIntExtra("mode", 0)
         val saldo = intent.getStringExtra("whichSaldo") ?: ""
@@ -270,8 +271,7 @@ class ManageSaldoActivity : AppCompatActivity() {
                 val tanggal = intent.getStringExtra("tanggal") ?: ""
 
                 val newKeterangan = binding.etKeterangan.text.toString()
-                val newEditor = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                    .getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+                val newEditor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
                 val editorToSave = if (editor != newEditor) "$editor, $newEditor" else editor
 

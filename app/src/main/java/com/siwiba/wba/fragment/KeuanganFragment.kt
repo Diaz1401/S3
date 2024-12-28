@@ -1,10 +1,8 @@
 package com.siwiba.wba.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,24 +17,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import com.dewakoding.androiddatatable.data.Column
 import com.dewakoding.androiddatatable.listener.OnWebViewComponentClickListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
-import com.opencsv.CSVReader
-import com.opencsv.CSVWriter
 import com.siwiba.MainActivity
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
 import com.siwiba.R
-import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.util.CsvExportImport
+import com.siwiba.util.EncSharedPref
 import com.siwiba.util.NumberFormat
 import com.siwiba.util.RefreshData
 
 class KeuanganFragment() : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPref: SharedPreferences
     private lateinit var csvManager: CsvExportImport
     private var _binding: FragmentKeuanganBinding? = null
     private val binding get() = _binding!!
@@ -53,23 +46,23 @@ class KeuanganFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentKeuanganBinding.inflate(inflater, container, false)
+        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         firestore = FirebaseFirestore.getInstance()
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         csvManager = CsvExportImport(whichSaldo, firestoreSaldo, requireContext(), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editor = sharedPreferences.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
+        editor = sharedPref.getString("name", "Editor tidak diketahui") ?: "Editor tidak diketahui"
 
         binding.frameGaji.setOnClickListener {
-            val scopeGaji = sharedPreferences.getBoolean("scopeGaji", false)
+            val scopeGaji = sharedPref.getBoolean("scopeGaji", false)
             if (scopeGaji) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -82,7 +75,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.framePajak.setOnClickListener {
-            val scopePajak = sharedPreferences.getBoolean("scopePajak", false)
+            val scopePajak = sharedPref.getBoolean("scopePajak", false)
             if (scopePajak) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -95,7 +88,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.framePinjaman.setOnClickListener {
-            val scopePinjaman = sharedPreferences.getBoolean("scopePinjaman", false)
+            val scopePinjaman = sharedPref.getBoolean("scopePinjaman", false)
             if (scopePinjaman) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -108,7 +101,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.frameKas.setOnClickListener {
-            val scopeKas = sharedPreferences.getBoolean("scopeKas", false)
+            val scopeKas = sharedPref.getBoolean("scopeKas", false)
             if (scopeKas) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -121,7 +114,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.frameBpjs.setOnClickListener {
-            val scopeBpjs = sharedPreferences.getBoolean("scopeBpjs", false)
+            val scopeBpjs = sharedPref.getBoolean("scopeBpjs", false)
             if (scopeBpjs) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -134,7 +127,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.frameLogistik.setOnClickListener {
-            val scopeLogistik = sharedPreferences.getBoolean("scopeLogistik", false)
+            val scopeLogistik = sharedPref.getBoolean("scopeLogistik", false)
             if (scopeLogistik) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -147,7 +140,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.frameTagihan.setOnClickListener {
-            val scopeTagihan = sharedPreferences.getBoolean("scopeTagihan", false)
+            val scopeTagihan = sharedPref.getBoolean("scopeTagihan", false)
             if (scopeTagihan) {
                 activity?.let {
                     val intent = Intent(it, SaldoActivity::class.java)
@@ -161,7 +154,7 @@ class KeuanganFragment() : Fragment() {
 
         binding.btnTambah.setOnClickListener {
             // if user if admin allow click else show toast not allowed
-            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+            val isAdmin = sharedPref.getBoolean("isAdmin", false)
             if (isAdmin) {
                 activity?.let {
                     val intent = Intent(it, ManageSaldoActivity::class.java)
@@ -176,7 +169,7 @@ class KeuanganFragment() : Fragment() {
         }
 
         binding.dokumen.setOnClickListener {
-            val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+            val isAdmin = sharedPref.getBoolean("isAdmin", false)
             AlertDialog.Builder(requireContext())
                 .setTitle("Pilih Aksi")
                 .setItems(arrayOf("Export Data", "Import Data")) { _, which ->
@@ -277,7 +270,7 @@ class KeuanganFragment() : Fragment() {
         val customColor = ContextCompat.getColor(requireContext(), R.color.siwiba_light)
         binding.dataTable.setBackgroundColor(customColor)
 
-        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = sharedPreferences.getBoolean("isAdmin", false))
+        binding.dataTable.setTable(columns, saldoList, isActionButtonShow = sharedPref.getBoolean("isAdmin", false))
 
         binding.dataTable.setOnClickListener(object : OnWebViewComponentClickListener {
             override fun onRowClicked(dataStr: String) {
@@ -338,7 +331,7 @@ class KeuanganFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val uid = sharedPreferences.getString("uid", "") ?: ""
+        val uid = sharedPref.getString("uid", "") ?: ""
         RefreshData(requireContext()).getUserData(uid)
         fetchSaldoData()
     }

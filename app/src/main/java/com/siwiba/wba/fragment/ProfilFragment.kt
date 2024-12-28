@@ -3,6 +3,7 @@ package com.siwiba.wba.fragment
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.siwiba.databinding.ActivityMainBinding
 import com.siwiba.databinding.FragmentProfilBinding
 import com.siwiba.wba.SignInActivity
 import com.siwiba.MainActivity
+import com.siwiba.util.EncSharedPref
 import com.siwiba.wba.activity.AboutActivity
 import com.siwiba.wba.activity.ManageAccountActivity
 import java.io.ByteArrayOutputStream
@@ -33,6 +35,7 @@ class ProfilFragment : Fragment() {
     private var _binding: FragmentProfilBinding? = null
     private val binding get() = _binding!!
     private var encodedImage: String? = null
+    private lateinit var sharedPref: SharedPreferences
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
@@ -42,8 +45,9 @@ class ProfilFragment : Fragment() {
     ): View? {
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        sharedPref = EncSharedPref(requireContext()).getEncSharedPref()
         _binding = FragmentProfilBinding.inflate(inflater, container, false)
-        val isAdmin = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getBoolean("isAdmin", false)
+        val isAdmin = sharedPref.getBoolean("isAdmin", false)
         if (isAdmin) {
             binding.layoutManageAkun.visibility = View.VISIBLE
         }
@@ -55,13 +59,12 @@ class ProfilFragment : Fragment() {
         }
         binding.btnSaveImg.setOnClickListener {
             // Save image to firestore and shared prefs
-            val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
+            val editor = sharedPref.edit()
             editor.putString("profileImage", encodedImage)
             editor.apply()
             binding.btnSaveImg.visibility = View.GONE
 
-            val id = sharedPreferences.getString("uid", "N/A")
+            val id = sharedPref.getString("uid", "N/A")
             firestore.collection("users").document(id!!).update("profileImage", encodedImage)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Profile image updated", Toast.LENGTH_SHORT).show()
@@ -76,14 +79,13 @@ class ProfilFragment : Fragment() {
         }
         binding.btnSaveName.setOnClickListener {
             val name = binding.txtName.text.toString()
-            val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
+            val editor = sharedPref.edit()
             editor.putString("name", name)
             editor.apply()
             binding.txtName.isEnabled = false
             binding.btnSaveName.visibility = View.GONE
 
-            val id = sharedPreferences.getString("uid", "N/A")
+            val id = sharedPref.getString("uid", "N/A")
             firestore.collection("users").document(id!!).update("name", name)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Name updated", Toast.LENGTH_SHORT).show()
@@ -98,14 +100,13 @@ class ProfilFragment : Fragment() {
         }
         binding.btnSaveAlamat.setOnClickListener {
             val address = binding.txtAlamat.text.toString()
-            val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
+            val editor = sharedPref.edit()
             editor.putString("address", address)
             editor.apply()
             binding.txtAlamat.isEnabled = false
             binding.btnSaveAlamat.visibility = View.GONE
 
-            val id = sharedPreferences.getString("uid", "N/A")
+            val id = sharedPref.getString("uid", "N/A")
             firestore.collection("users").document(id!!).update("address", address)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Address updated", Toast.LENGTH_SHORT).show()
@@ -129,7 +130,6 @@ class ProfilFragment : Fragment() {
                 .setTitle("Keluar")
                 .setMessage("Apakah anda yakin untuk keluar?")
                 .setPositiveButton("Ya") { dialog, _ ->
-                    val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val editor = sharedPref.edit()
                     editor.clear()
                     editor.apply()
@@ -180,7 +180,6 @@ class ProfilFragment : Fragment() {
                             .addOnSuccessListener {
                                 Toast.makeText(requireContext(), "Password berhasil diubah", Toast.LENGTH_SHORT).show()
                                 Toast.makeText(requireContext(), "Tolong masuk kembali", Toast.LENGTH_SHORT).show()
-                                val sharedPref = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                                 val editor = sharedPref.edit()
                                 editor.clear()
                                 editor.apply()
@@ -236,12 +235,11 @@ class ProfilFragment : Fragment() {
     }
 
     private fun loadData() {
-        val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString("name", "N/A")
-        val id = sharedPreferences.getString("uid", "N/A")
-        val email = sharedPreferences.getString("email", "N/A")
-        val address = sharedPreferences.getString("address", "N/A")
-        val profileImage = sharedPreferences.getString("profileImage", null)
+        val name = sharedPref.getString("name", "N/A")
+        val id = sharedPref.getString("uid", "N/A")
+        val email = sharedPref.getString("email", "N/A")
+        val address = sharedPref.getString("address", "N/A")
+        val profileImage = sharedPref.getString("profileImage", null)
 
         binding.txtId.text = id
         binding.txtName.setText(name)
